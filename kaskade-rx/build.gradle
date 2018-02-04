@@ -1,0 +1,15 @@
+apply plugin: 'kotlin'
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/test/kotlin'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation project(":kaskade")
+    implementation "io.reactivex.rxjava2:rxjava:2.1.9"
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
