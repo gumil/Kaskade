@@ -1,1 +1,1 @@
-include ':kaskade', ':sample', ':kaskade-rx'
+include ':kaskade', ':sample', ':kaskade-rx', ':kaskade-livedata'

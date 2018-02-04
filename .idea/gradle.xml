@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/kaskade" />
+            <option value="$PROJECT_DIR$/kaskade-livedata" />
             <option value="$PROJECT_DIR$/kaskade-rx" />
             <option value="$PROJECT_DIR$/sample" />
           </set>
