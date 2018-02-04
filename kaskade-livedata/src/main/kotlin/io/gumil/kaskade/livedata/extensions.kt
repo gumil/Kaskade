@@ -16,7 +16,7 @@ fun <I, R> ((I) -> LiveData<R>).toDeferred(): (I) -> Deferred<R> {
     }
 }
 
-fun <S : MviState, I : MviIntent, R : MviResult> MviStateMachine<S, I, R>.observeLiveData(): LiveData<S> {
+fun <S : MviState, I : MviIntent, R : MviResult> MviStateMachine<S, I, R>.stateLiveData(): LiveData<S> {
     val state = MutableLiveData<S>()
     onStateChanged = {
         state.postValue(it)
