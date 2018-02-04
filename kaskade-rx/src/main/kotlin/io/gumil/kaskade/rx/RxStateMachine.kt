@@ -17,13 +17,11 @@ internal class RxStateMachine<S : MviState, in I : MviIntent, R : MviResult>(
 ) : MviStateMachine<S, I, R>(
         initialState, resultFromIntent.toDeferred(), reducer
 ) {
-    val state: Observable<S> get() = mutableState
     private val disposables = CompositeDisposable()
-    private val mutableState = PublishSubject.create<S>()
 
-    init {
+    fun getStateObservable(): Observable<S> = PublishSubject.create<S>().apply {
         onStateChanged = {
-            mutableState.onNext(it)
+            onNext(it)
         }
     }
 
@@ -40,7 +38,7 @@ internal class RxStateMachine<S : MviState, in I : MviIntent, R : MviResult>(
     }
 }
 
-fun <I, R> ((I) -> Observable<R>).toDeferred(): (I) -> Deferred<R>{
+fun <I, R> ((I) -> Observable<R>).toDeferred(): (I) -> Deferred<R> {
     return { intent: I ->
         RxDeferredValue(this(intent))
     }
@@ -65,7 +63,6 @@ class RxDeferredValue<T>(
     fun dispose() {
         subscription?.dispose()
     }
-
 
 
 }
