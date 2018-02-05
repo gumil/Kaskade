@@ -4,9 +4,9 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import io.gumil.kaskade.Deferred
-import io.gumil.kaskade.MviIntent
-import io.gumil.kaskade.MviResult
-import io.gumil.kaskade.MviState
+import io.gumil.kaskade.Intent
+import io.gumil.kaskade.Result
+import io.gumil.kaskade.State
 import io.gumil.kaskade.MviStateMachine
 
 
@@ -16,7 +16,7 @@ fun <I, R> ((I) -> LiveData<R>).toDeferred(): (I) -> Deferred<R> {
     }
 }
 
-fun <S : MviState, I : MviIntent, R : MviResult> MviStateMachine<S, I, R>.stateLiveData(): LiveData<S> {
+fun <S : State, I : Intent, R : Result> MviStateMachine<S, I, R>.stateLiveData(): LiveData<S> {
     val state = MutableLiveData<S>()
     onStateChanged = {
         state.postValue(it)

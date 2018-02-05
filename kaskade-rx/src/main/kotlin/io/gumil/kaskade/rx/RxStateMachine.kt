@@ -1,16 +1,16 @@
 package io.gumil.kaskade.rx
 
 import io.gumil.kaskade.Deferred
-import io.gumil.kaskade.MviIntent
-import io.gumil.kaskade.MviResult
-import io.gumil.kaskade.MviState
+import io.gumil.kaskade.Intent
+import io.gumil.kaskade.Result
+import io.gumil.kaskade.State
 import io.gumil.kaskade.MviStateMachine
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 
-internal class RxStateMachine<S : MviState, in I : MviIntent, R : MviResult>(
+internal class RxStateMachine<S : State, in I : Intent, R : Result>(
         initialState: S,
         resultFromIntent: (I) -> Observable<R>,
         reducer: (state: S, result: R) -> S
@@ -61,7 +61,7 @@ class RxDeferredValue<T>(
     }
 }
 
-fun <S : MviState, I : MviIntent, R : MviResult> MviStateMachine<S, I, R>.stateObservable():
+fun <S : State, I : Intent, R : Result> MviStateMachine<S, I, R>.stateObservable():
         Observable<S> = PublishSubject.create<S>().apply {
     onStateChanged = {
         onNext(it)

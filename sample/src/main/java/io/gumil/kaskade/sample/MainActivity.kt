@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import io.gumil.kaskade.DeferredValue
-import io.gumil.kaskade.MviIntent
-import io.gumil.kaskade.MviResult
-import io.gumil.kaskade.MviState
+import io.gumil.kaskade.Intent
+import io.gumil.kaskade.Result
+import io.gumil.kaskade.State
 import io.gumil.kaskade.MviStateMachine
 import kotlinx.android.synthetic.main.activity_main.toastButton
 
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    object ToastIntent : MviIntent
-    object ToastState : MviState
-    object ToastResult : MviResult
+    object ToastIntent : Intent
+    object ToastState : State
+    object ToastResult : Result
 }

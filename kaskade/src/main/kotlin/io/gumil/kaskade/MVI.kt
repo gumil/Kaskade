@@ -24,6 +24,6 @@
 
 package io.gumil.kaskade
 
-interface MviIntent
-interface MviState
-interface MviResult
+interface Intent
+interface State
+interface Result
