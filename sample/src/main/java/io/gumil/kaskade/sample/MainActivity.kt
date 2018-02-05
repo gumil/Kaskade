@@ -12,15 +12,9 @@ import kotlinx.android.synthetic.main.activity_main.toastButton
 
 class MainActivity : AppCompatActivity() {
 
-    private val stateMachine = StateMachine<ToastState, ToastIntent, ToastResult>(
-            ToastState,
-            {
-                DeferredValue(ToastResult)
-            },
-            { _, _ ->
-                ToastState
-            }
-    )
+    private val stateMachine = StateMachine<ToastState, ToastIntent, ToastResult>(ToastState).apply {
+        addIntentHandler(ToastIntent, DeferredValue(ToastResult))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,5 +31,10 @@ class MainActivity : AppCompatActivity() {
 
     object ToastIntent : Intent
     object ToastState : State
-    object ToastResult : Result
+    object ToastResult : Result<ToastState> {
+        override fun reduceToState(oldState: ToastState): ToastState {
+            return ToastState
+        }
+
+    }
 }
