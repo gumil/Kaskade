@@ -1,16 +1,27 @@
 package io.gumil.kaskade
 
 abstract class Deferred<T>(
-        var onNext: (T) -> Unit = {},
-        var onError: (Throwable) -> Unit = {}
-) : Function0<Unit>
+        val onError: (Throwable) -> Unit = {}
+) : Function0<Unit> {
+
+    val onNext: (T) -> Unit get() =  _onNext
+    internal var _onNext: (T) -> Unit = {}
+
+    abstract fun dispose()
+}
 
 class DeferredValue<T>(
         private val value: T,
-        onNext: (T) -> Unit = {},
         onError: (Throwable) -> Unit = {}
-) : Deferred<T>(onNext, onError) {
+) : Deferred<T>(onError) {
+
+    override fun dispose() {}
+
     override fun invoke() {
-        onNext(value)
+        try {
+            onNext(value)
+        } catch (e: Exception) {
+            onError(e)
+        }
     }
 }

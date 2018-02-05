@@ -9,14 +9,9 @@ import io.gumil.kaskade.Result
 import io.gumil.kaskade.State
 import io.gumil.kaskade.StateMachine
 
+fun <T> LiveData<T>.toDeferred(): Deferred<T> = LiveDataDeferredValue(this)
 
-fun <I, R> ((I) -> LiveData<R>).toDeferred(): (I) -> Deferred<R> {
-    return { intent: I ->
-        LiveDataDeferredValue(this(intent))
-    }
-}
-
-fun <S : State, I : Intent, R : Result> StateMachine<S, I, R>.stateLiveData(): LiveData<S> {
+fun <S : State, I : Intent, R : Result<S>> StateMachine<S, I, R>.stateLiveData(): LiveData<S> {
     val state = MutableLiveData<S>()
     onStateChanged = {
         state.postValue(it)
@@ -27,9 +22,8 @@ fun <S : State, I : Intent, R : Result> StateMachine<S, I, R>.stateLiveData(): L
 
 class LiveDataDeferredValue<T>(
         private val function: LiveData<T>,
-        onNext: (T) -> Unit = {},
         onError: (Throwable) -> Unit = {}
-) : Deferred<T>(onNext, onError) {
+) : Deferred<T>(onError) {
 
     private var observer: Observer<T>? = null
 
@@ -48,7 +42,7 @@ class LiveDataDeferredValue<T>(
         }
     }
 
-    fun dispose() {
+    override fun dispose() {
         observer?.let {
             function.removeObserver(it)
         }

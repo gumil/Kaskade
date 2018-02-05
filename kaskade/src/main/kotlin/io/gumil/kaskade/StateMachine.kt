@@ -26,22 +26,38 @@ package io.gumil.kaskade
 
 import kotlin.properties.Delegates
 
-open class StateMachine<S : State, in I : Intent, R : Result>(
-        initialState: S,
-        private val resultFromIntent: (I) -> Deferred<R>,
-        private val reducer: (state: S, result: R) -> S
+class StateMachine<S : State, I : Intent, R : Result<S>>(
+        initialState: S
 ) {
+    private val intentResultMap = mutableMapOf<Intent, Deferred<R>>()
+
     private var currentState: S by Delegates.observable(initialState) { _, _, newValue ->
         onStateChanged?.invoke(newValue)
     }
 
     var onStateChanged: ((state: S) -> Unit)? = null
 
+    private val deferredList = mutableListOf<Deferred<*>>()
+
+    fun addIntentHandler(intent: Intent, deferred: Deferred<R>) {
+        deferredList.add(deferred)
+        intentResultMap[intent] = deferred
+    }
+
     fun processIntent(intent: I) {
-        resultFromIntent(intent).apply {
-            onNext = {
-                currentState = reducer(currentState, it)
+        intentResultMap[intent]?.apply {
+            _onNext = {
+                currentState = it.reduceToState(currentState)
             }
-        }()
+        }?.invoke() ?: throw IllegalStateException("Intent ${intent.javaClass.simpleName} not added to State Machine")
+    }
+
+    fun processIntent(intent: Deferred<I>) {
+        deferredList.add(intent)
+        intent._onNext = { processIntent(it) }
+    }
+
+    fun dispose() {
+        deferredList.forEach { it.dispose() }
     }
 }
