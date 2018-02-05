@@ -7,12 +7,12 @@ import io.gumil.kaskade.DeferredValue
 import io.gumil.kaskade.Intent
 import io.gumil.kaskade.Result
 import io.gumil.kaskade.State
-import io.gumil.kaskade.MviStateMachine
+import io.gumil.kaskade.StateMachine
 import kotlinx.android.synthetic.main.activity_main.toastButton
 
 class MainActivity : AppCompatActivity() {
 
-    private val stateMachine = MviStateMachine<ToastState, ToastIntent, ToastResult>(
+    private val stateMachine = StateMachine<ToastState, ToastIntent, ToastResult>(
             ToastState,
             {
                 DeferredValue(ToastResult)

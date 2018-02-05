@@ -26,7 +26,7 @@ package io.gumil.kaskade
 
 import kotlin.properties.Delegates
 
-open class MviStateMachine<S : State, in I : Intent, R : Result>(
+open class StateMachine<S : State, in I : Intent, R : Result>(
         initialState: S,
         private val resultFromIntent: (I) -> Deferred<R>,
         private val reducer: (state: S, result: R) -> S

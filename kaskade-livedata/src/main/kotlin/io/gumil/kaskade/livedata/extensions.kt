@@ -7,7 +7,7 @@ import io.gumil.kaskade.Deferred
 import io.gumil.kaskade.Intent
 import io.gumil.kaskade.Result
 import io.gumil.kaskade.State
-import io.gumil.kaskade.MviStateMachine
+import io.gumil.kaskade.StateMachine
 
 
 fun <I, R> ((I) -> LiveData<R>).toDeferred(): (I) -> Deferred<R> {
@@ -16,7 +16,7 @@ fun <I, R> ((I) -> LiveData<R>).toDeferred(): (I) -> Deferred<R> {
     }
 }
 
-fun <S : State, I : Intent, R : Result> MviStateMachine<S, I, R>.stateLiveData(): LiveData<S> {
+fun <S : State, I : Intent, R : Result> StateMachine<S, I, R>.stateLiveData(): LiveData<S> {
     val state = MutableLiveData<S>()
     onStateChanged = {
         state.postValue(it)
