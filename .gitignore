@@ -3,6 +3,8 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/copyright
+/.idea/kotlinc.xml
 .DS_Store
 /build
 /captures
