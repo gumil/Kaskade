@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import io.gumil.kaskade.DeferredValue
-import io.gumil.kaskade.Intent
+import io.gumil.kaskade.Action
 import io.gumil.kaskade.Result
 import io.gumil.kaskade.State
 import io.gumil.kaskade.StateMachine
@@ -12,8 +12,8 @@ import kotlinx.android.synthetic.main.activity_main.toastButton
 
 class MainActivity : AppCompatActivity() {
 
-    private val stateMachine = StateMachine<ToastState, ToastIntent, ToastResult>(ToastState).apply {
-        addIntentHandler(ToastIntent, DeferredValue(ToastResult))
+    private val stateMachine = StateMachine<ToastState, ToastAction, ToastResult>(ToastState).apply {
+        addIntentHandler(ToastAction, DeferredValue(ToastResult))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         toastButton.setOnClickListener {
-            stateMachine.processIntent(ToastIntent)
+            stateMachine.processAction(ToastAction)
         }
 
         stateMachine.onStateChanged = {
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    object ToastIntent : Intent
+    object ToastAction : Action
     object ToastState : State
     object ToastResult : Result<ToastState> {
         override fun reduceToState(oldState: ToastState): ToastState {

@@ -1,7 +1,7 @@
 package io.gumil.kaskade.rx
 
 import io.gumil.kaskade.Deferred
-import io.gumil.kaskade.Intent
+import io.gumil.kaskade.Action
 import io.gumil.kaskade.Result
 import io.gumil.kaskade.State
 import io.gumil.kaskade.StateMachine
@@ -31,9 +31,9 @@ class RxDeferredValue<T>(
     }
 }
 
-fun <S : State, I : Intent, R : Result<S>> StateMachine<S, I, R>.stateObservable():
-        Observable<S> = PublishSubject.create<S>().apply {
-    onStateChanged = {
-        onNext(it)
-    }
-}
+fun <S : State, A : Action, R : Result<S>> StateMachine<S, A, R>.stateObservable(): Observable<S> =
+        PublishSubject.create<S>().apply {
+            onStateChanged = {
+                onNext(it)
+            }
+        }

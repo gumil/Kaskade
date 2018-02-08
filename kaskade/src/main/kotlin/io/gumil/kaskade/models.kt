@@ -24,7 +24,7 @@
 
 package io.gumil.kaskade
 
-interface Intent
+interface Action
 interface State
 interface Result<S: State> {
     fun reduceToState(oldState: S): S

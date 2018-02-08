@@ -26,10 +26,10 @@ package io.gumil.kaskade
 
 import kotlin.properties.Delegates
 
-class StateMachine<S : State, I : Intent, R : Result<S>>(
+class StateMachine<S : State, A : Action, R : Result<S>>(
         initialState: S
 ) {
-    private val intentResultMap = mutableMapOf<Intent, Deferred<R>>()
+    private val intentResultMap = mutableMapOf<Action, Deferred<R>>()
 
     private var currentState: S by Delegates.observable(initialState) { _, _, newValue ->
         onStateChanged?.invoke(newValue)
@@ -39,22 +39,22 @@ class StateMachine<S : State, I : Intent, R : Result<S>>(
 
     private val deferredList = mutableListOf<Deferred<*>>()
 
-    fun addIntentHandler(intent: Intent, deferred: Deferred<R>) {
+    fun addIntentHandler(intent: Action, deferred: Deferred<R>) {
         deferredList.add(deferred)
         intentResultMap[intent] = deferred
     }
 
-    fun processIntent(intent: I) {
-        intentResultMap[intent]?.apply {
+    fun processAction(action: A) {
+        intentResultMap[action]?.apply {
             _onNext = {
                 currentState = it.reduceToState(currentState)
             }
-        }?.invoke() ?: throw IllegalStateException("Intent ${intent.javaClass.simpleName} not added to State Machine")
+        }?.invoke() ?: throw IllegalStateException("Intent ${action.javaClass.simpleName} not added to State Machine")
     }
 
-    fun processIntent(intent: Deferred<I>) {
+    fun processAction(intent: Deferred<A>) {
         deferredList.add(intent)
-        intent._onNext = { processIntent(it) }
+        intent._onNext = { processAction(it) }
     }
 
     fun dispose() {

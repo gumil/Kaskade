@@ -4,14 +4,14 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import io.gumil.kaskade.Deferred
-import io.gumil.kaskade.Intent
+import io.gumil.kaskade.Action
 import io.gumil.kaskade.Result
 import io.gumil.kaskade.State
 import io.gumil.kaskade.StateMachine
 
 fun <T> LiveData<T>.toDeferred(): Deferred<T> = LiveDataDeferredValue(this)
 
-fun <S : State, I : Intent, R : Result<S>> StateMachine<S, I, R>.stateLiveData(): LiveData<S> {
+fun <S : State, A : Action, R : Result<S>> StateMachine<S, A, R>.stateLiveData(): LiveData<S> {
     val state = MutableLiveData<S>()
     onStateChanged = {
         state.postValue(it)
