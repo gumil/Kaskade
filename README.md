@@ -26,7 +26,7 @@ allprojects {
 Add the dependency
 ```
 dependencies {
-  implementation 'com.github.gumil.Kaskade:kaskade:0.1.1'
+  implementation 'com.github.gumil.kaskade:kaskade:0.1.1'
 }
 ```
 
@@ -65,7 +65,7 @@ stateMachine.onStateChanged = {
 Add the dependency
 ```
 dependencies {
-  implementation 'com.github.gumil.Kaskade:kaskade-rx:0.1.1'
+  implementation 'com.github.gumil.kaskade:kaskade-rx:0.1.1'
 }
 ```
 
@@ -83,7 +83,7 @@ stateMachine.stateObservable()
 Add the dependency
 ```
 dependencies {
-  implementation 'com.github.gumil.Kaskade:kaskade-livedata:0.1.1'
+  implementation 'com.github.gumil.kaskade:kaskade-livedata:0.1.1'
 }
 ```
 
