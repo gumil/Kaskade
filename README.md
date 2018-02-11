@@ -26,23 +26,74 @@ allprojects {
 Add the dependency
 ```
 dependencies {
-  implementation 'com.github.gumil.Kaskade:kaskade:0.1.0'
+  implementation 'com.github.gumil.Kaskade:kaskade:0.1.1'
 }
 ```
 
 # Usage
+Create the `Action`, `Result`, `State` objects
+```Kotlin
+object TestAction : Action
+object TestState : State
+object TestResult : Result<TestState> {
+  override fun reduceToState(oldState: TestState): TestState {
+    // For a real use case, there should be some logic in determining the new state
+    // For our example we just return TestState
+    return TestState
+  }
+}
+```
 
+Create the `StateMachine` applying `TestState` as initial state
+```Kotlin
+val stateMachine = StateMachine<TestState, TestAction, TestResult>(TestState)
+```
+
+Adding handler to `Action`
+```Kotlin
+stateMachine.addActionHandler(TestAction, DeferredValue(TestResult))
+```
+
+Observing states
+```Kotlin
+stateMachine.onStateChanged = {
+  //Do something with new state
+  render(it)
+}
+```
 ## RxJava2
 Add the dependency
 ```
 dependencies {
-  implementation 'com.github.gumil.Kaskade:kaskade-rx:0.1.0'
+  implementation 'com.github.gumil.Kaskade:kaskade-rx:0.1.1'
 }
 ```
+
+For transforming `Observables` to `Deferred`
+```Kotlin
+Observable.just("hello world").toDeferred()
+```
+
+Observing state as `Observable`
+```Kotlin
+stateMachine.stateObservable()
+```
+
 ## LiveData
 Add the dependency
 ```
 dependencies {
-  implementation 'com.github.gumil.Kaskade:kaskade-livedata:0.1.0'
+  implementation 'com.github.gumil.Kaskade:kaskade-livedata:0.1.1'
 }
+```
+
+For transforming `LiveData` to `Deferred`
+```Kotlin
+val liveData = MutableLiveData<String>()
+liveData.toDeferred()
+```
+
+Observing state as `LiveData`
+```Kotlin
+stateMachine.stateLiveData()
 ```
