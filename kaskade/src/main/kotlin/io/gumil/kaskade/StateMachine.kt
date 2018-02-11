@@ -21,7 +21,7 @@ import kotlin.properties.Delegates
 class StateMachine<S : State, A : Action, R : Result<S>>(
         initialState: S
 ) {
-    private val intentResultMap = mutableMapOf<Action, Deferred<R>>()
+    private val actionResultMap = mutableMapOf<Action, Deferred<R>>()
 
     private var currentState: S by Delegates.observable(initialState) { _, _, newValue ->
         onStateChanged?.invoke(newValue)
@@ -31,22 +31,22 @@ class StateMachine<S : State, A : Action, R : Result<S>>(
 
     private val deferredList = mutableListOf<Deferred<*>>()
 
-    fun addIntentHandler(intent: Action, deferred: Deferred<R>) {
+    fun addActionHandler(action: Action, deferred: Deferred<R>) {
         deferredList.add(deferred)
-        intentResultMap[intent] = deferred
+        actionResultMap[action] = deferred
     }
 
     fun processAction(action: A) {
-        intentResultMap[action]?.apply {
+        actionResultMap[action]?.apply {
             _onNext = {
                 currentState = it.reduceToState(currentState)
             }
-        }?.invoke() ?: throw IllegalStateException("Intent ${action.javaClass.simpleName} not added to State Machine")
+        }?.invoke() ?: throw IllegalStateException("Action ${action.javaClass.simpleName} not added to State Machine")
     }
 
-    fun processAction(intent: Deferred<A>) {
-        deferredList.add(intent)
-        intent._onNext = { processAction(it) }
+    fun processAction(action: Deferred<A>) {
+        deferredList.add(action)
+        action._onNext = { processAction(it) }
     }
 
     fun dispose() {
