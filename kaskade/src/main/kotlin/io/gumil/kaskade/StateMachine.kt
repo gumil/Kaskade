@@ -31,7 +31,7 @@ class StateMachine<S : State, A : Action, R : Result<S>>(
 
     private val deferredList = mutableListOf<Deferred<*>>()
 
-    fun addActionHandler(action: Action, deferred: Deferred<R>) {
+    fun addAction(action: Action, deferred: Deferred<R>) {
         deferredList.add(deferred)
         actionResultMap[action] = deferred
     }
