@@ -2,8 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 
-group='io.gumil.kaskade'
-
 android {
     compileSdkVersion 27
 
