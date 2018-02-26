@@ -17,11 +17,12 @@
 package io.gumil.kaskade
 
 import kotlin.properties.Delegates
+import kotlin.reflect.KClass
 
 class StateMachine<S : State, A : Action, R : Result<S>>(
         initialState: S
 ) {
-    private val actionResultMap = mutableMapOf<Action, Deferred<R>>()
+    private val actionResultMap = mutableMapOf<KClass<out A>, Deferred<R>>()
 
     private var currentState: S by Delegates.observable(initialState) { _, _, newValue ->
         onStateChanged?.invoke(newValue)
@@ -31,13 +32,13 @@ class StateMachine<S : State, A : Action, R : Result<S>>(
 
     private val deferredList = mutableListOf<Deferred<*>>()
 
-    fun addAction(action: Action, deferred: Deferred<R>) {
+    fun addAction(clazz: KClass<out A>, deferred: Deferred<R>) {
         deferredList.add(deferred)
-        actionResultMap[action] = deferred
+        actionResultMap[clazz] = deferred
     }
 
     fun processAction(action: A) {
-        actionResultMap[action]?.apply {
+        actionResultMap[action::class]?.apply {
             _onNext = {
                 currentState = it.reduceToState(currentState)
             }
