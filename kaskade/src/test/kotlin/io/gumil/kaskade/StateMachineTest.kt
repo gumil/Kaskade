@@ -23,8 +23,12 @@ import kotlin.test.assertFailsWith
 internal class StateMachineTest {
 
     private val stateMachine = StateMachine<TestState, TestAction, TestResult>(TestState.State1).apply {
-        addAction(TestAction.Action1::class, DeferredValue(TestResult.Result1()))
-        addAction(TestAction.Action2::class, DeferredValue(TestResult.Result2()))
+        addActionHandler(TestAction.Action1::class) {
+            DeferredValue(TestResult.Result1())
+        }
+        addActionHandler(TestAction.Action2::class) {
+            DeferredValue(TestResult.Result2())
+        }
     }
 
     @Test

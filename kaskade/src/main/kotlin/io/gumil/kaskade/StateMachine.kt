@@ -22,7 +22,7 @@ import kotlin.reflect.KClass
 class StateMachine<S : State, A : Action, R : Result<S>>(
         initialState: S
 ) {
-    private val actionResultMap = mutableMapOf<KClass<out A>, Deferred<R>>()
+    private val actionResultMap = mutableMapOf<KClass<out A>, (A) -> Deferred<R>?>()
 
     private var currentState: S by Delegates.observable(initialState) { _, _, newValue ->
         onStateChanged?.invoke(newValue)
@@ -32,13 +32,17 @@ class StateMachine<S : State, A : Action, R : Result<S>>(
 
     private val deferredList = mutableListOf<Deferred<*>>()
 
-    fun addAction(clazz: KClass<out A>, deferred: Deferred<R>) {
-        deferredList.add(deferred)
-        actionResultMap[clazz] = deferred
+    @Suppress("UNCHECKED_CAST")
+    fun <T: A> addActionHandler(clazz: KClass<T>, resultFromAction: (T) -> Deferred<R>) {
+        actionResultMap[clazz] = {
+            (it as? T)?.let {
+                resultFromAction(it)
+            }
+        }
     }
 
     fun processAction(action: A) {
-        actionResultMap[action::class]?.apply {
+        actionResultMap[action::class]?.invoke(action)?.apply {
             _onNext = {
                 currentState = it.reduceToState(currentState)
             }
