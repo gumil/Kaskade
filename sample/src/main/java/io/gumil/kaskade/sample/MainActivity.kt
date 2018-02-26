@@ -29,7 +29,9 @@ import kotlinx.android.synthetic.main.activity_main.toastButton
 class MainActivity : AppCompatActivity() {
 
     private val stateMachine = StateMachine<ToastState, ToastAction, ToastResult>(ToastState).apply {
-        addAction(ToastAction, DeferredValue(ToastResult))
+        addActionHandler(ToastAction::class) {
+            DeferredValue(ToastResult)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
