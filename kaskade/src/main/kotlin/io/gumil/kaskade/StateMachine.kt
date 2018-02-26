@@ -52,6 +52,7 @@ class StateMachine<S : State, A : Action, R : Result<S>>(
     fun processAction(action: Deferred<A>) {
         deferredList.add(action)
         action._onNext = { processAction(it) }
+        action()
     }
 
     fun dispose() {
