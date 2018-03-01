@@ -25,7 +25,9 @@ import io.gumil.kaskade.Result
 import io.gumil.kaskade.State
 import io.gumil.kaskade.StateMachine
 
-fun <T> LiveData<T>.toDeferred(): Deferred<T> = LiveDataDeferredValue(this)
+fun <T> LiveData<T>.toDeferred(
+        onError: (Throwable) -> Unit = {}
+): Deferred<T> = LiveDataDeferredValue(this, onError)
 
 fun <S : State, A : Action, R : Result<S>> StateMachine<S, A, R>.stateLiveData(): LiveData<S> {
     val state = MutableLiveData<S>()

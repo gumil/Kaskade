@@ -25,11 +25,15 @@ import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 
-fun <T> Observable<T>.toDeferred(): Deferred<T> = RxDeferredValue(this)
+fun <T> Observable<T>.toDeferred(
+        onError: (Throwable) -> Unit = {},
+        onComplete: () -> Unit = {}
+): Deferred<T> = RxDeferredValue(this, onError, onComplete)
 
 class RxDeferredValue<T>(
         private val function: Observable<T>,
-        onError: (Throwable) -> Unit = {}
+        onError: (Throwable) -> Unit = {},
+        private val onComplete: () -> Unit = {}
 ) : Deferred<T>(onError) {
 
     private var subscription: Disposable? = null
@@ -39,6 +43,8 @@ class RxDeferredValue<T>(
             onNext(it)
         }, {
             onError(it)
+        }, {
+            onComplete()
         })
     }
 
