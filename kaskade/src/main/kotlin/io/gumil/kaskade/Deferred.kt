@@ -31,11 +31,17 @@ class DeferredValue<T>(
         onError: (Throwable) -> Unit = {}
 ) : Deferred<T>(onError) {
 
-    override fun dispose() {}
+    private var isDisposed = false
+
+    override fun dispose() {
+        isDisposed = true
+    }
 
     override fun invoke() {
         try {
-            onNext(value)
+            if (!isDisposed) {
+                onNext(value)
+            }
         } catch (e: Exception) {
             onError(e)
         }
