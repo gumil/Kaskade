@@ -51,7 +51,9 @@ val stateMachine = StateMachine<TestState, TestAction, TestResult>(TestState)
 
 Adding handler to `Action`
 ```Kotlin
-stateMachine.addActionHandler(TestAction, DeferredValue(TestResult))
+stateMachine.addActionHandler(TestAction::class) {
+    DeferredValue(TestResult)
+}
 ```
 
 Observing states
@@ -61,6 +63,12 @@ stateMachine.onStateChanged = {
   render(it)
 }
 ```
+
+Executing actions
+```Kotlin
+stateMachine.processAction(ToastAction)
+```
+
 ## RxJava2
 Add the dependency
 ```
