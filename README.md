@@ -26,7 +26,7 @@ allprojects {
 Add the dependency
 ```
 dependencies {
-  implementation 'com.github.gumil.kaskade:kaskade:0.1.1'
+  implementation 'com.github.gumil.kaskade:kaskade:0.1.6'
 }
 ```
 
@@ -73,7 +73,7 @@ stateMachine.processAction(ToastAction)
 Add the dependency
 ```
 dependencies {
-  implementation 'com.github.gumil.kaskade:kaskade-rx:0.1.1'
+  implementation 'com.github.gumil.kaskade:kaskade-rx:0.1.6'
 }
 ```
 
@@ -91,7 +91,7 @@ stateMachine.stateObservable()
 Add the dependency
 ```
 dependencies {
-  implementation 'com.github.gumil.kaskade:kaskade-livedata:0.1.1'
+  implementation 'com.github.gumil.kaskade:kaskade-livedata:0.1.6'
 }
 ```
 
