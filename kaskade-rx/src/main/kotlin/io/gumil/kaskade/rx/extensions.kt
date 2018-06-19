@@ -16,7 +16,7 @@
 
 package io.gumil.kaskade.rx
 
-import io.gumil.kaskade.Deferred
+import io.gumil.kaskade.Holder
 import io.gumil.kaskade.Action
 import io.gumil.kaskade.Result
 import io.gumil.kaskade.State
@@ -28,13 +28,13 @@ import io.reactivex.subjects.PublishSubject
 fun <T> Observable<T>.toDeferred(
         onError: (Throwable) -> Unit = {},
         onComplete: () -> Unit = {}
-): Deferred<T> = RxDeferredValue(this, onError, onComplete)
+): Holder<T> = RxHolderValue(this, onError, onComplete)
 
-class RxDeferredValue<T>(
+class RxHolderValue<T>(
         private val function: Observable<T>,
         onError: (Throwable) -> Unit = {},
         private val onComplete: () -> Unit = {}
-) : Deferred<T>(onError) {
+) : Holder<T>(onError) {
 
     private var subscription: Disposable? = null
 
