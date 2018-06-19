@@ -28,22 +28,10 @@ internal sealed class TestAction : Action {
     object Action3 : TestAction()
 }
 
-internal sealed class TestResult : Result<TestState> {
-    class Result1 : TestResult() {
-        override fun reduceToState(oldState: TestState): TestState {
-            return TestState.State1
-        }
-    }
+internal sealed class TestResult : Effect {
+    class Result1 : TestResult()
 
-    class Result2 : TestResult() {
-        override fun reduceToState(oldState: TestState): TestState {
-            return TestState.State2
-        }
-    }
+    class Result2 : TestResult()
 
-    class Result3 : TestResult() {
-        override fun reduceToState(oldState: TestState): TestState {
-            return TestState.State3
-        }
-    }
+    class Result3 : TestResult()
 }

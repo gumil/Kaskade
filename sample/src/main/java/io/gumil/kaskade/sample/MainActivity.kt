@@ -21,7 +21,7 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import io.gumil.kaskade.HolderValue
 import io.gumil.kaskade.Action
-import io.gumil.kaskade.Result
+import io.gumil.kaskade.Effect
 import io.gumil.kaskade.State
 import io.gumil.kaskade.StateMachine
 import kotlinx.android.synthetic.main.activity_main.toastButton
@@ -49,10 +49,5 @@ class MainActivity : AppCompatActivity() {
 
     object ToastAction : Action
     object ToastState : State
-    object ToastResult : Result<ToastState> {
-        override fun reduceToState(oldState: ToastState): ToastState {
-            return ToastState
-        }
-
-    }
+    object ToastResult : Effect
 }
