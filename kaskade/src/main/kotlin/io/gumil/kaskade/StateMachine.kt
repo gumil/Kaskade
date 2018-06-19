@@ -22,7 +22,7 @@ import kotlin.reflect.KClass
 class StateMachine<S : State, A : Action, R : Result<S>>(
         initialState: S
 ) {
-    private val actionResultMap = mutableMapOf<KClass<out A>, (A) -> Deferred<R>?>()
+    private val actionResultMap = mutableMapOf<KClass<out A>, (A) -> Holder<R>?>()
 
     private var currentState: S by Delegates.observable(initialState) { _, _, newValue ->
         onStateChanged?.invoke(newValue)
@@ -30,10 +30,10 @@ class StateMachine<S : State, A : Action, R : Result<S>>(
 
     var onStateChanged: ((state: S) -> Unit)? = null
 
-    private val deferredList = mutableListOf<Deferred<*>>()
+    private val deferredList = mutableListOf<Holder<*>>()
 
     @Suppress("UNCHECKED_CAST")
-    fun <T: A> addActionHandler(clazz: KClass<T>, resultFromAction: (T) -> Deferred<R>) {
+    fun <T: A> addActionHandler(clazz: KClass<T>, resultFromAction: (T) -> Holder<R>) {
         actionResultMap[clazz] = {
             (it as? T)?.let {
                 resultFromAction(it)
@@ -49,7 +49,7 @@ class StateMachine<S : State, A : Action, R : Result<S>>(
         }?.invoke() ?: throw IllegalStateException("Action ${action.javaClass.simpleName} not added to State Machine")
     }
 
-    fun processAction(action: Deferred<A>) {
+    fun processAction(action: Holder<A>) {
         deferredList.add(action)
         action._onNext = { processAction(it) }
         action()

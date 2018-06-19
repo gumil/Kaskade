@@ -19,7 +19,7 @@ package io.gumil.kaskade.sample
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import io.gumil.kaskade.DeferredValue
+import io.gumil.kaskade.HolderValue
 import io.gumil.kaskade.Action
 import io.gumil.kaskade.Result
 import io.gumil.kaskade.State
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private val stateMachine = StateMachine<ToastState, ToastAction, ToastResult>(ToastState).apply {
         addActionHandler(ToastAction::class) {
-            DeferredValue(ToastResult)
+            HolderValue(ToastResult)
         }
     }
 

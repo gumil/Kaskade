@@ -16,7 +16,7 @@
 
 package io.gumil.kaskade
 
-abstract class Deferred<T>(
+abstract class Holder<T>(
         val onError: (Throwable) -> Unit = {}
 ) : Function0<Unit> {
 
@@ -26,10 +26,10 @@ abstract class Deferred<T>(
     abstract fun dispose()
 }
 
-class DeferredValue<T>(
+class HolderValue<T>(
         private val value: T,
         onError: (Throwable) -> Unit = {}
-) : Deferred<T>(onError) {
+) : Holder<T>(onError) {
 
     private var isDisposed = false
 

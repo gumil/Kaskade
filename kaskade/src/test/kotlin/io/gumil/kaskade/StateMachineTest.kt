@@ -24,10 +24,10 @@ internal class StateMachineTest {
 
     private val stateMachine = StateMachine<TestState, TestAction, TestResult>(TestState.State1).apply {
         addActionHandler(TestAction.Action1::class) {
-            DeferredValue(TestResult.Result1())
+            HolderValue(TestResult.Result1())
         }
         addActionHandler(TestAction.Action2::class) {
-            DeferredValue(TestResult.Result2())
+            HolderValue(TestResult.Result2())
         }
     }
 
