@@ -3,11 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 28
     }
 
     sourceSets {
@@ -17,7 +17,7 @@ android {
 }
 
 dependencies {
-    implementation "android.arch.lifecycle:livedata:1.1.0"
+    implementation "android.arch.lifecycle:livedata:1.1.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(":kaskade")
 }
