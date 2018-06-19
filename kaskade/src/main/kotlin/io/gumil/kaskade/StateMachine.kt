@@ -19,10 +19,10 @@ package io.gumil.kaskade
 import kotlin.properties.Delegates
 import kotlin.reflect.KClass
 
-class StateMachine<S : State, A : Action, R : Result<S>>(
+class StateMachine<S : State, A : Action, E : Effect>(
         initialState: S
 ) {
-    private val actionResultMap = mutableMapOf<KClass<out A>, (A) -> Holder<R>?>()
+    private val actionResultMap = mutableMapOf<KClass<out A>, (A) -> Holder<E>?>()
 
     private var currentState: S by Delegates.observable(initialState) { _, _, newValue ->
         onStateChanged?.invoke(newValue)
@@ -33,7 +33,7 @@ class StateMachine<S : State, A : Action, R : Result<S>>(
     private val deferredList = mutableListOf<Holder<*>>()
 
     @Suppress("UNCHECKED_CAST")
-    fun <T: A> addActionHandler(clazz: KClass<T>, resultFromAction: (T) -> Holder<R>) {
+    fun <T: A> addActionHandler(clazz: KClass<T>, resultFromAction: (T) -> Holder<E>) {
         actionResultMap[clazz] = {
             (it as? T)?.let {
                 resultFromAction(it)
@@ -44,7 +44,7 @@ class StateMachine<S : State, A : Action, R : Result<S>>(
     fun processAction(action: A) {
         actionResultMap[action::class]?.invoke(action)?.apply {
             _onNext = {
-                currentState = it.reduceToState(currentState)
+                //currentState = it.reduceToState(currentState)
             }
         }?.invoke() ?: throw IllegalStateException("Action ${action.javaClass.simpleName} not added to State Machine")
     }

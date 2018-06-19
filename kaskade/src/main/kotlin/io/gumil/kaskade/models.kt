@@ -18,6 +18,4 @@ package io.gumil.kaskade
 
 interface Action
 interface State
-interface Result<S: State> {
-    fun reduceToState(oldState: S): S
-}
+interface Effect

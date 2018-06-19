@@ -18,7 +18,7 @@ package io.gumil.kaskade.rx
 
 import io.gumil.kaskade.Holder
 import io.gumil.kaskade.Action
-import io.gumil.kaskade.Result
+import io.gumil.kaskade.Effect
 import io.gumil.kaskade.State
 import io.gumil.kaskade.StateMachine
 import io.reactivex.Observable
@@ -53,7 +53,7 @@ class RxHolderValue<T>(
     }
 }
 
-fun <S : State, A : Action, R : Result<S>> StateMachine<S, A, R>.stateObservable(): Observable<S> =
+fun <S : State, A : Action, R : Effect> StateMachine<S, A, R>.stateObservable(): Observable<S> =
         PublishSubject.create<S>().apply {
             onStateChanged = {
                 onNext(it)
