@@ -26,6 +26,7 @@ internal sealed class TestAction : Action {
     object Action1 : TestAction()
     object Action2 : TestAction()
     object Action3 : TestAction()
+    object Action4 : TestAction()
 }
 
 internal sealed class TestResult : Effect {

@@ -19,20 +19,24 @@ package io.gumil.kaskade.sample
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import io.gumil.kaskade.HolderValue
+import io.gumil.kaskade.EventValue
 import io.gumil.kaskade.Action
 import io.gumil.kaskade.Effect
 import io.gumil.kaskade.State
-import io.gumil.kaskade.StateMachine
+import io.gumil.kaskade.Kaskade
 import kotlinx.android.synthetic.main.activity_main.toastButton
 
 class MainActivity : AppCompatActivity() {
 
-    private val stateMachine = StateMachine<ToastState, ToastAction, ToastResult>(ToastState).apply {
-        addActionHandler(ToastAction::class) {
-            HolderValue(ToastResult)
+    private val stateMachine = Kaskade.create<ToastState, ToastAction, ToastResult>(ToastState) {
+        on<ToastAction> {
+            transformTo {
+                ToastState
+            }
         }
     }
+
+    private var counter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         stateMachine.onStateChanged = {
-            Toast.makeText(this, "Hello world", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Hello world ${counter++}", Toast.LENGTH_SHORT).show()
         }
     }
 
