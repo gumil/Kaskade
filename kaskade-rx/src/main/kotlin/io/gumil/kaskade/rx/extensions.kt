@@ -16,11 +16,11 @@
 
 package io.gumil.kaskade.rx
 
-import io.gumil.kaskade.Holder
+import io.gumil.kaskade.Event
 import io.gumil.kaskade.Action
 import io.gumil.kaskade.Effect
 import io.gumil.kaskade.State
-import io.gumil.kaskade.StateMachine
+import io.gumil.kaskade.Kaskade
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
@@ -28,13 +28,13 @@ import io.reactivex.subjects.PublishSubject
 fun <T> Observable<T>.toDeferred(
         onError: (Throwable) -> Unit = {},
         onComplete: () -> Unit = {}
-): Holder<T> = RxHolderValue(this, onError, onComplete)
+): Event<T> = RxEventValue(this, onError, onComplete)
 
-class RxHolderValue<T>(
+class RxEventValue<T>(
         private val function: Observable<T>,
         onError: (Throwable) -> Unit = {},
         private val onComplete: () -> Unit = {}
-) : Holder<T>(onError) {
+) : Event<T>(onError) {
 
     private var subscription: Disposable? = null
 
@@ -53,7 +53,7 @@ class RxHolderValue<T>(
     }
 }
 
-fun <S : State, A : Action, R : Effect> StateMachine<S, A, R>.stateObservable(): Observable<S> =
+fun <S : State, A : Action, R : Effect> Kaskade<S, A, R>.stateObservable(): Observable<S> =
         PublishSubject.create<S>().apply {
             onStateChanged = {
                 onNext(it)

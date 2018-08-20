@@ -20,21 +20,34 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-internal class StateMachineTest {
+internal class KaskadeTest {
 
-    private val stateMachine = StateMachine<TestState, TestAction, TestResult>(TestState.State1).apply {
-        addActionHandler(TestAction.Action1::class) {
-            HolderValue(TestResult.Result1())
+    private val stateMachine = Kaskade.create<TestState, TestAction, TestResult>(TestState.State1) {
+        on<TestAction.Action1> {
+            reduceTo {
+                TestState.State1
+            }
         }
-        addActionHandler(TestAction.Action2::class) {
-            HolderValue(TestResult.Result2())
+
+        on<TestAction.Action2> {
+            reduceTo {
+                TestState.State2
+            }
+        }
+
+        on<TestAction.Action3> {
+            withEffect {
+                TestResult.Result3()
+            }.reduceTo {
+                TestState.State3
+            }
         }
     }
 
     @Test
     fun testShouldThrowException() {
         assertFailsWith(IllegalStateException::class) {
-            stateMachine.processAction(TestAction.Action3)
+            stateMachine.processAction(TestAction.Action4)
         }
     }
 
@@ -54,4 +67,11 @@ internal class StateMachineTest {
         }
     }
 
+    @Test
+    fun testShouldEmitState3() {
+        stateMachine.processAction(TestAction.Action3)
+        stateMachine.onStateChanged = {
+            assertEquals(TestState.State3, it)
+        }
+    }
 }

@@ -16,7 +16,7 @@
 
 package io.gumil.kaskade
 
-abstract class Holder<T>(
+abstract class Event<T>(
         val onError: (Throwable) -> Unit = {}
 ) : Function0<Unit> {
 
@@ -26,10 +26,10 @@ abstract class Holder<T>(
     abstract fun dispose()
 }
 
-class HolderValue<T>(
+class EventValue<T>(
         private val value: T,
         onError: (Throwable) -> Unit = {}
-) : Holder<T>(onError) {
+) : Event<T>(onError) {
 
     private var isDisposed = false
 

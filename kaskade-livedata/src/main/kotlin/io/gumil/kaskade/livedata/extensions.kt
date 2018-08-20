@@ -19,17 +19,17 @@ package io.gumil.kaskade.livedata
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
-import io.gumil.kaskade.Holder
+import io.gumil.kaskade.Event
 import io.gumil.kaskade.Action
 import io.gumil.kaskade.Effect
 import io.gumil.kaskade.State
-import io.gumil.kaskade.StateMachine
+import io.gumil.kaskade.Kaskade
 
 fun <T> LiveData<T>.toDeferred(
         onError: (Throwable) -> Unit = {}
-): Holder<T> = LiveDataHolderValue(this, onError)
+): Event<T> = LiveDataEventValue(this, onError)
 
-fun <S : State, A : Action, R : Effect> StateMachine<S, A, R>.stateLiveData(): LiveData<S> {
+fun <S : State, A : Action, R : Effect> Kaskade<S, A, R>.stateLiveData(): LiveData<S> {
     val state = MutableLiveData<S>()
     onStateChanged = {
         state.postValue(it)
@@ -38,10 +38,10 @@ fun <S : State, A : Action, R : Effect> StateMachine<S, A, R>.stateLiveData(): L
     return state
 }
 
-class LiveDataHolderValue<T>(
+class LiveDataEventValue<T>(
         private val function: LiveData<T>,
         onError: (Throwable) -> Unit = {}
-) : Holder<T>(onError) {
+) : Event<T>(onError) {
 
     private var observer: Observer<T>? = null
 
