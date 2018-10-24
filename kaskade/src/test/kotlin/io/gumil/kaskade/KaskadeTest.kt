@@ -22,25 +22,17 @@ import kotlin.test.assertFailsWith
 
 internal class KaskadeTest {
 
-    private val stateMachine = Kaskade.create<TestState, TestAction, TestResult>(TestState.State1) {
+    private val stateMachine = Kaskade.create<TestState, TestAction>(TestState.State1) {
         on<TestAction.Action1> {
-            reduceTo {
-                TestState.State1
-            }
+            TestState.State1
         }
 
         on<TestAction.Action2> {
-            reduceTo {
-                TestState.State2
-            }
+            TestState.State2
         }
 
         on<TestAction.Action3> {
-            withEffect {
-                TestResult.Result3()
-            }.reduceTo {
-                TestState.State3
-            }
+            TestState.State3
         }
     }
 

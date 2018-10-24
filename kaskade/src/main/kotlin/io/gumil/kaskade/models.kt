@@ -16,10 +16,11 @@
 
 package io.gumil.kaskade
 
-interface Action: Loggable
-interface State: Loggable
-interface Effect: Loggable
+interface Event
+interface Action: Event
+interface State: Event
 
-interface Loggable {
-    fun className(): String = this::class.java.simpleName
-}
+data class ActionState<A: Action, S: State>(
+        val action: A,
+        val state: S
+)
