@@ -1,4 +1,4 @@
 package io.gumil.kaskade
 
-internal class IncompleteFlowException(loggable: Loggable):
-        IllegalStateException("Action ${loggable.className()} has an incomplete flow")
+internal class IncompleteFlowException(event: Event):
+        IllegalStateException("$event has an incomplete flow")

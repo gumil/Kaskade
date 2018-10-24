@@ -28,11 +28,3 @@ internal sealed class TestAction : Action {
     object Action3 : TestAction()
     object Action4 : TestAction()
 }
-
-internal sealed class TestResult : Effect {
-    class Result1 : TestResult()
-
-    class Result2 : TestResult()
-
-    class Result3 : TestResult()
-}
