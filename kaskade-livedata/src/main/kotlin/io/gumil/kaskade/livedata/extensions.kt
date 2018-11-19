@@ -16,9 +16,9 @@
 
 package io.gumil.kaskade.livedata
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import io.gumil.kaskade.Event
 import io.gumil.kaskade.Action
 import io.gumil.kaskade.Effect
