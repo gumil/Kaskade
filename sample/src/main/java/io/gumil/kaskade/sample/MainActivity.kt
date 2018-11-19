@@ -17,22 +17,18 @@
 package io.gumil.kaskade.sample
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import io.gumil.kaskade.EventValue
+import androidx.appcompat.app.AppCompatActivity
 import io.gumil.kaskade.Action
-import io.gumil.kaskade.Effect
-import io.gumil.kaskade.State
 import io.gumil.kaskade.Kaskade
-import kotlinx.android.synthetic.main.activity_main.toastButton
+import io.gumil.kaskade.State
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val stateMachine = Kaskade.create<ToastState, ToastAction, ToastResult>(ToastState) {
+    private val stateMachine = Kaskade.create<ToastState, ToastAction>(ToastState) {
         on<ToastAction> {
-            transformTo {
-                ToastState
-            }
+            ToastState
         }
     }
 
@@ -53,5 +49,4 @@ class MainActivity : AppCompatActivity() {
 
     object ToastAction : Action
     object ToastState : State
-    object ToastResult : Effect
 }
