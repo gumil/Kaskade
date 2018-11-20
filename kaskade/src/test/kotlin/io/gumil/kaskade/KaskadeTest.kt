@@ -39,13 +39,13 @@ internal class KaskadeTest {
     @Test
     fun testShouldThrowException() {
         assertFailsWith(IllegalStateException::class) {
-            stateMachine.processAction(TestAction.Action4)
+            stateMachine.process(TestAction.Action4)
         }
     }
 
     @Test
     fun testShouldEmitState1() {
-        stateMachine.processAction(TestAction.Action1)
+        stateMachine.process(TestAction.Action1)
         stateMachine.onStateChanged = {
             assertEquals(TestState.State1, it)
         }
@@ -53,7 +53,7 @@ internal class KaskadeTest {
 
     @Test
     fun testShouldEmitState2() {
-        stateMachine.processAction(TestAction.Action2)
+        stateMachine.process(TestAction.Action2)
         stateMachine.onStateChanged = {
             assertEquals(TestState.State2, it)
         }
@@ -61,7 +61,7 @@ internal class KaskadeTest {
 
     @Test
     fun testShouldEmitState3() {
-        stateMachine.processAction(TestAction.Action3)
+        stateMachine.process(TestAction.Action3)
         stateMachine.onStateChanged = {
             assertEquals(TestState.State3, it)
         }
