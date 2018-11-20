@@ -17,36 +17,17 @@
 package io.gumil.kaskade.sample
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import io.gumil.kaskade.Action
-import io.gumil.kaskade.Kaskade
-import io.gumil.kaskade.State
-import kotlinx.android.synthetic.main.activity_main.*
+import io.gumil.kaskade.sample.list.ListFragment
 
 class MainActivity : AppCompatActivity() {
-
-    private val stateMachine = Kaskade.create<ToastState, ToastAction>(ToastState) {
-        on<ToastAction> {
-            ToastState
-        }
-    }
-
-    private var counter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        toastButton.setOnClickListener {
-            stateMachine.processAction(ToastAction)
-        }
-
-        stateMachine.onStateChanged = {
-            Toast.makeText(this, "Hello world ${counter++}", Toast.LENGTH_SHORT).show()
-        }
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, ListFragment())
+                .commit()
     }
-
-    object ToastAction : Action
-    object ToastState : State
 }
