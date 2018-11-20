@@ -37,7 +37,7 @@ class Kaskade<STATE : State, ACTION : Action> private constructor(
         actionResultMap.putAll(eventBuilder.transformer)
     }
 
-    fun processAction(action: ACTION) {
+    fun process(action: ACTION) {
         actionResultMap[action::class]?.invoke(action, currentState)?.let {
             currentState = it
         } ?: throw IncompleteFlowException(action)
