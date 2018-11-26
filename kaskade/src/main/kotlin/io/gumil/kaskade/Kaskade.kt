@@ -43,6 +43,10 @@ class Kaskade<STATE : State, ACTION : Action> private constructor(
         } ?: throw IncompleteFlowException(action)
     }
 
+    fun unsubscribe() {
+        onStateChanged = null
+    }
+
     class Builder<ACTION: Action, STATE: State> internal constructor() {
 
         private val _transformerMap = mutableMapOf<KClass<ACTION>, (ACTION, STATE) -> STATE>()
