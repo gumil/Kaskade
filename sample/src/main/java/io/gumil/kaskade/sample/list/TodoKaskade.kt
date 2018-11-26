@@ -5,7 +5,7 @@ import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.State
 import io.gumil.kaskade.sample.data.TodoItem
 import io.gumil.kaskade.sample.data.TodoRepository
-
+import io.gumil.kaskade.stateFlow
 
 internal class TodoKaskade(
         private val todoRepository: TodoRepository
@@ -17,12 +17,15 @@ internal class TodoKaskade(
         }
     }
 
-    fun listenToUpdates(onStateChanged: (TodoState) -> Unit) {
-        kaskade.onStateChanged = { onStateChanged(it) }
-    }
+    val state = kaskade.stateFlow()
 
     fun process(action: TodoAction) {
         kaskade.process(action)
+    }
+
+    fun unsubscribe() {
+        state.unsubscribe()
+        kaskade.unsubscribe()
     }
 }
 
