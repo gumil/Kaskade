@@ -13,7 +13,7 @@ internal class ListTodoRepository : TodoRepository {
     }
 
     override fun removeItem(item: TodoItem) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        list.remove(item)
     }
 
     override fun addItem(item: TodoItem) {
