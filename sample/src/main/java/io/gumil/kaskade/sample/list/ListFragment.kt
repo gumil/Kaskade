@@ -13,6 +13,8 @@ internal class ListFragment : androidx.fragment.app.Fragment() {
 
     private val todoKaskade = TodoKaskade(ListTodoRepository())
 
+    private val adapter = TodoAdapter(emptyList())
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_list, container, false)
     }
@@ -21,10 +23,16 @@ internal class ListFragment : androidx.fragment.app.Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
 
         todoKaskade.state.subscribe { render(it) }
 
+        adapter.onDeleteItem.subscribe { (position, item) ->
+            todoKaskade.process(TodoAction.Delete(position, item))
+        }
+
         todoKaskade.process(TodoAction.Refresh)
+
     }
 
     override fun onDestroyView() {
@@ -33,8 +41,9 @@ internal class ListFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun render(state: TodoState) {
-        when (state) {
-            is TodoState.OnLoaded -> recyclerView.adapter = TodoAdapter(state.list)
+        return when (state) {
+            is TodoState.OnLoaded -> adapter.list = state.list
+            is TodoState.OnDeleted -> adapter.removeItem(state.position)
         }
     }
 }

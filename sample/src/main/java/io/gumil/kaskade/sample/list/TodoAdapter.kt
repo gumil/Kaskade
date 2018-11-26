@@ -4,28 +4,48 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import io.gumil.kaskade.Flow
 import io.gumil.kaskade.sample.R
 import io.gumil.kaskade.sample.data.TodoItem
 import kotlinx.android.synthetic.main.item_todo.view.*
 
 internal class TodoAdapter(
-        private val list: List<TodoItem>
-) : RecyclerView.Adapter<TodoAdapter.ToDoViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoViewHolder {
-        return ToDoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_todo, parent, false))
+        list: List<TodoItem>
+) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
+
+    private var _list = list.toMutableList()
+
+    var list: List<TodoItem>
+        get() = _list
+        set(value) {
+            _list = value.toMutableList()
+            notifyDataSetChanged()
+        }
+
+    val onDeleteItem = Flow<Pair<Int, TodoItem>>()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
+        return TodoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_todo, parent, false))
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = _list.size
 
-    override fun onBindViewHolder(holder: ToDoViewHolder, position: Int) {
-        holder.bind(list[position])
+    override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
+        holder.bind(_list[position])
     }
 
-    class ToDoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    fun removeItem(position: Int) {
+        _list.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    inner class TodoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(item: TodoItem) {
             itemView.textDescription.text = item.description
             itemView.checkbox.isChecked = item.isDone
-            itemView.buttonDelete.setOnClickListener {  }
+            itemView.buttonDelete.setOnClickListener {
+                onDeleteItem.sendValue(layoutPosition to item)
+            }
         }
     }
 }

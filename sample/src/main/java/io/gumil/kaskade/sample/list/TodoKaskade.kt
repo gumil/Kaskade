@@ -1,11 +1,8 @@
 package io.gumil.kaskade.sample.list
 
-import io.gumil.kaskade.Action
-import io.gumil.kaskade.Kaskade
-import io.gumil.kaskade.State
+import io.gumil.kaskade.*
 import io.gumil.kaskade.sample.data.TodoItem
 import io.gumil.kaskade.sample.data.TodoRepository
-import io.gumil.kaskade.stateFlow
 
 internal class TodoKaskade(
         private val todoRepository: TodoRepository
@@ -14,6 +11,11 @@ internal class TodoKaskade(
     private val kaskade = Kaskade.create<TodoState, TodoAction>(TodoState.OnLoaded(listOf())) {
         on<TodoAction.Refresh> {
             TodoState.OnLoaded(todoRepository.getToDoItems())
+        }
+
+        on<TodoAction.Delete> {
+            todoRepository.removeItem(action.todoItem)
+            TodoState.OnDeleted(action.position)
         }
     }
 
@@ -31,8 +33,10 @@ internal class TodoKaskade(
 
 internal sealed class TodoState : State {
     class OnLoaded(val list: List<TodoItem>) : TodoState()
+    class OnDeleted(val position: Int) : TodoState()
 }
 
 internal sealed class TodoAction : Action {
     object Refresh : TodoAction()
+    class Delete(val position: Int, val todoItem: TodoItem) : TodoAction()
 }
