@@ -11,9 +11,7 @@ import kotlinx.android.synthetic.main.fragment_list.*
 
 internal class ListFragment : androidx.fragment.app.Fragment() {
 
-    private val todoKaskade = TodoKaskade(ListTodoRepository()).apply {
-        listenToUpdates { render(it) }
-    }
+    private val todoKaskade = TodoKaskade(ListTodoRepository())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_list, container, false)
@@ -24,7 +22,14 @@ internal class ListFragment : androidx.fragment.app.Fragment() {
 
         recyclerView.layoutManager = LinearLayoutManager(context)
 
+        todoKaskade.state.subscribe { render(it) }
+
         todoKaskade.process(TodoAction.Refresh)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        todoKaskade.unsubscribe()
     }
 
     private fun render(state: TodoState) {
