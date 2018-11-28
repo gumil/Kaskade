@@ -41,6 +41,7 @@ internal class ListFragment : androidx.fragment.app.Fragment() {
         return when (state) {
             is TodoState.OnLoaded -> adapter.list = state.list
             is TodoState.OnDeleted -> adapter.removeItem(state.position)
+            is TodoState.OnAdded -> adapter.addItem(state.item)
         }
     }
 }
