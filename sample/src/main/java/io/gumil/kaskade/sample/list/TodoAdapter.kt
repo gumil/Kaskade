@@ -22,7 +22,7 @@ internal class TodoAdapter(
             notifyDataSetChanged()
         }
 
-    val onDeleteItem = Flow<Pair<Int, TodoItem>>()
+    val onItemAction = Flow<TodoAction>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         return TodoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_todo, parent, false))
@@ -44,7 +44,7 @@ internal class TodoAdapter(
             itemView.textDescription.text = item.description
             itemView.checkbox.isChecked = item.isDone
             itemView.buttonDelete.setOnClickListener {
-                onDeleteItem.sendValue(layoutPosition to item)
+                onItemAction.sendValue(TodoAction.Delete(layoutPosition, item))
             }
         }
     }

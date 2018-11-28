@@ -27,12 +27,9 @@ internal class ListFragment : androidx.fragment.app.Fragment() {
 
         todoKaskade.state.subscribe { render(it) }
 
-        adapter.onDeleteItem.subscribe { (position, item) ->
-            todoKaskade.process(TodoAction.Delete(position, item))
-        }
+        adapter.onItemAction.subscribe { todoKaskade.process(it) }
 
         todoKaskade.process(TodoAction.Refresh)
-
     }
 
     override fun onDestroyView() {
