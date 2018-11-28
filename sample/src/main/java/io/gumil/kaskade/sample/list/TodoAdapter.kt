@@ -1,5 +1,6 @@
 package io.gumil.kaskade.sample.list
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,13 +63,35 @@ internal class TodoAdapter(
         notifyItemInserted(itemCount + 1)
     }
 
+    fun updateItem(position: Int, todoItem: TodoItem) {
+        _list[position] = todoItem
+        notifyItemChanged(position)
+    }
+
     inner class TodoViewHolder(view: View) : BindableViewHolder(view) {
+        init {
+            itemView.setOnClickListener { itemView.checkbox.performClick() }
+        }
+
         override fun bind(item: TodoItem?) {
             itemView.textDescription.text = item?.description
             itemView.checkbox.isChecked = item?.isDone ?: false
+
+            if (item?.isDone == true) {
+                itemView.textDescription.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            } else {
+                itemView.textDescription.paintFlags = 0
+            }
+
             itemView.buttonDelete.setOnClickListener {
                 item?.let { item ->
                     onItemAction.sendValue(TodoAction.Delete(layoutPosition, item))
+                }
+            }
+
+            itemView.checkbox.setOnCheckedChangeListener { _, isChecked ->
+                item?.let {
+                    onItemAction.sendValue(TodoAction.Update(layoutPosition, item.copy(isDone = isChecked)))
                 }
             }
         }

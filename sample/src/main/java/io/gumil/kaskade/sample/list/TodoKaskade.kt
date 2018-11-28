@@ -22,6 +22,11 @@ internal class TodoKaskade(
             todoRepository.addItem(action.todoItem)
             TodoState.OnAdded(action.todoItem)
         }
+
+        on<TodoAction.Update> {
+            todoRepository.updateItem(action.todoItem)
+            TodoState.OnUpdated(action.position, action.todoItem)
+        }
     }
 
     val state = kaskade.stateFlow()
@@ -40,10 +45,12 @@ internal sealed class TodoState : State {
     class OnLoaded(val list: List<TodoItem>) : TodoState()
     class OnDeleted(val position: Int) : TodoState()
     class OnAdded(val item: TodoItem) : TodoState()
+    class OnUpdated(val position: Int, val item: TodoItem) : TodoState()
 }
 
 internal sealed class TodoAction : Action {
     object Refresh : TodoAction()
     class Delete(val position: Int, val todoItem: TodoItem) : TodoAction()
     class Add(val todoItem: TodoItem) : TodoAction()
+    class Update(val position: Int, val todoItem: TodoItem) : TodoAction()
 }

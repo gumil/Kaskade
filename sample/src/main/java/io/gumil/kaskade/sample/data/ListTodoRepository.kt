@@ -5,11 +5,11 @@ internal class ListTodoRepository : TodoRepository {
     private val list = mutableListOf<TodoItem>()
 
     override fun getToDoItems(): List<TodoItem> {
-        return (0..5).map { createTodoItem(it) }
+        return (0..5).map { createTodoItem(it) }.also { list.addAll(it) }
     }
 
     override fun updateItem(item: TodoItem) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        list[list.indexOfFirst { item.id == it.id }] = item
     }
 
     override fun removeItem(item: TodoItem) {
