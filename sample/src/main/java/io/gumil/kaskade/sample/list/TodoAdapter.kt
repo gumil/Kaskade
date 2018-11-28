@@ -85,7 +85,7 @@ internal class TodoAdapter(
         override fun bind(item: TodoItem?) {
             itemView.buttonAdd.setOnClickListener {
                 val description = itemView.inputAddItem.text.toString()
-                onItemAction.sendValue(TodoAction.Add(TodoItem(description, false)))
+                onItemAction.sendValue(TodoAction.Add(TodoItem(layoutPosition, description, false)))
                 itemView.inputAddItem.setText("")
             }
         }
