@@ -38,10 +38,13 @@ internal class ListFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun render(state: TodoState) {
-        return when (state) {
+        when (state) {
             is TodoState.OnLoaded -> adapter.list = state.list
             is TodoState.OnDeleted -> adapter.removeItem(state.position)
             is TodoState.OnAdded -> adapter.addItem(state.item)
+            is TodoState.OnUpdated -> recyclerView.post {
+                adapter.updateItem(state.position, state.item)
+            }
         }
     }
 }
