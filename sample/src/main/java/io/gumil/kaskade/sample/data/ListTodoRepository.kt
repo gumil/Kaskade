@@ -20,5 +20,5 @@ internal class ListTodoRepository : TodoRepository {
         list.add(item)
     }
 
-    private fun createTodoItem(index: Int) : TodoItem = TodoItem("item $index", index % 2 == 0)
+    private fun createTodoItem(index: Int) : TodoItem = TodoItem(index, "item $index", index % 2 == 0)
 }
