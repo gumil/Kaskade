@@ -4,6 +4,7 @@ import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import io.gumil.kaskade.Flow
 import io.gumil.kaskade.sample.R
@@ -42,7 +43,6 @@ internal class TodoAdapter(
             is TodoViewHolder -> _list[position]
             else -> throw UnsupportedOperationException()
         }
-
         holder.bind(todoItem)
     }
 
@@ -69,47 +69,45 @@ internal class TodoAdapter(
     }
 
     inner class TodoViewHolder(view: View) : BindableViewHolder(view) {
-        init {
-            itemView.setOnClickListener { itemView.checkbox.performClick() }
-        }
 
         override fun bind(item: TodoItem?) {
-            itemView.textDescription.text = item?.description
-            itemView.checkbox.isChecked = item?.isDone ?: false
+            if (item == null) return
 
-            if (item?.isDone == true) {
+
+            itemView.textDescription.text = item.description
+            itemView.checkbox.isChecked = item.isDone
+
+            if (item.isDone) {
                 itemView.textDescription.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
             } else {
                 itemView.textDescription.paintFlags = 0
             }
 
             itemView.buttonDelete.setOnClickListener {
-                item?.let { item ->
-                    onItemAction.sendValue(TodoAction.Delete(layoutPosition, item))
-                }
+                onItemAction.sendValue(TodoAction.Delete(layoutPosition, item))
             }
 
-            itemView.checkbox.setOnCheckedChangeListener { _, isChecked ->
-                item?.let {
-                    onItemAction.sendValue(TodoAction.Update(layoutPosition, item.copy(isDone = isChecked)))
-                }
+            itemView.checkbox.setOnClickListener {
+                it as CheckBox
+                onItemAction.sendValue(TodoAction.Update(layoutPosition, item.copy(isDone = it.isChecked)))
             }
+
+            itemView.setOnClickListener { itemView.checkbox.performClick() }
         }
     }
 
     inner class FooterViewHolder(view: View) : BindableViewHolder(view) {
 
-        init {
-            itemView.inputAddItem.setOnEditorActionListener { _, _, _ ->
-                itemView.buttonAdd.performClick()
-            }
-        }
-
         override fun bind(item: TodoItem?) {
             itemView.buttonAdd.setOnClickListener {
                 val description = itemView.inputAddItem.text.toString()
-                onItemAction.sendValue(TodoAction.Add(TodoItem(layoutPosition, description, false)))
+                val id = _list.maxBy { it.id }?.id?.let { it + 1 } ?: -1
+                onItemAction.sendValue(TodoAction.Add(TodoItem(id, description, false)))
                 itemView.inputAddItem.setText("")
+            }
+
+            itemView.inputAddItem.setOnEditorActionListener { _, _, _ ->
+                itemView.buttonAdd.performClick()
             }
         }
     }
