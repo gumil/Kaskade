@@ -1,4 +1,4 @@
-package io.gumil.kaskade.sample.list
+package io.gumil.kaskade.sample.todo
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.gumil.kaskade.sample.R
-import io.gumil.kaskade.sample.data.ListTodoRepository
+import io.gumil.kaskade.sample.todo.data.ListTodoRepository
 import kotlinx.android.synthetic.main.fragment_list.*
 
 internal class ListFragment : androidx.fragment.app.Fragment() {

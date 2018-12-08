@@ -16,9 +16,11 @@
 
 package io.gumil.kaskade.sample
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import io.gumil.kaskade.sample.list.ListFragment
+import io.gumil.kaskade.sample.todo.TodoActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,8 +28,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, ListFragment())
-                .commit()
+        buttonStartTodo.setOnClickListener { startActivity(Intent(this, TodoActivity::class.java)) }
     }
 }
