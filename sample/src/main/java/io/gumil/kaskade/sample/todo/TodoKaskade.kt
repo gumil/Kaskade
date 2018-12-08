@@ -1,8 +1,8 @@
-package io.gumil.kaskade.sample.list
+package io.gumil.kaskade.sample.todo
 
 import io.gumil.kaskade.*
-import io.gumil.kaskade.sample.data.TodoItem
-import io.gumil.kaskade.sample.data.TodoRepository
+import io.gumil.kaskade.sample.todo.data.TodoItem
+import io.gumil.kaskade.sample.todo.data.TodoRepository
 
 internal class TodoKaskade(
         private val todoRepository: TodoRepository

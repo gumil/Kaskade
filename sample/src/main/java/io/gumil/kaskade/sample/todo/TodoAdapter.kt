@@ -1,4 +1,4 @@
-package io.gumil.kaskade.sample.list
+package io.gumil.kaskade.sample.todo
 
 import android.graphics.Paint
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import io.gumil.kaskade.Flow
 import io.gumil.kaskade.sample.R
-import io.gumil.kaskade.sample.data.TodoItem
+import io.gumil.kaskade.sample.todo.data.TodoItem
 import kotlinx.android.synthetic.main.item_footer.view.*
 import kotlinx.android.synthetic.main.item_todo.view.*
 

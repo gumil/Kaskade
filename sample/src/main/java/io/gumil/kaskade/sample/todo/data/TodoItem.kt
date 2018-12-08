@@ -1,4 +1,4 @@
-package io.gumil.kaskade.sample.data
+package io.gumil.kaskade.sample.todo.data
 
 internal data class TodoItem(
         val id: Int,
