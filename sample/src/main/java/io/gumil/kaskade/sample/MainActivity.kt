@@ -16,11 +16,9 @@
 
 package io.gumil.kaskade.sample
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import io.gumil.kaskade.sample.todo.TodoActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.fragment.app.Fragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +26,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        buttonStartTodo.setOnClickListener { startActivity(Intent(this, TodoActivity::class.java)) }
+        goTo(MainFragment(), false)
+    }
+
+    fun goTo(fragment: Fragment, addToBackstack: Boolean = true) {
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, fragment)
+                .apply {
+                    if (addToBackstack) addToBackStack(null)
+                }
+                .commit()
     }
 }
