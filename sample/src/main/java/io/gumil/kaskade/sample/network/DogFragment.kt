@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -26,7 +27,9 @@ internal class DogFragment : Fragment(), Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dogViewModel.state.subscribe { render(it) }
+        dogViewModel.state.observe(this, Observer<DogState> {
+            render(it)
+        })
 
         buttonGetNewImage.setOnClickListener { dogViewModel.process(DogAction.Refresh) }
     }
@@ -44,15 +47,12 @@ internal class DogFragment : Fragment(), Callback {
             is DogState.OnLoaded -> {
                 Picasso.get().load(state.url).into(imageView, this)
             }
-            is DogState.Success -> {
-                progressBar.visibility = View.GONE
-                imageView.visibility = View.VISIBLE
-            }
         }
     }
 
     override fun onSuccess() {
-        dogViewModel.process(DogAction.OnSuccess)
+        progressBar.visibility = View.GONE
+        imageView.visibility = View.VISIBLE
     }
 
     override fun onError(e: java.lang.Exception) {
