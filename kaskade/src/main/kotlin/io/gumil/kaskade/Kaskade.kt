@@ -16,14 +16,15 @@
 
 package io.gumil.kaskade
 
+import kotlinx.coroutines.CoroutineScope
 import kotlin.properties.Delegates.observable
 import kotlin.reflect.KClass
 
 class Kaskade<STATE : State, ACTION : Action> private constructor(
-        initialState: STATE
+        private val initialState: STATE
 ) {
 
-    private val actionResultMap = mutableMapOf<KClass<out ACTION>, (ACTION, STATE) -> STATE>()
+    private val actionStateMap = mutableMapOf<KClass<out ACTION>, Reducer<ACTION, STATE>>()
 
     private var currentState: STATE by observable(initialState) { _, _, newValue ->
         onStateChanged?.invoke(newValue)
@@ -32,36 +33,41 @@ class Kaskade<STATE : State, ACTION : Action> private constructor(
     var onStateChanged: ((state: STATE) -> Unit)? = null
 
     fun addActions(builder: Builder<ACTION, STATE>.() -> Unit) {
-        val eventBuilder = Builder<ACTION, STATE>()
+        val eventBuilder = Builder<ACTION, STATE>(initialState)
         eventBuilder.builder()
-        actionResultMap.putAll(eventBuilder.transformer)
+        actionStateMap.putAll(eventBuilder.transformer)
     }
 
     fun process(action: ACTION) {
-        actionResultMap[action::class]?.invoke(action, currentState)?.let {
-            currentState = it
+        actionStateMap[action::class]?.let { reducer ->
+            reducer(action, currentState) { currentState = it }
         } ?: throw IncompleteFlowException(action)
+
     }
 
     fun unsubscribe() {
         onStateChanged = null
     }
 
-    class Builder<ACTION: Action, STATE: State> internal constructor() {
+    class Builder<ACTION: Action, STATE: State> internal constructor(
+            private val initialState: STATE
+    ) {
 
-        private val _transformerMap = mutableMapOf<KClass<ACTION>, (ACTION, STATE) -> STATE>()
+        private val _transformerMap = mutableMapOf<KClass<ACTION>, Reducer<ACTION, STATE>>()
 
         internal val transformer get() = _transformerMap.toMap()
 
-        inline fun <reified T: ACTION> on(noinline transformer: ActionState<T, STATE>.() -> STATE) {
-            on(T::class, transformer)
+        inline fun <reified T: ACTION> on(noinline transformer: suspend ActionState<T, STATE>.() -> STATE) {
+            on(T::class, transformer, null)
+        }
+
+        inline fun <reified T: ACTION> on(scope: CoroutineScope, noinline transformer: suspend ActionState<T, STATE>.() -> STATE) {
+            on(T::class, transformer, scope)
         }
 
         @Suppress("UNCHECKED_CAST")
-        fun <T: ACTION> on(clazz: KClass<T>, transformerFunction: ActionState<T, STATE>.() -> STATE) {
-            _transformerMap[clazz as KClass<ACTION>] = { action, state ->
-                transformerFunction(ActionState(action as T, state))
-            }
+        fun <T: ACTION> on(clazz: KClass<T>, transformerFunction: suspend ActionState<T, STATE>.() -> STATE, scope: CoroutineScope?) {
+            _transformerMap[clazz as KClass<ACTION>] = Reducer(initialState, transformerFunction, scope) as Reducer<ACTION, STATE>
         }
     }
 
