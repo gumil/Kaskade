@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        goTo(MainFragment(), false)
+        savedInstanceState ?: goTo(MainFragment(), false)
     }
 
     fun goTo(fragment: Fragment, addToBackstack: Boolean = true) {

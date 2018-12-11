@@ -1,16 +1,16 @@
 package io.gumil.kaskade.sample.network
 
-import io.gumil.kaskade.Action
-import io.gumil.kaskade.Kaskade
-import io.gumil.kaskade.State
-import io.gumil.kaskade.stateFlow
+import androidx.lifecycle.ViewModel
+import io.gumil.kaskade.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 
-internal class DogKaskade(
+internal class DogViewModel(
         private val dogApi: RandomDogApi
-) {
+): ViewModel() {
+
+    constructor(): this(ApiFactory.create())
 
     private val job = Job()
 
@@ -25,15 +25,19 @@ internal class DogKaskade(
         on<DogAction.GetDog>(uiScope) {
             DogState.OnLoaded(dogApi.getDog().await().message)
         }
+
+        on<DogAction.OnError> { DogState.Error(action.exception) }
+        on<DogAction.OnSuccess> { DogState.Success }
     }
 
-    val state = kaskade.stateFlow()
+    val state = kaskade.stateDamFlow(DogAction.GetDog)
 
     fun process(action: DogAction) {
         kaskade.process(action)
     }
 
-    fun unsubscribe() {
+    override fun onCleared() {
+        super.onCleared()
         job.cancel()
         state.unsubscribe()
         kaskade.unsubscribe()
@@ -42,10 +46,14 @@ internal class DogKaskade(
 
 internal sealed class DogState : State {
     object Loading : DogState()
+    data class Error(val exception: Throwable) : DogState()
     data class OnLoaded(val url: String) : DogState()
+    object Success : DogState()
 }
 
 internal sealed class DogAction : Action {
     object Refresh : DogAction()
     object GetDog : DogAction()
+    data class OnError(val exception: Throwable) : DogAction()
+    object OnSuccess : DogAction()
 }

@@ -7,15 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.gumil.kaskade.sample.R
 import kotlinx.android.synthetic.main.fragment_dog.*
-import java.lang.Exception
 
-internal class DogFragment : Fragment() {
+internal class DogFragment : Fragment(), Callback {
 
-    private val dogKaskade = DogKaskade(ApiFactory.create())
+    private val dogViewModel by lazy {
+        ViewModelProviders.of(this).get(DogViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_dog, container, false)
@@ -24,16 +26,9 @@ internal class DogFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dogKaskade.state.subscribe { render(it) }
+        dogViewModel.state.subscribe { render(it) }
 
-        dogKaskade.process(DogAction.Refresh)
-
-        buttonGetNewImage.setOnClickListener { dogKaskade.process(DogAction.Refresh) }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        dogKaskade.unsubscribe()
+        buttonGetNewImage.setOnClickListener { dogViewModel.process(DogAction.Refresh) }
     }
 
     private fun render(state: DogState) {
@@ -42,20 +37,25 @@ internal class DogFragment : Fragment() {
                 progressBar.visibility = View.VISIBLE
                 imageView.visibility = View.GONE
             }
+            is DogState.Error -> {
+                Log.e(DogFragment::class.java.simpleName, "error", state.exception)
+                Toast.makeText(context, "Error loading image", Toast.LENGTH_SHORT).show()
+            }
             is DogState.OnLoaded -> {
-                Picasso.get().load(state.url).into(imageView, object : Callback {
-                    override fun onSuccess() {
-                        progressBar.visibility = View.GONE
-                        imageView.visibility = View.VISIBLE
-                    }
-
-                    override fun onError(e: Exception?) {
-                        Toast.makeText(context, "Error loading image", Toast.LENGTH_SHORT).show()
-                        Log.e("tantrums", "error", e)
-                    }
-
-                })
+                Picasso.get().load(state.url).into(imageView, this)
+            }
+            is DogState.Success -> {
+                progressBar.visibility = View.GONE
+                imageView.visibility = View.VISIBLE
             }
         }
+    }
+
+    override fun onSuccess() {
+        dogViewModel.process(DogAction.OnSuccess)
+    }
+
+    override fun onError(e: java.lang.Exception) {
+        dogViewModel.process(DogAction.OnError(e))
     }
 }
