@@ -9,7 +9,7 @@ import io.gumil.kaskade.sample.R
 import io.gumil.kaskade.sample.todo.data.ListTodoRepository
 import kotlinx.android.synthetic.main.fragment_list.*
 
-internal class ListFragment : androidx.fragment.app.Fragment() {
+internal class TodoFragment : androidx.fragment.app.Fragment() {
 
     private val todoKaskade = TodoKaskade(ListTodoRepository())
 

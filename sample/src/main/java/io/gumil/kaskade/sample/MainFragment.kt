@@ -1,13 +1,12 @@
 package io.gumil.kaskade.sample
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import io.gumil.kaskade.sample.network.DogFragment
-import io.gumil.kaskade.sample.todo.TodoActivity
+import io.gumil.kaskade.sample.todo.TodoFragment
 import kotlinx.android.synthetic.main.fragment_main.*
 
 internal class MainFragment : Fragment() {
@@ -19,7 +18,9 @@ internal class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        buttonStartTodo.setOnClickListener { startActivity(Intent(context, TodoActivity::class.java)) }
+        buttonStartTodo.setOnClickListener {
+            (activity as? MainActivity)?.goTo(TodoFragment())
+        }
 
         buttonStartNetwork.setOnClickListener {
             (activity as? MainActivity)?.goTo(DogFragment())
