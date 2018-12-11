@@ -47,6 +47,7 @@ class Kaskade<STATE : State, ACTION : Action> private constructor(
 
     fun unsubscribe() {
         onStateChanged = null
+        actionStateMap.clear()
     }
 
     class Builder<ACTION: Action, STATE: State> internal constructor(
