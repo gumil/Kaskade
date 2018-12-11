@@ -37,15 +37,17 @@ class DamFlow<T> : Flow<T>() {
     }
 }
 
-fun <S : State, A : Action> Kaskade<S, A>.stateFlow(): Flow<S> {
-    return createFlow(Flow())
+fun <S : State, A : Action> Kaskade<S, A>.stateFlow(initialAction: A? = null): Flow<S> {
+    return createFlow(Flow(), initialAction)
 }
 
-fun <S : State, A : Action> Kaskade<S, A>.stateDamFlow(): Flow<S> {
-    return createFlow(DamFlow())
+fun <S : State, A : Action> Kaskade<S, A>.stateDamFlow(initialAction: A? = null): Flow<S> {
+    return createFlow(DamFlow(), initialAction)
 }
 
-private fun <A : Action, S : State> Kaskade<S, A>.createFlow(flow: Flow<S>): Flow<S> {
+private fun <A : Action, S : State> Kaskade<S, A>.createFlow(flow: Flow<S>, initialAction: A?): Flow<S> {
     onStateChanged = { flow.sendValue(it) }
-    return flow
+    return flow.also {
+        initialAction?.let { process(it) }
+    }
 }
