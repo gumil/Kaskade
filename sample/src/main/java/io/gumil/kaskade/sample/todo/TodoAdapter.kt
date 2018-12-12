@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
-import io.gumil.kaskade.Flow
+import io.gumil.kaskade.flow.Flow
+import io.gumil.kaskade.flow.MutableFlow
 import io.gumil.kaskade.sample.R
 import io.gumil.kaskade.sample.todo.data.TodoItem
 import kotlinx.android.synthetic.main.item_footer.view.*
@@ -25,7 +26,9 @@ internal class TodoAdapter(
             notifyDataSetChanged()
         }
 
-    val onItemAction = Flow<TodoAction>()
+    val onItemAction: Flow<TodoAction> get() = _onItemAction
+
+    private val _onItemAction = MutableFlow<TodoAction>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindableViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -84,12 +87,12 @@ internal class TodoAdapter(
             }
 
             itemView.buttonDelete.setOnClickListener {
-                onItemAction.sendValue(TodoAction.Delete(layoutPosition, item))
+                _onItemAction.sendValue(TodoAction.Delete(layoutPosition, item))
             }
 
             itemView.checkbox.setOnClickListener {
                 it as CheckBox
-                onItemAction.sendValue(TodoAction.Update(layoutPosition, item.copy(isDone = it.isChecked)))
+                _onItemAction.sendValue(TodoAction.Update(layoutPosition, item.copy(isDone = it.isChecked)))
             }
 
             itemView.setOnClickListener { itemView.checkbox.performClick() }
@@ -102,7 +105,7 @@ internal class TodoAdapter(
             itemView.buttonAdd.setOnClickListener {
                 val description = itemView.inputAddItem.text.toString()
                 val id = _list.maxBy { it.id }?.id?.let { it + 1 } ?: -1
-                onItemAction.sendValue(TodoAction.Add(TodoItem(id, description, false)))
+                _onItemAction.sendValue(TodoAction.Add(TodoItem(id, description, false)))
                 itemView.inputAddItem.setText("")
             }
 
