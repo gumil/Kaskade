@@ -1,5 +1,7 @@
 package io.gumil.kaskade
 
+import kotlin.reflect.KClass
+
 open class Flow<T> {
 
     private var subscription: ((T) -> Unit)? = null
@@ -17,23 +19,34 @@ open class Flow<T> {
     }
 }
 
-class DamFlow<T> : Flow<T>() {
+class DamFlow<T : Any> : Flow<T>() {
 
-    private var savedValue: T? = null
+    private val savedValues = mutableMapOf<KClass<out T>, T>()
+
+    private val excludedValues = mutableSetOf<KClass<out T>>()
 
     override fun subscribe(subscription: (T) -> Unit) {
         super.subscribe(subscription)
-        savedValue?.let { sendValue(it) }
+        savedValues.forEach {
+            super.sendValue(it.value)
+        }
     }
 
     override fun sendValue(value: T) {
-        savedValue = value
+        if (value::class !in excludedValues) {
+            savedValues[value::class] = value
+        }
         super.sendValue(value)
     }
 
     override fun unsubscribe() {
         super.unsubscribe()
-        savedValue = null
+        savedValues.clear()
+        excludedValues.clear()
+    }
+
+    fun exclude(vararg classes: KClass<out T>) {
+        excludedValues.addAll(classes)
     }
 }
 
@@ -41,13 +54,13 @@ fun <S : State, A : Action> Kaskade<S, A>.stateFlow(initialAction: A? = null): F
     return createFlow(Flow(), initialAction)
 }
 
-fun <S : State, A : Action> Kaskade<S, A>.stateDamFlow(initialAction: A? = null): Flow<S> {
+fun <S : State, A : Action> Kaskade<S, A>.stateDamFlow(initialAction: A? = null): DamFlow<S> {
     return createFlow(DamFlow(), initialAction)
 }
 
-private fun <A : Action, S : State> Kaskade<S, A>.createFlow(flow: Flow<S>, initialAction: A?): Flow<S> {
+private fun <A : Action, S : State, F: Flow<S>> Kaskade<S, A>.createFlow(flow: F, initialAction: A?): F {
     onStateChanged = { flow.sendValue(it) }
     return flow.also {
-        initialAction?.let { process(it) }
+        initialAction?.let { action -> process(action) }
     }
 }
