@@ -1,8 +1,11 @@
 package io.gumil.kaskade.sample.network
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import io.gumil.kaskade.*
-import io.gumil.kaskade.livedata.stateLiveData
+import io.gumil.kaskade.Action
+import io.gumil.kaskade.Kaskade
+import io.gumil.kaskade.State
+import io.gumil.kaskade.livedata.stateDamLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,7 +33,11 @@ internal class DogViewModel(
         on<DogAction.OnError> { DogState.Error(action.exception) }
     }
 
-    val state = kaskade.stateLiveData(DogAction.GetDog)
+    val state: LiveData<DogState> get() = _state
+
+    private val _state = kaskade.stateDamLiveData(DogAction.GetDog).apply {
+        exclude(DogState.Error::class, DogState.Loading::class)
+    }
 
     fun process(action: DogAction) {
         kaskade.process(action)
@@ -38,6 +45,7 @@ internal class DogViewModel(
 
     override fun onCleared() {
         super.onCleared()
+        _state.clear()
         job.cancel()
         kaskade.unsubscribe()
     }

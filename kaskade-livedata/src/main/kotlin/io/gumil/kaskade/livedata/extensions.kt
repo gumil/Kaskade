@@ -23,7 +23,16 @@ import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.State
 
 fun <S : State, A : Action> Kaskade<S, A>.stateLiveData(initialAction: A? = null): LiveData<S> {
-    val state = MutableLiveData<S>()
+    return createLiveData(MutableLiveData(), initialAction)
+}
+
+fun <S : State, A : Action> Kaskade<S, A>.stateDamLiveData(initialAction: A? = null): DamLiveData<S> {
+    return createLiveData(DamLiveData(), initialAction)
+}
+
+private fun <A : Action, S : State, L: MutableLiveData<S>> Kaskade<S, A>.createLiveData(
+        state: L, initialAction: A?
+): L {
     onStateChanged = {
         state.postValue(it)
     }
