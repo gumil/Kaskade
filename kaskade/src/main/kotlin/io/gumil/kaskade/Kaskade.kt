@@ -54,7 +54,7 @@ class Kaskade<STATE : State, ACTION : Action> private constructor(
             private val initialState: STATE
     ) {
 
-        private val _transformerMap = mutableMapOf<KClass<ACTION>, Reducer<ACTION, STATE>>()
+        private val _transformerMap = mutableMapOf<KClass<out ACTION>, Reducer<ACTION, STATE>>()
 
         internal val transformer get() = _transformerMap.toMap()
 
@@ -68,7 +68,7 @@ class Kaskade<STATE : State, ACTION : Action> private constructor(
 
         @Suppress("UNCHECKED_CAST")
         fun <T : ACTION> on(clazz: KClass<T>, transformerFunction: suspend ActionState<T, STATE>.() -> STATE, scope: CoroutineScope?) {
-            _transformerMap[clazz as KClass<ACTION>] = Reducer(initialState, transformerFunction, scope) as Reducer<ACTION, STATE>
+            _transformerMap[clazz] = Reducer(initialState, transformerFunction, scope) as Reducer<ACTION, STATE>
         }
     }
 
