@@ -16,8 +16,7 @@ class DamFlow<T : Any> : MutableFlow<T>() {
         super.sendValue(value)
     }
 
-    override fun unsubscribe() {
-        super.unsubscribe()
+    fun clear() {
         savedValueHolder.clear()
     }
 
