@@ -20,6 +20,7 @@ internal sealed class TestState : State {
     object State1 : TestState()
     object State2 : TestState()
     object State3 : TestState()
+    object State4 : TestState()
 }
 
 internal sealed class TestAction : Action {
