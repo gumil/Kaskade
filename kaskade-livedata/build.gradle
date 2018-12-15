@@ -20,4 +20,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata:2.0.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(":kaskade")
+
+    testImplementation "androidx.arch.core:core-testing:2.0.0"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 }
