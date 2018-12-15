@@ -4,6 +4,7 @@ import io.gumil.kaskade.*
 import kotlinx.coroutines.CoroutineScope
 import kotlin.reflect.KClass
 
+@KaskadeBuilderMarker
 class CoroutinesKaskadeBuilder<ACTION: Action, STATE: State>(
         private val builder: Kaskade.Builder<ACTION, STATE>
 ) {
@@ -21,6 +22,7 @@ class CoroutinesKaskadeBuilder<ACTION: Action, STATE: State>(
     }
 }
 
+@KaskadeBuilderMarker
 class CoroutinesScopedKaskadeBuilder<ACTION: Action, STATE: State>(
         val scope: CoroutineScope,
         private val builder: Kaskade.Builder<ACTION, STATE>

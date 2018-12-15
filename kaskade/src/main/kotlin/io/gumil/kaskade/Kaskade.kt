@@ -49,6 +49,7 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
         actionStateMap.clear()
     }
 
+    @KaskadeBuilderMarker
     class Builder<ACTION : Action, STATE : State> internal constructor() {
 
         private val _transformerMap = mutableMapOf<KClass<out ACTION>, Reducer<ACTION, STATE>>()
