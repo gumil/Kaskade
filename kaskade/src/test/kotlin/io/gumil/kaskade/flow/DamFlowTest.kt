@@ -6,7 +6,7 @@ import kotlin.test.*
 
 internal class DamFlowTest {
 
-    private val kaskade = Kaskade.create<TestState, TestAction>(TestState.State1) {
+    private val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
         on<TestAction.Action1> {
             TestState.State1
         }

@@ -23,7 +23,7 @@ import kotlin.test.assertFailsWith
 
 internal class KaskadeTest {
 
-    private val kaskade = Kaskade.create<TestState, TestAction>(TestState.State1) {
+    private val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
         on<TestAction.Action1> {
             TestState.State1
         }

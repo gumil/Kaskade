@@ -14,7 +14,7 @@ data class ScopedReducer<ACTION: Action, STATE: State>(
     }
 }
 
-inline fun <S : State, A : Action, reified T : A> Kaskade.Builder<A, S>.on(
+inline fun <A : Action, S : State, reified T : A> Kaskade.Builder<A, S>.on(
         scope: CoroutineScope,
         noinline transformer: suspend ActionState<T, S>.() -> S
 ) {
