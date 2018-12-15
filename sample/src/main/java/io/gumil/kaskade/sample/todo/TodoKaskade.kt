@@ -8,7 +8,7 @@ internal class TodoKaskade(
         private val todoRepository: TodoRepository
 ) {
 
-    private val kaskade = Kaskade.create<TodoState, TodoAction>(TodoState.OnLoaded(listOf())) {
+    private val kaskade = Kaskade.create<TodoAction, TodoState>(TodoState.OnLoaded(listOf())) {
         on<TodoAction.Refresh> {
             TodoState.OnLoaded(todoRepository.getToDoItems())
         }

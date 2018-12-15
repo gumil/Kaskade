@@ -23,13 +23,13 @@ internal class DogViewModel(
 
     private val uiScope = CoroutineScope(dispatcher + job)
 
-    private val kaskade = Kaskade.create<DogState, DogAction>(DogState.OnLoaded("")) {
+    private val kaskade = Kaskade.create<DogAction, DogState>(DogState.OnLoaded("")) {
         on<DogAction.Refresh> {
             process(DogAction.GetDog)
             DogState.Loading
         }
 
-        on<DogState, DogAction, DogAction.GetDog>(uiScope) {
+        on<DogAction, DogState, DogAction.GetDog>(uiScope) {
             DogState.OnLoaded(dogApi.getDog().await().message)
         }
 

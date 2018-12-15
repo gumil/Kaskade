@@ -13,7 +13,7 @@ internal class DamLiveDataTest {
     @get:Rule
     val rule: TestRule = InstantTaskExecutorRule()
 
-    private val kaskade = Kaskade.create<TestState, TestAction>(TestState.State1) {
+    private val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
         on<TestAction.Action1> {
             TestState.State1
         }

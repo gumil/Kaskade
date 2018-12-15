@@ -19,7 +19,7 @@ package io.gumil.kaskade
 import kotlin.properties.Delegates.observable
 import kotlin.reflect.KClass
 
-class Kaskade<STATE : State, ACTION : Action> private constructor(
+class Kaskade<ACTION : Action, STATE : State> private constructor(
         initialState: STATE
 ) {
 
@@ -66,11 +66,11 @@ class Kaskade<STATE : State, ACTION : Action> private constructor(
     }
 
     companion object {
-        fun <STATE : State, ACTION : Action> create(
+        fun <ACTION : Action, STATE : State> create(
                 initialState: STATE,
                 builder: Builder<ACTION, STATE>.() -> Unit
-        ): Kaskade<STATE, ACTION> {
-            return Kaskade<STATE, ACTION>(initialState).apply {
+        ): Kaskade<ACTION, STATE> {
+            return Kaskade<ACTION, STATE>(initialState).apply {
                 addActions(builder)
             }
         }
