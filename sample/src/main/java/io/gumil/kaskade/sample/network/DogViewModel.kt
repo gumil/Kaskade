@@ -2,6 +2,7 @@ package io.gumil.kaskade.sample.network
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.gumil.kaskade.coroutines.on
 import io.gumil.kaskade.Action
 import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.State
@@ -28,7 +29,7 @@ internal class DogViewModel(
             DogState.Loading
         }
 
-        on<DogAction.GetDog>(uiScope) {
+        on<DogState, DogAction, DogAction.GetDog>(uiScope) {
             DogState.OnLoaded(dogApi.getDog().await().message)
         }
 

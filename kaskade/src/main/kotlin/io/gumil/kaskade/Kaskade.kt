@@ -16,12 +16,11 @@
 
 package io.gumil.kaskade
 
-import kotlinx.coroutines.CoroutineScope
 import kotlin.properties.Delegates.observable
 import kotlin.reflect.KClass
 
 class Kaskade<STATE : State, ACTION : Action> private constructor(
-        private val initialState: STATE
+        initialState: STATE
 ) {
 
     private val actionStateMap = mutableMapOf<KClass<out ACTION>, Reducer<ACTION, STATE>>()
@@ -33,7 +32,7 @@ class Kaskade<STATE : State, ACTION : Action> private constructor(
     var onStateChanged: ((state: STATE) -> Unit)? = null
 
     fun addActions(builder: Builder<ACTION, STATE>.() -> Unit) {
-        val eventBuilder = Builder<ACTION, STATE>(initialState)
+        val eventBuilder = Builder<ACTION, STATE>()
         eventBuilder.builder()
         actionStateMap.putAll(eventBuilder.transformer)
     }
@@ -50,25 +49,19 @@ class Kaskade<STATE : State, ACTION : Action> private constructor(
         actionStateMap.clear()
     }
 
-    class Builder<ACTION : Action, STATE : State> internal constructor(
-            private val initialState: STATE
-    ) {
+    class Builder<ACTION : Action, STATE : State> internal constructor() {
 
         private val _transformerMap = mutableMapOf<KClass<out ACTION>, Reducer<ACTION, STATE>>()
 
         internal val transformer get() = _transformerMap.toMap()
 
-        inline fun <reified T : ACTION> on(noinline transformer: suspend ActionState<T, STATE>.() -> STATE) {
-            on(T::class, transformer, null)
-        }
-
-        inline fun <reified T : ACTION> on(scope: CoroutineScope, noinline transformer: suspend ActionState<T, STATE>.() -> STATE) {
-            on(T::class, transformer, scope)
+        inline fun <reified T : ACTION> on(noinline transformer: ActionState<T, STATE>.() -> STATE) {
+            on(T::class, BlockingReducer(transformer))
         }
 
         @Suppress("UNCHECKED_CAST")
-        fun <T : ACTION> on(clazz: KClass<T>, transformerFunction: suspend ActionState<T, STATE>.() -> STATE, scope: CoroutineScope?) {
-            _transformerMap[clazz] = Reducer(initialState, transformerFunction, scope) as Reducer<ACTION, STATE>
+        fun <T : ACTION> on(clazz: KClass<T>, reducer: Reducer<T, STATE>) {
+            _transformerMap[clazz] = reducer as Reducer<ACTION, STATE>
         }
     }
 

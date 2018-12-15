@@ -78,30 +78,30 @@ internal class KaskadeTest {
 
     @Test
     fun  `verify builder transformer`() {
-        val transformer: suspend ActionState<TestAction.Action4, TestState>.() -> TestState.State4 = {
+        val transformer: ActionState<TestAction.Action4, TestState>.() -> TestState.State4 = {
             TestState.State4
         }
 
-        val builder = Kaskade.Builder<TestAction, TestState>(TestState.State1).apply { on(transformer) }
+        val builder = Kaskade.Builder<TestAction, TestState>().apply { on(transformer) }
 
         val expected = mapOf<KClass<out TestAction>, Reducer<out TestAction, TestState>>(
-                TestAction.Action4::class to Reducer(TestState.State1, transformer))
+                TestAction.Action4::class to BlockingReducer(transformer))
 
         assertEquals(expected, builder.transformer)
     }
 
     @Test
     fun `builder should be empty on initialized`() {
-        val builder = Kaskade.Builder<TestAction, TestState>(TestState.State1)
+        val builder = Kaskade.Builder<TestAction, TestState>()
         assertEquals(emptyMap(), builder.transformer)
     }
 
     @Test
     fun `verify reducer transformer is invoked`() {
-        val transformer: suspend ActionState<TestAction.Action4, TestState>.() -> TestState.State4 = {
+        val transformer: ActionState<TestAction.Action4, TestState>.() -> TestState.State4 = {
             TestState.State4
         }
-        val reducer = Reducer(TestState.State1, transformer)
+        val reducer = BlockingReducer(transformer)
 
         reducer.invoke(TestAction.Action4, TestState.State4) {
             assertEquals(TestState.State4, it)
