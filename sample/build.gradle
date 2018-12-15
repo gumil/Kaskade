@@ -47,9 +47,7 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
 
-    testImplementation "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
+    testImplementation "androidx.arch.core:core-testing:2.0.0"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
     testImplementation "io.mockk:mockk:1.8.13.kotlin13"
 }
