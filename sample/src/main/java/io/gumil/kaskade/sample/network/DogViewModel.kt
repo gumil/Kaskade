@@ -29,8 +29,8 @@ internal class DogViewModel(
             DogState.Loading
         }
 
-        coroutines {
-            on<DogAction.GetDog>(uiScope) {
+        coroutines(uiScope) {
+            on<DogAction.GetDog> {
                 DogState.OnLoaded(dogApi.getDog().await().message)
             }
         }
