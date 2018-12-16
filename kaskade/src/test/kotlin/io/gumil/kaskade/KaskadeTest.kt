@@ -17,9 +17,7 @@
 package io.gumil.kaskade
 
 import kotlin.reflect.KClass
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
+import kotlin.test.*
 
 internal class KaskadeTest {
 
@@ -106,5 +104,18 @@ internal class KaskadeTest {
         reducer.invoke(TestAction.Action4, TestState.State4) {
             assertEquals(TestState.State4, it)
         }
+    }
+
+    @Test
+    fun `get reducer with Action1 should return correct reducer`() {
+        val expected = BlockingReducer<TestAction, TestState> { TestState.State1 }
+        val actual = kaskade.getReducer(TestAction.Action1) as BlockingReducer
+        assertEquals(expected.getState(TestAction.Action1, TestState.State1),
+                actual.getState(TestAction.Action1, TestState.State1))
+    }
+
+    @Test
+    fun `get reducer with action not registered should return null`() {
+        assertNull(kaskade.getReducer(TestAction.Action4))
     }
 }

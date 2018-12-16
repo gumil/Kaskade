@@ -8,6 +8,8 @@ data class BlockingReducer<ACTION: Action, STATE: State>(
         private val transformerFunction: ActionState<ACTION, STATE>.() -> STATE
 ) : Reducer<ACTION, STATE> {
     override fun invoke(action: ACTION, state: STATE, onStateChanged: (state: STATE) -> Unit) {
-        onStateChanged(transformerFunction(ActionState(action, state)))
+        onStateChanged(getState(action, state))
     }
+
+    fun getState(action: ACTION, state: STATE) = transformerFunction(ActionState(action, state))
 }

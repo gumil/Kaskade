@@ -38,10 +38,14 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
     }
 
     fun process(action: ACTION) {
-        actionStateMap[action::class]?.let { reducer ->
+        getReducer(action)?.let { reducer ->
             reducer(action, currentState) { currentState = it }
         } ?: throw IncompleteFlowException(action)
+    }
 
+    @Suppress("UNCHECKED_CAST")
+    fun <T: ACTION> getReducer(action: T): Reducer<T, STATE>? {
+        return actionStateMap[action::class] as? Reducer<T, STATE>
     }
 
     fun unsubscribe() {
