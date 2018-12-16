@@ -9,7 +9,9 @@ sourceSets {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(":kaskade")
-    implementation "io.reactivex.rxjava2:rxjava:2.1.14"
+    implementation "io.reactivex.rxjava2:rxjava:2.2.4"
+
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 }
 
 sourceCompatibility = "1.8"
