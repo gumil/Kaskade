@@ -113,12 +113,12 @@ internal class CoroutinesKaskadeBuilderTest {
         action2Job.join()
     }
 
-    internal sealed class TestState : State {
+    private sealed class TestState : State {
         object State1 : TestState()
         object State2 : TestState()
     }
 
-    internal sealed class TestAction : Action {
+    private sealed class TestAction : Action {
         object Action1 : TestAction()
         object Action2 : TestAction()
     }
