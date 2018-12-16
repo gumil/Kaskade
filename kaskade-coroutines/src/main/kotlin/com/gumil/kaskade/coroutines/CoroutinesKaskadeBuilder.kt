@@ -39,14 +39,3 @@ class CoroutinesScopedKaskadeBuilder<ACTION: Action, STATE: State>(
         builder.on(clazz, reducer)
     }
 }
-
-fun <A : Action, S : State> Kaskade.Builder<A, S>.coroutines(builder: CoroutinesKaskadeBuilder<A, S>.() -> Unit) {
-    builder(CoroutinesKaskadeBuilder(this))
-}
-
-fun <A : Action, S : State> Kaskade.Builder<A, S>.coroutines(
-        scope: CoroutineScope,
-        builder: CoroutinesScopedKaskadeBuilder<A, S>.() -> Unit
-) {
-    builder(CoroutinesScopedKaskadeBuilder(scope, this))
-}
