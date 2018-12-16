@@ -127,9 +127,7 @@ internal class DamFlowTest {
 
     @Test
     fun `create flow from kaskade should not emit excluded state on new subscriber`() {
-        val stateFlow = kaskade.stateDamFlow(TestAction.Action1).apply {
-            exclude(TestState.State2::class)
-        }
+        val stateFlow = kaskade.stateDamFlow(TestAction.Action1, TestState.State2::class)
         var counter = 0
 
         val subscription: (TestState) -> Unit = {

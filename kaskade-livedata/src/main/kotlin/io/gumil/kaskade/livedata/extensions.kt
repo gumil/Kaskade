@@ -21,13 +21,19 @@ import androidx.lifecycle.MutableLiveData
 import io.gumil.kaskade.Action
 import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.State
+import kotlin.reflect.KClass
 
 fun <A : Action, S : State> Kaskade<A, S>.stateLiveData(initialAction: A? = null): LiveData<S> {
     return createLiveData(MutableLiveData(), initialAction)
 }
 
-fun <A : Action, S : State> Kaskade<A, S>.stateDamLiveData(initialAction: A? = null): DamLiveData<S> {
-    return createLiveData(DamLiveData(), initialAction)
+fun <A : Action, S : State> Kaskade<A, S>.stateDamLiveData(
+        initialAction: A? = null,
+        vararg excludedStates: KClass<out S>
+): DamLiveData<S> {
+    val damLiveData: DamLiveData<S> = createLiveData(DamLiveData(), initialAction)
+    damLiveData.exclude(*excludedStates)
+    return damLiveData
 }
 
 private fun <A : Action, S : State, L: MutableLiveData<S>> Kaskade<A, S>.createLiveData(
