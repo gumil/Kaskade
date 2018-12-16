@@ -18,7 +18,7 @@ package io.gumil.kaskade.sample
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,15 +26,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        savedInstanceState ?: goTo(MainFragment(), false)
-    }
-
-    fun goTo(fragment: Fragment, addToBackstack: Boolean = true) {
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, fragment)
-                .apply {
-                    if (addToBackstack) addToBackStack(null)
-                }
-                .commit()
+        if (savedInstanceState == null) {
+            val host = NavHostFragment.create(R.navigation.nav_graph)
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, host)
+                    .setPrimaryNavigationFragment(host)
+                    .commit()
+        }
     }
 }
