@@ -5,8 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import io.gumil.kaskade.sample.network.DogFragment
-import io.gumil.kaskade.sample.todo.TodoFragment
+import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_main.*
 
 internal class MainFragment : Fragment() {
@@ -18,12 +17,8 @@ internal class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        buttonStartTodo.setOnClickListener {
-            (activity as? MainActivity)?.goTo(TodoFragment())
-        }
+        buttonStartTodo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.todoFragment))
 
-        buttonStartNetwork.setOnClickListener {
-            (activity as? MainActivity)?.goTo(DogFragment())
-        }
+        buttonStartNetwork.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.dogFragment))
     }
 }

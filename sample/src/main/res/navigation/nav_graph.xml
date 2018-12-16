@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="io.gumil.kaskade.sample.MainFragment"
+        android:label="MainFragment">
+        <action
+            android:id="@+id/action_mainFragment_to_todoFragment"
+            app:destination="@id/todoFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_dogFragment"
+            app:destination="@id/dogFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/todoFragment"
+        android:name="io.gumil.kaskade.sample.todo.TodoFragment"
+        android:label="TodoFragment" />
+
+    <fragment
+        android:id="@+id/dogFragment"
+        android:name="io.gumil.kaskade.sample.network.DogFragment"
+        android:label="DogFragment" />
+</navigation>
