@@ -122,9 +122,7 @@ internal class DamLiveDataTest {
 
     @Test
     fun `create DamLiveData from kaskade should not emit excluded state on new observer`() {
-        val stateLiveData = kaskade.stateDamLiveData(TestAction.Action1).apply {
-            exclude(TestState.State2::class)
-        }
+        val stateLiveData = kaskade.stateDamLiveData(TestAction.Action1, TestState.State2::class)
         var counter = 0
 
         val observer = Observer<TestState> {

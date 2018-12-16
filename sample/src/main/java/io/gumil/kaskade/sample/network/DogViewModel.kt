@@ -40,9 +40,8 @@ internal class DogViewModel(
 
     val state: LiveData<DogState> get() = _state
 
-    private val _state = kaskade.stateDamLiveData(DogAction.GetDog).apply {
-        exclude(DogState.Error::class, DogState.Loading::class)
-    }
+    private val _state = kaskade.stateDamLiveData(DogAction.GetDog,
+            DogState.Error::class, DogState.Loading::class)
 
     fun process(action: DogAction) {
         kaskade.process(action)
