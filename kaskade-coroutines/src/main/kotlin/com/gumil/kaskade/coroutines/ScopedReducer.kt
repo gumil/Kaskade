@@ -13,6 +13,9 @@ data class ScopedReducer<ACTION: Action, STATE: State>(
 ) : Reducer<ACTION, STATE> {
 
     override fun invoke(action: ACTION, state: STATE, onStateChanged: (state: STATE) -> Unit) {
-        coroutineScope.launch { onStateChanged(transformerFunction(ActionState(action, state))) }
+        startJob( action, state, onStateChanged)
     }
+
+    internal fun startJob(action: ACTION, state: STATE, onStateChanged: (state: STATE) -> Unit) =
+            coroutineScope.launch { onStateChanged(transformerFunction(ActionState(action, state))) }
 }
