@@ -2,5 +2,10 @@
     <string name="app_name">sample</string>
     <string name="start_todo_sample">Start Todo sample</string>
     <string name="start_network_sample">Start Network sample</string>
+    <string name="start_auth_sample">Start Auth sample</string>
     <string name="get_new_image">Get New Image</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="error_auth">The username and password you entered did not match our records.</string>
 </resources>

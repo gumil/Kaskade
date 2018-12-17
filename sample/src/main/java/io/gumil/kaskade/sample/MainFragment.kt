@@ -20,5 +20,7 @@ internal class MainFragment : Fragment() {
         buttonStartTodo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.todoFragment))
 
         buttonStartNetwork.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.dogFragment))
+
+        buttonStartAuth.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.authFragment))
     }
 }
