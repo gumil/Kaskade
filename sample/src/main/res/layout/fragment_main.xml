@@ -15,4 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/start_network_sample"/>
+
+    <Button
+        android:id="@+id/buttonStartAuth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start_auth_sample"/>
 </LinearLayout>

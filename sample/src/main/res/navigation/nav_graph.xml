@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_mainFragment_to_dogFragment"
             app:destination="@id/dogFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_authFragment"
+            app:destination="@id/authFragment" />
     </fragment>
 
     <fragment
@@ -25,4 +28,9 @@
         android:id="@+id/dogFragment"
         android:name="io.gumil.kaskade.sample.network.DogFragment"
         android:label="DogFragment" />
+
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="io.gumil.kaskade.sample.auth.AuthFragment"
+        android:label="AuthFragment" />
 </navigation>
