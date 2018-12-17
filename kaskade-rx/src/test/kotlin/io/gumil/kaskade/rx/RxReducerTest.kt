@@ -13,7 +13,7 @@ internal class RxReducerTest {
 
     private val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
         rx {
-            on<TestAction.Action1>(observer) {
+            on<TestAction.Action1>({ observer }) {
                 Observable.just(TestState.State1)
             }
         }
@@ -44,7 +44,7 @@ internal class RxReducerTest {
 
         val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
             rx {
-                on<TestAction.Action1>(observer) {
+                on<TestAction.Action1>({ observer }) {
                     Observable.just<TestState>(TestState.State1)
                             .startWith(TestState.State2)
                 }
@@ -66,7 +66,7 @@ internal class RxReducerTest {
 
         val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
             rx {
-                on<TestAction.Action1>(observer) {
+                on<TestAction.Action1>({ observer }) {
                     Observable.error(exception)
                 }
             }
@@ -76,6 +76,12 @@ internal class RxReducerTest {
 
         observer.assertError(exception)
         observer.assertNotComplete()
+    }
+
+    @Test
+    @Ignore
+    fun `resubscribing observable`() {
+
     }
 
     private sealed class TestState : State {
