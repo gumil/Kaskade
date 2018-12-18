@@ -111,16 +111,12 @@ internal class RxReducerTest {
     @Test
     fun `send two actions`() {
         val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
-            rx {
-                on<TestAction.Action1>({
-                    TestObserver<TestState>()
-                }) {
+            rx({ TestObserver<TestState>() }) {
+                on<TestAction.Action1> {
                     Observable.just<TestState>(TestState.State1)
                 }
 
-                on<TestAction.Action2>({
-                    TestObserver<TestState>()
-                }) {
+                on<TestAction.Action2> {
                     Observable.just<TestState>(TestState.State2)
                 }
             }
