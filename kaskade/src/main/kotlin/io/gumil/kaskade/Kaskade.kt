@@ -20,7 +20,7 @@ import kotlin.properties.Delegates.observable
 import kotlin.reflect.KClass
 
 class Kaskade<ACTION : Action, STATE : State> private constructor(
-        initialState: STATE
+        private val initialState: STATE
 ) {
 
     private val actionStateMap = mutableMapOf<KClass<out ACTION>, Reducer<ACTION, STATE>>()
@@ -29,7 +29,17 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
         onStateChanged?.invoke(newValue)
     }
 
+    private var isOnStateChangeSet = false
+
     var onStateChanged: ((state: STATE) -> Unit)? = null
+        set(value) {
+            field = value
+
+            if (!isOnStateChangeSet) {
+                currentState = initialState
+                isOnStateChangeSet = true
+            }
+        }
 
     fun addActions(builder: Builder<ACTION, STATE>.() -> Unit) {
         val eventBuilder = Builder<ACTION, STATE>()

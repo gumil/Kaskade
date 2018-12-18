@@ -15,6 +15,13 @@ internal class FlowTest {
         }
     }
 
+    @BeforeTest
+    fun `should emit initial state`() {
+        kaskade.onStateChanged = {
+            assertEquals(TestState.State1, it)
+        }
+    }
+
     @Test
     fun `mutableFlow when value sent should invoke subscribe`() {
         val flow = MutableFlow<String>()

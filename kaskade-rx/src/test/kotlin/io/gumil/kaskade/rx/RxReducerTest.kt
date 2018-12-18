@@ -21,6 +21,13 @@ internal class RxReducerTest {
         on<TestAction.Action2> { TestState.State2 }
     }
 
+    @BeforeTest
+    fun `should emit initial state`() {
+        kaskade.stateObservable().subscribe {
+            assertEquals(TestState.State1, it)
+        }
+    }
+
     @Test
     fun `create rx kaskade builder`() {
         val testObserver = TestObserver<TestState>()

@@ -38,6 +38,7 @@ internal class DogViewModelTest {
     fun setUp() {
         viewModel = DogViewModel(mockApi, Dispatchers.Default)
         viewModel.state.observeForever(mockObserver)
+        verify { mockObserver.onChanged(DogState.Loading) }
         verify { mockObserver.onChanged(DogState.OnLoaded(mockUrl)) }
     }
 
