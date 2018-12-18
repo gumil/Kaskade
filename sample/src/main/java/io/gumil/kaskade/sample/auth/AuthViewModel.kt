@@ -1,6 +1,5 @@
 package io.gumil.kaskade.sample.auth
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import io.gumil.kaskade.Action
 import io.gumil.kaskade.Kaskade
@@ -14,7 +13,9 @@ import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-internal class AuthViewModel : ViewModel() {
+internal class AuthViewModel(
+        private val delay: Long = 5
+) : ViewModel() {
 
     private val disposables = CompositeDisposable()
 
@@ -27,11 +28,9 @@ internal class AuthViewModel : ViewModel() {
             /**
              * Do sideffects here like logging. Sending state already handled by Kaskade
              */
-            Log.d(TAG, "state = $state")
         }
 
         override fun onError(e: Throwable) {
-            Log.e(TAG, "state = $state")
             process(Observable.just(AuthAction.OnError))
         }
 
@@ -41,7 +40,7 @@ internal class AuthViewModel : ViewModel() {
         rx {
             on<AuthAction.Login>({ observer }) {
                 Observable.just(this)
-                        .delay(5, TimeUnit.SECONDS)
+                        .delay(delay, TimeUnit.SECONDS)
                         .map {
                             if (action.password == "world" &&
                                     action.username == "hello") {
