@@ -15,6 +15,13 @@ internal class DamFlowTest {
         }
     }
 
+    @BeforeTest
+    fun `should emit initial state`() {
+        kaskade.onStateChanged = {
+            assertEquals(TestState.State1, it)
+        }
+    }
+
     @Test
     fun `damFlow when value sent should invoke subscribe`() {
         val flow = DamFlow<String>()

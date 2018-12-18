@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import io.gumil.kaskade.Kaskade
 import org.junit.Rule
 import org.junit.rules.TestRule
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -23,11 +24,16 @@ internal class LiveDataTest {
         }
     }
 
-    private val liveData = kaskade.stateLiveData() as MutableLiveData<TestState>
-
+    @BeforeTest
+    fun `should emit initial state`() {
+        kaskade.stateLiveData().observeForever {
+            assertEquals(TestState.State1, it)
+        }
+    }
 
     @Test
     fun `livedata no emissions on initialized`() {
+        val liveData = kaskade.stateLiveData() as MutableLiveData<TestState>
         liveData.observeForever {
             throw AssertionError("Should not emit anything")
         }
@@ -44,6 +50,7 @@ internal class LiveDataTest {
 
     @Test
     fun `set value on livedata should invoke observer`() {
+        val liveData = kaskade.stateLiveData() as MutableLiveData<TestState>
         liveData.observeForever {
             assertEquals(TestState.State1, it)
         }
@@ -52,6 +59,7 @@ internal class LiveDataTest {
 
     @Test
     fun `livedata invoke latest emitted value before observing`() {
+        val liveData = kaskade.stateLiveData() as MutableLiveData<TestState>
         liveData.value = TestState.State1
         var counter = 0
 
@@ -69,7 +77,8 @@ internal class LiveDataTest {
 
     @Test
     fun `livedata should not invoke anything after removing observer`() {
-        val observer = Observer<TestState>  {
+        val liveData = kaskade.stateLiveData() as MutableLiveData<TestState>
+        val observer = Observer<TestState> {
             throw AssertionError("Should not emit anything")
         }
 
@@ -80,7 +89,8 @@ internal class LiveDataTest {
 
     @Test
     fun `livedata should invoke last emitted after removeObserver`() {
-        val observer = Observer<TestState>  {
+        val liveData = kaskade.stateLiveData() as MutableLiveData<TestState>
+        val observer = Observer<TestState> {
             throw AssertionError("Should not emit anything")
         }
 

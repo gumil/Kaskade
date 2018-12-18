@@ -35,6 +35,13 @@ internal class KaskadeTest {
         }
     }
 
+    @BeforeTest
+    fun `should emit initial state`() {
+        kaskade.onStateChanged = {
+            assertEquals(TestState.State1, it)
+        }
+    }
+
     @Test
     fun `action not in Kaskade should throw exception`() {
         assertFailsWith(IncompleteFlowException::class) {
@@ -52,26 +59,26 @@ internal class KaskadeTest {
 
     @Test
     fun `action1 should emit State1`() {
-        kaskade.process(TestAction.Action1)
         kaskade.onStateChanged = {
             assertEquals(TestState.State1, it)
         }
+        kaskade.process(TestAction.Action1)
     }
 
     @Test
     fun `action2 should emit State2`() {
-        kaskade.process(TestAction.Action2)
         kaskade.onStateChanged = {
             assertEquals(TestState.State2, it)
         }
+        kaskade.process(TestAction.Action2)
     }
 
     @Test
     fun `action3 should emit state3`() {
-        kaskade.process(TestAction.Action3)
         kaskade.onStateChanged = {
             assertEquals(TestState.State3, it)
         }
+        kaskade.process(TestAction.Action3)
     }
 
     @Test

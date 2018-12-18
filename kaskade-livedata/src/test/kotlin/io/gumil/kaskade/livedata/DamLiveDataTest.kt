@@ -22,6 +22,13 @@ internal class DamLiveDataTest {
         }
     }
 
+    @BeforeTest
+    fun `should emit initial state`() {
+        kaskade.stateDamLiveData().observeForever {
+            assertEquals(TestState.State1, it)
+        }
+    }
+
     @Test
     fun `damLiveData when value sent should invoke observer`() {
         val liveData = DamLiveData<String>()
