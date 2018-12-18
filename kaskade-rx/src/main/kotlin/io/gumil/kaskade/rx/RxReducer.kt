@@ -7,11 +7,11 @@ import kotlin.reflect.KClass
 
 class RxReducer<ACTION: Action, STATE: State>(
         private val observer: () -> Observer<STATE>,
-        private val transformerFunction: ActionState<ACTION, STATE>.() -> Observable<STATE>
+        private val transformerFunction: Observable<ActionState<ACTION, STATE>>.() -> Observable<STATE>
 ) : Reducer<ACTION, STATE> {
 
     override fun invoke(action: ACTION, state: STATE, onStateChanged: (state: STATE) -> Unit) {
-        transformerFunction(ActionState(action, state))
+        transformerFunction(Observable.just(ActionState(action, state)))
                 .doOnNext { onStateChanged(it) }
                 .subscribe(observer())
     }
@@ -24,7 +24,7 @@ class RxKaskadeBuilder<ACTION: Action, STATE: State>(
 
     inline fun <reified T : ACTION> on(
             noinline observer: () -> Observer<STATE>,
-            noinline transformer: ActionState<T, STATE>.() -> Observable<STATE>
+            noinline transformer: Observable<ActionState<T, STATE>>.() -> Observable<STATE>
     ) {
         on(T::class, RxReducer(observer, transformer))
     }

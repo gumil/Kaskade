@@ -23,19 +23,36 @@ internal class RxReducerTest {
 
     @Test
     fun `create rx kaskade builder`() {
+        val testObserver = TestObserver<TestState>()
+        kaskade.stateObservable().subscribe(testObserver)
+
         kaskade.process(TestAction.Action1)
 
         observer.assertValue(TestState.State1)
         observer.assertResult(TestState.State1)
         observer.assertNoErrors()
         observer.assertComplete()
+
+        testObserver.assertValue(TestState.State1)
+        testObserver.assertNoErrors()
+        testObserver.assertNotComplete()
     }
 
     @Test
     fun `observable not called`() {
+        val testObserver = TestObserver<TestState>()
+        kaskade.stateObservable().subscribe(testObserver)
+
         kaskade.process(TestAction.Action2)
+
         observer.assertNotSubscribed()
         observer.assertNotComplete()
+        observer.assertNoValues()
+
+        testObserver.assertValue(TestState.State2)
+        testObserver.assertNoErrors()
+        testObserver.assertNotComplete()
+
     }
 
     @Test
@@ -51,12 +68,18 @@ internal class RxReducerTest {
             }
         }
 
+        val testObserver = TestObserver<TestState>()
+        kaskade.stateObservable().subscribe(testObserver)
+
         kaskade.process(TestAction.Action1)
 
         observer.assertValues(TestState.State2, TestState.State1)
         observer.assertResult(TestState.State2, TestState.State1)
         observer.assertNoErrors()
         observer.assertComplete()
+
+        testObserver.assertValues(TestState.State2, TestState.State1)
+        testObserver.assertNoErrors()
     }
 
     @Test
@@ -72,16 +95,46 @@ internal class RxReducerTest {
             }
         }
 
+        val testObserver = TestObserver<TestState>()
+        kaskade.stateObservable().subscribe(testObserver)
+
         kaskade.process(TestAction.Action1)
 
         observer.assertError(exception)
         observer.assertNotComplete()
+
+        testObserver.assertNoValues()
+        testObserver.assertNoErrors()
+        testObserver.assertNotComplete()
     }
 
     @Test
-    @Ignore
-    fun `resubscribing observable`() {
+    fun `send two actions`() {
+        val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
+            rx {
+                on<TestAction.Action1>({
+                    TestObserver<TestState>()
+                }) {
+                    Observable.just<TestState>(TestState.State1)
+                }
 
+                on<TestAction.Action2>({
+                    TestObserver<TestState>()
+                }) {
+                    Observable.just<TestState>(TestState.State2)
+                }
+            }
+        }
+
+        val testObserver = TestObserver<TestState>()
+        kaskade.stateObservable().subscribe(testObserver)
+
+        kaskade.process(TestAction.Action1)
+        kaskade.process(TestAction.Action2)
+
+        testObserver.assertValues(TestState.State1, TestState.State2)
+        testObserver.assertNoErrors()
+        testObserver.assertNotComplete()
     }
 
     private sealed class TestState : State {
