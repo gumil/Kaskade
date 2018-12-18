@@ -1,9 +1,11 @@
 package io.gumil.kaskade.rx
 
-import io.gumil.kaskade.*
+import io.gumil.kaskade.Action
+import io.gumil.kaskade.ActionState
+import io.gumil.kaskade.Reducer
+import io.gumil.kaskade.State
 import io.reactivex.Observable
 import io.reactivex.Observer
-import kotlin.reflect.KClass
 
 class RxReducer<ACTION: Action, STATE: State>(
         private val observer: () -> Observer<STATE>,
@@ -14,23 +16,5 @@ class RxReducer<ACTION: Action, STATE: State>(
         transformerFunction(Observable.just(ActionState(action, state)))
                 .doOnNext { onStateChanged(it) }
                 .subscribe(observer())
-    }
-}
-
-@KaskadeBuilderMarker
-class RxKaskadeBuilder<ACTION: Action, STATE: State>(
-        private val builder: Kaskade.Builder<ACTION, STATE>
-) {
-
-    inline fun <reified T : ACTION> on(
-            noinline observer: () -> Observer<STATE>,
-            noinline transformer: Observable<ActionState<T, STATE>>.() -> Observable<STATE>
-    ) {
-        on(T::class, RxReducer(observer, transformer))
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    fun <T : ACTION> on(clazz: KClass<T>, reducer: Reducer<T, STATE>) {
-        builder.on(clazz, reducer)
     }
 }
