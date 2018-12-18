@@ -39,11 +39,10 @@ internal class AuthViewModel(
     private val kaskade = Kaskade.create<AuthAction, AuthState>(AuthState.Initial) {
         rx {
             on<AuthAction.Login>({ observer }) {
-                Observable.just(this)
-                        .delay(delay, TimeUnit.SECONDS)
+                delay(delay, TimeUnit.SECONDS)
                         .map {
-                            if (action.password == "world" &&
-                                    action.username == "hello") {
+                            if (it.action.password == "world" &&
+                                    it.action.username == "hello") {
                                 AuthState.Success
                             } else {
                                 AuthState.Error
@@ -56,6 +55,9 @@ internal class AuthViewModel(
             }
         }
 
+        on<AuthAction.OnError> {
+            AuthState.Error
+        }
     }
 
     val state: Observable<AuthState> = kaskade.stateObservable()
