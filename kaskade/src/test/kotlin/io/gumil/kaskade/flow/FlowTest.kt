@@ -4,8 +4,11 @@ import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.TestAction
 import io.gumil.kaskade.TestState
 import io.gumil.kaskade.stateFlow
-import java.lang.AssertionError
-import kotlin.test.*
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
+import kotlin.test.assertTrue
 
 internal class FlowTest {
 

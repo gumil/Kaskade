@@ -12,8 +12,8 @@ fun <A : Action, S : State> Kaskade.Builder<A, S>.coroutines(builder: Coroutines
 }
 
 fun <A : Action, S : State> Kaskade.Builder<A, S>.coroutines(
-        scope: CoroutineScope,
-        builder: CoroutinesScopedKaskadeBuilder<A, S>.() -> Unit
+    scope: CoroutineScope,
+    builder: CoroutinesScopedKaskadeBuilder<A, S>.() -> Unit
 ) {
     builder(CoroutinesScopedKaskadeBuilder(scope, this))
 }

@@ -13,7 +13,7 @@ internal class ListTodoRepository : TodoRepository {
     }
 
     override fun updateItem(item: TodoItem) {
-        list[list.indexOfFirst { item.id == it.id }] = item
+        list[list.indexOfFirst { item.id == it.id } ] = item
     }
 
     override fun removeItem(item: TodoItem) {
@@ -24,5 +24,5 @@ internal class ListTodoRepository : TodoRepository {
         list.add(item)
     }
 
-    private fun createTodoItem(index: Int) : TodoItem = TodoItem(index, "item $index", index % 2 == 0)
+    private fun createTodoItem(index: Int): TodoItem = TodoItem(index, "item $index", index % 2 == 0)
 }

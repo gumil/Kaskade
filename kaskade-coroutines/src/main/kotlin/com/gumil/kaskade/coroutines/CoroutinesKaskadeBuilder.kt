@@ -1,17 +1,22 @@
 package com.gumil.kaskade.coroutines
 
-import io.gumil.kaskade.*
+import io.gumil.kaskade.Action
+import io.gumil.kaskade.ActionState
+import io.gumil.kaskade.Kaskade
+import io.gumil.kaskade.KaskadeBuilderMarker
+import io.gumil.kaskade.Reducer
+import io.gumil.kaskade.State
 import kotlinx.coroutines.CoroutineScope
 import kotlin.reflect.KClass
 
 @KaskadeBuilderMarker
-class CoroutinesKaskadeBuilder<ACTION: Action, STATE: State>(
-        private val builder: Kaskade.Builder<ACTION, STATE>
+class CoroutinesKaskadeBuilder<ACTION : Action, STATE : State>(
+    private val builder: Kaskade.Builder<ACTION, STATE>
 ) {
 
     inline fun <reified T : ACTION> on(
-            scope: CoroutineScope,
-            noinline transformer: suspend ActionState<T, STATE>.() -> STATE
+        scope: CoroutineScope,
+        noinline transformer: suspend ActionState<T, STATE>.() -> STATE
     ) {
         on(T::class, ScopedReducer(scope, transformer))
     }
@@ -23,13 +28,13 @@ class CoroutinesKaskadeBuilder<ACTION: Action, STATE: State>(
 }
 
 @KaskadeBuilderMarker
-class CoroutinesScopedKaskadeBuilder<ACTION: Action, STATE: State>(
-        val scope: CoroutineScope,
-        private val builder: Kaskade.Builder<ACTION, STATE>
+class CoroutinesScopedKaskadeBuilder<ACTION : Action, STATE : State>(
+    val scope: CoroutineScope,
+    private val builder: Kaskade.Builder<ACTION, STATE>
 ) {
 
     inline fun <reified T : ACTION> on(
-            noinline transformer: suspend ActionState<T, STATE>.() -> STATE
+        noinline transformer: suspend ActionState<T, STATE>.() -> STATE
     ) {
         on(T::class, ScopedReducer(scope, transformer))
     }

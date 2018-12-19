@@ -1,8 +1,12 @@
 package io.gumil.kaskade.flow
 
-import io.gumil.kaskade.*
-import java.lang.AssertionError
-import kotlin.test.*
+import io.gumil.kaskade.Kaskade
+import io.gumil.kaskade.TestAction
+import io.gumil.kaskade.TestState
+import io.gumil.kaskade.stateDamFlow
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 internal class DamFlowTest {
 

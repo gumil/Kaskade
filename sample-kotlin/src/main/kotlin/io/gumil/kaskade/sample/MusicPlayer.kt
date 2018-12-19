@@ -3,21 +3,21 @@ package io.gumil.kaskade.sample
 internal class MusicPlayer {
 
     private val playlist = listOf(
-            "Like Ooh-Ahh",
-            "Cheer up",
-            "TT",
-            "Knock Knock",
-            "Signal",
-            "One More Time",
-            "Likey",
-            "Heart Shaker",
-            "Candy Pop",
-            "What Is Love?",
-            "Wake Me Up",
-            "Dance The Night Away",
-            "BDZ",
-            "Yes Or Yes",
-            "The Best Thing I Ever Did"
+        "Like Ooh-Ahh",
+        "Cheer up",
+        "TT",
+        "Knock Knock",
+        "Signal",
+        "One More Time",
+        "Likey",
+        "Heart Shaker",
+        "Candy Pop",
+        "What Is Love?",
+        "Wake Me Up",
+        "Dance The Night Away",
+        "BDZ",
+        "Yes Or Yes",
+        "The Best Thing I Ever Did"
     )
 
     private var index = -1

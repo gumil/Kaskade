@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_footer.view.*
 import kotlinx.android.synthetic.main.item_todo.view.*
 
 internal class TodoAdapter(
-        list: List<TodoItem>
+    list: List<TodoItem>
 ) : RecyclerView.Adapter<TodoAdapter.BindableViewHolder>() {
 
     private var _list = list.toMutableList()
@@ -75,7 +75,6 @@ internal class TodoAdapter(
 
         override fun bind(item: TodoItem?) {
             if (item == null) return
-
 
             itemView.textDescription.text = item.description
             itemView.checkbox.isChecked = item.isDone

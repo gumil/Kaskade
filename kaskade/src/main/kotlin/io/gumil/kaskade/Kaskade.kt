@@ -20,7 +20,7 @@ import kotlin.properties.Delegates.observable
 import kotlin.reflect.KClass
 
 class Kaskade<ACTION : Action, STATE : State> private constructor(
-        private val initialState: STATE
+    private val initialState: STATE
 ) {
 
     private val actionStateMap = mutableMapOf<KClass<out ACTION>, Reducer<ACTION, STATE>>()
@@ -54,7 +54,7 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T: ACTION> getReducer(action: T): Reducer<T, STATE>? {
+    fun <T : ACTION> getReducer(action: T): Reducer<T, STATE>? {
         return actionStateMap[action::class] as? Reducer<T, STATE>
     }
 
@@ -82,8 +82,8 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
 
     companion object {
         fun <ACTION : Action, STATE : State> create(
-                initialState: STATE,
-                builder: Builder<ACTION, STATE>.() -> Unit
+            initialState: STATE,
+            builder: Builder<ACTION, STATE>.() -> Unit
         ): Kaskade<ACTION, STATE> {
             return Kaskade<ACTION, STATE>(initialState).apply {
                 addActions(builder)

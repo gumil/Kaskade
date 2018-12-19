@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import io.gumil.kaskade.flow.SavedValueHolder
 import kotlin.reflect.KClass
 
-class DamLiveData<T: Any> : MutableLiveData<T>() {
+class DamLiveData<T : Any> : MutableLiveData<T>() {
 
     private val savedValueHolder = SavedValueHolder<T>()
 

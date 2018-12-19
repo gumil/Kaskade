@@ -34,15 +34,15 @@ internal class MusicPlayerKaskade {
     }
 }
 
-sealed class PlayerAction: Action {
+sealed class PlayerAction : Action {
     object PausePlay : PlayerAction()
     object Next : PlayerAction()
     object Previous : PlayerAction()
     object Stop : PlayerAction()
 }
 
-sealed class PlayerState: State {
-    data class Playing(val music: String): PlayerState()
+sealed class PlayerState : State {
+    data class Playing(val music: String) : PlayerState()
     object Stopped : PlayerState()
     object Paused : PlayerState()
 }

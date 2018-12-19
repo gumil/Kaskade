@@ -3,9 +3,14 @@ package com.gumil.kaskade.coroutines
 import io.gumil.kaskade.Action
 import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.State
-import kotlinx.coroutines.*
-import java.lang.AssertionError
-import kotlin.test.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
+import kotlinx.coroutines.runBlocking
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 internal class CoroutinesKaskadeBuilderTest {
 
@@ -19,9 +24,9 @@ internal class CoroutinesKaskadeBuilderTest {
 
         with(TestAction.Action1) {
             kaskade.getReducer(this)!!
-                    .asJob(this, TestState.State2) {
-                        assertEquals(TestState.State1, it)
-                    }.join()
+                .asJob(this, TestState.State2) {
+                    assertEquals(TestState.State1, it)
+                }.join()
         }
     }
 
@@ -35,9 +40,9 @@ internal class CoroutinesKaskadeBuilderTest {
 
         with(TestAction.Action1) {
             kaskade.getReducer(this)!!
-                    .asJob(this, TestState.State2) {
-                        assertEquals(TestState.State1, it)
-                    }.join()
+                .asJob(this, TestState.State2) {
+                    assertEquals(TestState.State1, it)
+                }.join()
         }
     }
 
@@ -60,16 +65,16 @@ internal class CoroutinesKaskadeBuilderTest {
 
         val job1 = with(TestAction.Action1) {
             kaskade.getReducer(this)!!
-                    .asJob(this, TestState.State2) {
-                        throw AssertionError("should not be called")
-                    }
+                .asJob(this, TestState.State2) {
+                    throw AssertionError("should not be called")
+                }
         }
 
         val job2 = with(TestAction.Action2) {
             kaskade.getReducer(this)!!
-                    .asJob(this, TestState.State2) {
-                        throw AssertionError("should not be called")
-                    }
+                .asJob(this, TestState.State2) {
+                    throw AssertionError("should not be called")
+                }
         }
 
         launch { joinAll(job1, job2) }
@@ -96,19 +101,19 @@ internal class CoroutinesKaskadeBuilderTest {
 
         val action1Job = with(TestAction.Action1) {
             kaskade.getReducer(this)!!
-                    .asJob(this, TestState.State2) {
-                        throw AssertionError("should not be called")
-                    }
+                .asJob(this, TestState.State2) {
+                    throw AssertionError("should not be called")
+                }
         }
 
         val action2Job = with(TestAction.Action2) {
             kaskade.getReducer(this)!!
-                    .asJob(this, TestState.State2) {
-                        assertEquals(TestState.State2, it)
-                    }
+                .asJob(this, TestState.State2) {
+                    assertEquals(TestState.State2, it)
+                }
         }
 
-        launch { action1Job.join()}
+        launch { action1Job.join() }
         job1.cancel()
         action2Job.join()
     }

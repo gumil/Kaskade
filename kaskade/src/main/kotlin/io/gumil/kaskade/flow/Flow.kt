@@ -1,6 +1,6 @@
 package io.gumil.kaskade.flow
 
-open class MutableFlow<T>: Flow<T> {
+open class MutableFlow<T> : Flow<T> {
 
     protected open var subscription: ((T) -> Unit)? = null
 

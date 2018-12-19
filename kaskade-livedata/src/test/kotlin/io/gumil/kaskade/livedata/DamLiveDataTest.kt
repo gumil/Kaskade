@@ -2,11 +2,12 @@ package io.gumil.kaskade.livedata
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import io.gumil.kaskade.*
+import io.gumil.kaskade.Kaskade
 import org.junit.Rule
 import org.junit.rules.TestRule
-import java.lang.AssertionError
-import kotlin.test.*
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 internal class DamLiveDataTest {
 
@@ -59,20 +60,20 @@ internal class DamLiveDataTest {
     fun `damLiveData should not invoke anything after removing observer`() {
         val liveData = DamLiveData<String>()
 
-        val observer = Observer<String>  {
+        val observer = Observer<String> {
             throw AssertionError("Should not emit anything")
         }
 
         liveData.observeForever(observer)
         liveData.removeObserver(observer)
-        liveData.setValue( "hello")
+        liveData.setValue("hello")
     }
 
     @Test
     fun `damLiveData should invoke last emitted after removeObserver`() {
         val liveData = DamLiveData<String>()
 
-        val observer = Observer<String>  {
+        val observer = Observer<String> {
             throw AssertionError("Should not emit anything")
         }
 

@@ -5,7 +5,9 @@ import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.State
 import io.reactivex.Observable
 import io.reactivex.observers.TestObserver
-import kotlin.test.*
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 internal class RxReducerTest {
 
@@ -59,7 +61,6 @@ internal class RxReducerTest {
         testObserver.assertValue(TestState.State2)
         testObserver.assertNoErrors()
         testObserver.assertNotComplete()
-
     }
 
     @Test
@@ -70,7 +71,7 @@ internal class RxReducerTest {
             rx {
                 on<TestAction.Action1>({ observer }) {
                     Observable.just<TestState>(TestState.State1)
-                            .startWith(TestState.State2)
+                        .startWith(TestState.State2)
                 }
             }
         }
