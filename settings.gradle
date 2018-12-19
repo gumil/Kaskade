@@ -1,1 +1,1 @@
-include ':kaskade', ':sample-android', ':kaskade-rx', ':kaskade-livedata', ':kaskade-coroutines'
+include ':kaskade', ':sample-android', ':kaskade-rx', ':kaskade-livedata', ':kaskade-coroutines', ':sample-kotlin'

@@ -1,0 +1,14 @@
+apply plugin: 'kotlin'
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/test/kotlin'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    implementation project(":kaskade")
+
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+}
