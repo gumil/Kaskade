@@ -28,16 +28,17 @@ fun <A : Action, S : State> Kaskade<A, S>.stateLiveData(initialAction: A? = null
 }
 
 fun <A : Action, S : State> Kaskade<A, S>.stateDamLiveData(
-        initialAction: A? = null,
-        vararg excludedStates: KClass<out S>
+    initialAction: A? = null,
+    vararg excludedStates: KClass<out S>
 ): DamLiveData<S> {
     val damLiveData: DamLiveData<S> = createLiveData(DamLiveData(), initialAction)
     damLiveData.exclude(*excludedStates)
     return damLiveData
 }
 
-private fun <A : Action, S : State, L: MutableLiveData<S>> Kaskade<A, S>.createLiveData(
-        state: L, initialAction: A?
+private fun <A : Action, S : State, L : MutableLiveData<S>> Kaskade<A, S>.createLiveData(
+    state: L,
+    initialAction: A?
 ): L {
     onStateChanged = {
         state.postValue(it)

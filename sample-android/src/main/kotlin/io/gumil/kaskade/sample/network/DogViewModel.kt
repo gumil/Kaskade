@@ -13,11 +13,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 
 internal class DogViewModel(
-        private val dogApi: RandomDogApi,
-        dispatcher: CoroutineDispatcher = Dispatchers.Main
-): ViewModel() {
+    private val dogApi: RandomDogApi,
+    dispatcher: CoroutineDispatcher = Dispatchers.Main
+) : ViewModel() {
 
-    constructor(): this(ApiFactory.create())
+    constructor() : this(ApiFactory.create())
 
     private val job = Job()
 
@@ -40,8 +40,10 @@ internal class DogViewModel(
 
     val state: LiveData<DogState> get() = _state
 
-    private val _state = kaskade.stateDamLiveData(DogAction.GetDog,
-            DogState.Error::class, DogState.Loading::class)
+    private val _state = kaskade.stateDamLiveData(
+        DogAction.GetDog,
+        DogState.Error::class, DogState.Loading::class
+    )
 
     fun process(action: DogAction) {
         kaskade.process(action)

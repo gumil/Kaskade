@@ -29,9 +29,9 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             val host = NavHostFragment.create(R.navigation.nav_graph)
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer, host)
-                    .setPrimaryNavigationFragment(host)
-                    .commit()
+                .replace(R.id.fragmentContainer, host)
+                .setPrimaryNavigationFragment(host)
+                .commit()
         }
     }
 }

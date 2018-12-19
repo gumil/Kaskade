@@ -17,10 +17,10 @@
 package io.gumil.kaskade
 
 interface Event
-interface Action: Event
-interface State: Event
+interface Action : Event
+interface State : Event
 
-data class ActionState<A: Action, S: State>(
-        val action: A,
-        val state: S
+data class ActionState<A : Action, S : State>(
+    val action: A,
+    val state: S
 )

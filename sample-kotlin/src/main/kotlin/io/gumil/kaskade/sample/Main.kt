@@ -3,7 +3,8 @@ package io.gumil.kaskade.sample
 import io.gumil.kaskade.stateFlow
 
 fun main(args: Array<String>) {
-    println("""
+    println(
+        """
 
         ########################
         # KASKADE MUSIC PLAYER #
@@ -18,7 +19,8 @@ fun main(args: Array<String>) {
         #  q = exit            #
         ########################
 
-    """.trimIndent())
+    """.trimIndent()
+    )
 
     val kaskade = MusicPlayerKaskade().kaskade
 
@@ -30,7 +32,7 @@ fun main(args: Array<String>) {
         }
     }
 
-    loop@while(true) {
+    loop@ while (true) {
         val action = readLine()?.get(0) ?: 'q'
 
         when (action) {
@@ -42,4 +44,3 @@ fun main(args: Array<String>) {
         }
     }
 }
-

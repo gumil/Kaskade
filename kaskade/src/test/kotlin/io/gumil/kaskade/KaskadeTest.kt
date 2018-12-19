@@ -17,7 +17,11 @@
 package io.gumil.kaskade
 
 import kotlin.reflect.KClass
-import kotlin.test.*
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
 
 internal class KaskadeTest {
 
@@ -82,7 +86,7 @@ internal class KaskadeTest {
     }
 
     @Test
-    fun  `verify builder transformer`() {
+    fun `verify builder transformer`() {
         val transformer: ActionState<TestAction.Action4, TestState>.() -> TestState.State4 = {
             TestState.State4
         }
@@ -90,7 +94,8 @@ internal class KaskadeTest {
         val builder = Kaskade.Builder<TestAction, TestState>().apply { on(transformer) }
 
         val expected = mapOf<KClass<out TestAction>, Reducer<out TestAction, TestState>>(
-                TestAction.Action4::class to BlockingReducer(transformer))
+            TestAction.Action4::class to BlockingReducer(transformer)
+        )
 
         assertEquals(expected, builder.transformer)
     }
@@ -117,8 +122,10 @@ internal class KaskadeTest {
     fun `get reducer with Action1 should return correct reducer`() {
         val expected = BlockingReducer<TestAction, TestState> { TestState.State1 }
         val actual = kaskade.getReducer(TestAction.Action1) as BlockingReducer
-        assertEquals(expected.getState(TestAction.Action1, TestState.State1),
-                actual.getState(TestAction.Action1, TestState.State1))
+        assertEquals(
+            expected.getState(TestAction.Action1, TestState.State1),
+            actual.getState(TestAction.Action1, TestState.State1)
+        )
     }
 
     @Test

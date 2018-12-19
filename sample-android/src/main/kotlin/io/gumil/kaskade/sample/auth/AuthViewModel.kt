@@ -14,44 +14,45 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 internal class AuthViewModel(
-        private val delay: Long = 5
+    private val delay: Long = 5
 ) : ViewModel() {
 
     private val disposables = CompositeDisposable()
 
-    private val observer get() = object : DisposableObserver<AuthState>() {
-        override fun onComplete() {
-            //do nothing
-        }
+    private val observer
+        get() = object : DisposableObserver<AuthState>() {
+            override fun onComplete() {
+                // do nothing
+            }
 
-        override fun onNext(state: AuthState) {
-            /**
-             * Do sideffects here like logging. Sending state already handled by Kaskade
-             */
-        }
+            override fun onNext(state: AuthState) {
+                /**
+                 * Do sideffects here like logging. Sending state already handled by Kaskade
+                 */
+            }
 
-        override fun onError(e: Throwable) {
-            process(Observable.just(AuthAction.OnError))
-        }
-
-    }.also { disposables.add(it) }
+            override fun onError(e: Throwable) {
+                process(Observable.just(AuthAction.OnError))
+            }
+        }.also { disposables.add(it) }
 
     private val kaskade = Kaskade.create<AuthAction, AuthState>(AuthState.Initial) {
         rx {
             on<AuthAction.Login>({ observer }) {
                 delay(delay, TimeUnit.SECONDS)
-                        .map {
-                            if (it.action.password == "world" &&
-                                    it.action.username == "hello") {
-                                AuthState.Success
-                            } else {
-                                AuthState.Error
-                            }
+                    .map {
+                        if (it.action.password == "world" &&
+                            it.action.username == "hello"
+                        ) {
+                            AuthState.Success
+                        } else {
+                            AuthState.Error
                         }
-                        .ofType(AuthState::class.java)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .startWith(AuthState.Loading)
+                    }
+                    .ofType(AuthState::class.java)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .startWith(AuthState.Loading)
             }
         }
 
