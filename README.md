@@ -1,16 +1,13 @@
 # Kaskade
 [![](https://jitpack.io/v/gumil/Kaskade.svg)](https://jitpack.io/#gumil/Kaskade)
 
-State Machine for Kotlin and Android.
+State Container for Kotlin and Android.
 
-This is inspired by **MVI** or **Model View Intent** where an intent is passed to the **StateMachine** and it outputs a **State**. In the case of this library, **Intent** is changed to **Action** to avoid confusion with Android's Intent. It is purely written in Kotlin and can be used to non Android projects.
+The name comes from cascade, a waterfall, which reflects the objective of the library to make flows easier with unidirectional data flow.
 
-## Concept
-![State Machine](https://raw.githubusercontent.com/gumil/Kaskade/master/art/StateMachine.png)
-* **StateMachine** - Immutable and has a unidirectional data flow. It inputs Actions and outputs States. Objects passed are never changed rather a new object is created to pass new data. The flow is simply `Action -> Result -> State`.
-* **State** - Model that represents the ouput
-* **Action** - Model that represents the input
-* **Result** - Reduces action and state to a new state. Paired with an action to determine new state.
+Inspired by **MVI** or **Model View Intent**.
+
+![Kaskade](art/kaskade.png)
 
 # Installation
 
@@ -26,79 +23,162 @@ allprojects {
 Add the dependency
 ```
 dependencies {
-  implementation 'com.github.gumil.kaskade:kaskade:0.1.6'
+  implementation 'com.github.gumil.kaskade:kaskade:0.2.0'
 }
 ```
 
 # Usage
-Create the `Action`, `Result`, `State` objects
+Create the `Action` and `State` objects.
+
+_Note: objects are only used here for simplicity in real projects data classes are more appropriate_
+
 ```Kotlin
-object TestAction : Action
-object TestState : State
-object TestResult : Result<TestState> {
-  override fun reduceToState(oldState: TestState): TestState {
-    // For a real use case, there should be some logic in determining the new state
-    // For our example we just return TestState
-    return TestState
-  }
+internal sealed class TestState : State {
+    object State1 : TestState()
+    object State2 : TestState()
+    object State3 : TestState()
+}
+
+internal sealed class TestAction : Action {
+    object Action1 : TestAction()
+    object Action2 : TestAction()
+    object Action3 : TestAction()
 }
 ```
 
-Create the `StateMachine` applying `TestState` as initial state
+Create `Kaskade` with `TestState.State1` as initial state
 ```Kotlin
-val stateMachine = StateMachine<TestState, TestAction, TestResult>(TestState)
-```
+val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
+    on<TestAction.Action1> {
+        TestState.State1
+    }
 
-Adding handler to `Action`
-```Kotlin
-stateMachine.addActionHandler(TestAction::class) {
-    DeferredValue(TestResult)
+    on<TestAction.Action2> {
+        TestState.State2
+    }
+
+    on<TestAction.Action3> {
+        TestState.State3
+    }
 }
 ```
+
+Adding actions to `Action` with parameter [ActionState](kaskade/src/main/kotlin/io/gumil/kaskade/models.kt)
+```Kotlin
+on<TestAction.Action1> { actionState ->
+    // do any side effects when returning a new state
+    TestState.State1
+}
+```
+_Syntax is made as simple as possible with lesser ceremonies in transfroming an action to state._
 
 Observing states
 ```Kotlin
-stateMachine.onStateChanged = {
-  //Do something with new state
-  render(it)
+kaskade.onStateChanged = {
+    // Do something with new state
+    render(it)
+}
+```
+
+Observing states with [Flow](kaskade/src/main/kotlin/io/gumil/kaskade/flow/Flow.kt)
+```Kotlin
+stateMachine.stateFlow.subscribe {
+    // Do something with new state
+    render(it)
 }
 ```
 
 Executing actions
 ```Kotlin
-stateMachine.processAction(ToastAction)
+stateMachine.process(ToastAction.Action1)
+```
+
+## Coroutines
+```
+dependencies {
+  implementation 'com.github.gumil.kaskade:kaskade-coroutines:0.2.0'
+}
+```
+
+Creating `Kaskade` with `coroutines` dsl:
+
+Shared scope
+```Kotlin
+Kaskade.create<TestAction, TestState>(TestState.State1) {
+    coroutines(localScope) {
+        on<TestAction.Action1> {
+            TestState.State1
+        }
+        on<TestAction.Action2> {
+            TestState.State2
+        }
+    }
+}
+```
+
+Independent scopes
+```Kotlin
+Kaskade.create<TestAction, TestState>(TestState.State1) {
+    coroutines {
+        on<TestAction.Action1>(localScope) {
+            TestState.State1
+        }
+        on<TestAction.Action2>(newScope) {
+            TestState.State2
+        }
+    }
+}
 ```
 
 ## RxJava2
 Add the dependency
 ```
 dependencies {
-  implementation 'com.github.gumil.kaskade:kaskade-rx:0.1.6'
+  implementation 'com.github.gumil.kaskade:kaskade-rx:0.2.0'
 }
 ```
 
-For transforming `Observables` to `Deferred`
+Creating `Kaskade` with `rx` dsl:
+
+Shared observer
 ```Kotlin
-Observable.just("hello world").toDeferred()
+Kaskade.create<TestAction, TestState>(TestState.State1) {
+    rx({ observer }) {
+        on<TestAction.Action1> {
+            TestState.State1
+        }
+        on<TestAction.Action2> {
+            TestState.State2
+        }
+    }
+}
+```
+
+Independent observers
+```Kotlin
+Kaskade.create<TestAction, TestState>(TestState.State1) {
+    rx {
+        on<TestAction.Action1>({ observer1 }) {
+            TestState.State1
+        }
+        on<TestAction.Action2>({ observer2 }) {
+            TestState.State2
+        }
+    }
+}
 ```
 
 Observing state as `Observable`
 ```Kotlin
-stateMachine.stateObservable()
+kaskade.stateObservable()
 ```
 
 ## LiveData
 Add the dependency
 ```
 dependencies {
-  implementation 'com.github.gumil.kaskade:kaskade-livedata:0.1.6'
+  implementation 'com.github.gumil.kaskade:kaskade-livedata:0.2.0'
 }
-```
-
-For transforming `LiveData` to `Deferred`
-```Kotlin
-val liveData = MutableLiveData<String>()
-liveData.toDeferred()
 ```
 
 Observing state as `LiveData`
