@@ -82,7 +82,7 @@ kaskade.onStateChanged = {
 
 Observing states with [Flow](kaskade/src/main/kotlin/io/gumil/kaskade/flow/Flow.kt)
 ```Kotlin
-stateMachine.stateFlow.subscribe {
+kaskade.stateFlow.subscribe {
     // Do something with new state
     render(it)
 }
@@ -90,7 +90,7 @@ stateMachine.stateFlow.subscribe {
 
 Executing actions
 ```Kotlin
-stateMachine.process(ToastAction.Action1)
+kaskade.process(ToastAction.Action1)
 ```
 
 ## Coroutines
@@ -183,5 +183,5 @@ dependencies {
 
 Observing state as `LiveData`
 ```Kotlin
-stateMachine.stateLiveData()
+kaskade.stateLiveData()
 ```
