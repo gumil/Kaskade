@@ -17,3 +17,7 @@ script:
   - ./gradlew test
   - ./gradlew lint
   - ./gradlew ktlintCheck
+
+branches:
+  only:
+  - master
