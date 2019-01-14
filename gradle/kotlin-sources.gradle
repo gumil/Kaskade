@@ -1,0 +1,21 @@
+if (project.plugins.hasPlugin("kotlin-android")) {
+    project.android.sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+
+    project.android.compileOptions {
+        sourceCompatibility = "1.8"
+        targetCompatibility = "1.8"
+    }
+} else {
+    project.sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+
+    sourceCompatibility = "1.8"
+    targetCompatibility = "1.8"
+}
+
+

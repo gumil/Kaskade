@@ -8,5 +8,5 @@ include(
 )
 
 rootProject.children.forEach {
-    it.buildFileName = "${it.name}.gradle"
+    it.buildFileName = "${it.name}.gradle.kts"
 }
