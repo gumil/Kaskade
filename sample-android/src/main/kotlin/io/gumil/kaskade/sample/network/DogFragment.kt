@@ -20,6 +20,21 @@ internal class DogFragment : Fragment(), Callback {
         ViewModelProviders.of(this).get(DogViewModel::class.java)
     }
 
+    private var currentState: DogState.OnLoaded? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        savedInstanceState?.let { bundle ->
+            val state = bundle.getParcelable<DogState.OnLoaded>(ARG_STATE)
+            state?.let {
+                Log.d("tantrums", "reload state ${state.url}")
+                currentState = it
+                dogViewModel.restore(it)
+            }
+        } ?: dogViewModel.restore()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_dog, container, false)
     }
@@ -34,6 +49,14 @@ internal class DogFragment : Fragment(), Callback {
         buttonGetNewImage.setOnClickListener { dogViewModel.process(DogAction.Refresh) }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        currentState?.let {
+            Log.d("tantrums", "save state ${it.url}")
+          outState.putParcelable(ARG_STATE, currentState)
+        }
+    }
+
     private fun render(state: DogState) {
         return when (state) {
             is DogState.Loading -> {
@@ -45,6 +68,7 @@ internal class DogFragment : Fragment(), Callback {
                 Toast.makeText(context, "Error loading image", Toast.LENGTH_SHORT).show()
             }
             is DogState.OnLoaded -> {
+                currentState = state
                 Picasso.get().load(state.url).into(imageView, this)
             }
         }
@@ -57,5 +81,9 @@ internal class DogFragment : Fragment(), Callback {
 
     override fun onError(e: java.lang.Exception) {
         dogViewModel.process(DogAction.OnError(e))
+    }
+
+    companion object {
+        private const val ARG_STATE = "last_state"
     }
 }

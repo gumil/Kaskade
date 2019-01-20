@@ -1,5 +1,6 @@
 package io.gumil.kaskade.sample.network
 
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.gumil.kaskade.coroutines.coroutines
@@ -7,6 +8,7 @@ import io.gumil.kaskade.Action
 import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.State
 import io.gumil.kaskade.livedata.stateDamLiveData
+import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,27 +25,34 @@ internal class DogViewModel(
 
     private val uiScope = CoroutineScope(dispatcher + job)
 
-    private val kaskade = Kaskade.create<DogAction, DogState>(DogState.Loading) {
-        on<DogAction.Refresh> {
-            process(DogAction.GetDog)
-            DogState.Loading
-        }
-
-        coroutines(uiScope) {
-            on<DogAction.GetDog> {
-                DogState.OnLoaded(dogApi.getDog().await().message)
-            }
-        }
-
-        on<DogAction.OnError> { DogState.Error(action.exception) }
-    }
+    private lateinit var kaskade: Kaskade<DogAction, DogState>
 
     val state: LiveData<DogState> get() = _state
 
-    private val _state = kaskade.stateDamLiveData(
-        DogAction.GetDog,
-        DogState.Error::class, DogState.Loading::class
-    )
+    private val _state by lazy {
+        kaskade.stateDamLiveData(
+            excludedStates = *arrayOf(DogState.Error::class, DogState.Loading::class)
+        )
+    }
+
+    fun restore(state: DogState = DogState.Loading) {
+        if (::kaskade.isInitialized.not()) {
+            kaskade = Kaskade.create(state) {
+                on<DogAction.Refresh> {
+                    process(DogAction.GetDog)
+                    DogState.Loading
+                }
+
+                coroutines(uiScope) {
+                    on<DogAction.GetDog> {
+                        DogState.OnLoaded(dogApi.getDog().await().message)
+                    }
+                }
+
+                on<DogAction.OnError> { DogState.Error(action.exception) }
+            }
+        }
+    }
 
     fun process(action: DogAction) {
         kaskade.process(action)
@@ -57,10 +66,10 @@ internal class DogViewModel(
     }
 }
 
-internal sealed class DogState : State {
-    object Loading : DogState()
-    data class Error(val exception: Throwable) : DogState()
-    data class OnLoaded(val url: String) : DogState()
+internal sealed class DogState : State, Parcelable {
+    @Parcelize object Loading : DogState()
+    @Parcelize data class Error(val exception: Throwable) : DogState()
+    @Parcelize data class OnLoaded(val url: String) : DogState()
 }
 
 internal sealed class DogAction : Action {
