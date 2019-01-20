@@ -1,8 +1,10 @@
+import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
+
 plugins {
     id("com.android.application")
     id("androidx.navigation.safeargs")
-    id("kotlin-android-extensions")
     kotlin("android")
+    kotlin("android.extensions")
 }
 
 apply { from(rootProject.file("gradle/kotlin-sources.gradle")) }
@@ -27,6 +29,12 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), file("proguard-rules.pro"))
         }
     }
+}
+
+androidExtensions {
+    configure(delegateClosureOf<AndroidExtensionsExtension> {
+        isExperimental = true
+    })
 }
 
 dependencies {
