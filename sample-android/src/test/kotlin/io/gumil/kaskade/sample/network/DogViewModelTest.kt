@@ -8,7 +8,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,17 +36,18 @@ internal class DogViewModelTest {
     @Before
     fun setUp() {
         viewModel = DogViewModel(mockApi, Dispatchers.Default)
+        viewModel.restore()
         viewModel.state.observeForever(mockObserver)
-        verify { mockObserver.onChanged(DogState.Loading) }
-        verify { mockObserver.onChanged(DogState.OnLoaded(mockUrl)) }
+        verify(exactly = 1) { mockObserver.onChanged(DogState.Loading) }
+        verify(exactly = 1) { mockObserver.onChanged(DogState.OnLoaded(mockUrl)) }
     }
 
     @Test
-    fun `process Refresh should emit Loading and OnLoaded states`() = runBlocking {
+    fun `process Refresh should emit Loading and OnLoaded states`() {
         viewModel.process(DogAction.Refresh)
 
-        verify { mockObserver.onChanged(DogState.Loading) }
-        verify { mockObserver.onChanged(DogState.OnLoaded(mockUrl)) }
+        verify(exactly = 2) { mockObserver.onChanged(DogState.Loading) }
+        verify(exactly = 2) { mockObserver.onChanged(DogState.OnLoaded(mockUrl)) }
     }
 
     @Test
@@ -56,13 +56,26 @@ internal class DogViewModelTest {
 
         viewModel.process(DogAction.OnError(exception))
 
-        verify { mockObserver.onChanged(DogState.Error(exception)) }
+        verify(exactly = 1) { mockObserver.onChanged(DogState.Error(exception)) }
     }
 
     @Test
     fun `process GetDog action should emit OnLoaded state`() {
         viewModel.process(DogAction.GetDog)
 
-        verify { mockObserver.onChanged(DogState.OnLoaded(mockUrl)) }
+        verify(exactly = 2) { mockObserver.onChanged(DogState.OnLoaded(mockUrl)) }
+    }
+
+    @Test
+    fun `restore with state should only emit passed state`() {
+        val viewModel = DogViewModel(mockApi, Dispatchers.Default)
+        val mockObserver = mockk<Observer<DogState>>(relaxed = true)
+
+        val state = DogState.OnLoaded(mockUrl)
+        viewModel.restore(state)
+        viewModel.state.observeForever(mockObserver)
+
+        verify(exactly = 0) { mockObserver.onChanged(DogState.Loading) }
+        verify(exactly = 1) { mockObserver.onChanged(state) }
     }
 }
