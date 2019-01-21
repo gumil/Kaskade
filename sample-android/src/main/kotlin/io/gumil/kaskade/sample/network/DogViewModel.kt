@@ -31,7 +31,7 @@ internal class DogViewModel(
 
     private val _state by lazy {
         kaskade.stateDamLiveData(
-            excludedStates = *arrayOf(DogState.Error::class, DogState.Loading::class)
+            DogState.Error::class, DogState.Loading::class
         )
     }
 
@@ -50,6 +50,9 @@ internal class DogViewModel(
                 }
 
                 on<DogAction.OnError> { DogState.Error(action.exception) }
+            }
+            if (state is DogState.Loading) {
+                process(DogAction.GetDog)
             }
         }
     }

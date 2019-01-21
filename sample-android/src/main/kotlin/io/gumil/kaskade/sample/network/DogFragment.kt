@@ -28,7 +28,6 @@ internal class DogFragment : Fragment(), Callback {
         savedInstanceState?.let { bundle ->
             val state = bundle.getParcelable<DogState.OnLoaded>(ARG_STATE)
             state?.let {
-                Log.d("tantrums", "reload state ${state.url}")
                 currentState = it
                 dogViewModel.restore(it)
             }
@@ -52,8 +51,7 @@ internal class DogFragment : Fragment(), Callback {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         currentState?.let {
-            Log.d("tantrums", "save state ${it.url}")
-          outState.putParcelable(ARG_STATE, currentState)
+            outState.putParcelable(ARG_STATE, currentState)
         }
     }
 
