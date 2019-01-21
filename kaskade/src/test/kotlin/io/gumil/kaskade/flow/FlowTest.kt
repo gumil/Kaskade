@@ -77,13 +77,4 @@ internal class FlowTest {
             throw AssertionError("Should not emit anything")
         }
     }
-
-    @Test
-    fun `create flow from kaskade with initial action`() {
-        val stateFlow = kaskade.stateFlow(TestAction.Action1)
-
-        stateFlow.subscribe {
-            assertEquals(TestState.State1, it)
-        }
-    }
 }

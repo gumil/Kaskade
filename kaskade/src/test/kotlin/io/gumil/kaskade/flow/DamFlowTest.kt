@@ -117,17 +117,9 @@ internal class DamFlowTest {
     }
 
     @Test
-    fun `create flow from kaskade with initial action`() {
-        val stateFlow = kaskade.stateDamFlow(TestAction.Action1)
-
-        stateFlow.subscribe {
-            assertEquals(TestState.State1, it)
-        }
-    }
-
-    @Test
     fun `create flow from kaskade should emit last state on new subscriber`() {
-        val stateFlow = kaskade.stateDamFlow(TestAction.Action1)
+        val stateFlow = kaskade.stateDamFlow()
+        kaskade.process(TestAction.Action1)
 
         stateFlow.unsubscribe()
 
@@ -138,7 +130,7 @@ internal class DamFlowTest {
 
     @Test
     fun `create flow from kaskade should not emit excluded state on new subscriber`() {
-        val stateFlow = kaskade.stateDamFlow(TestAction.Action1, TestState.State2::class)
+        val stateFlow = kaskade.stateDamFlow(TestState.State2::class)
         var counter = 0
 
         val subscription: (TestState) -> Unit = {
@@ -148,6 +140,9 @@ internal class DamFlowTest {
                 assertEquals(TestState.State1, it)
             }
         }
+
+        kaskade.process(TestAction.Action1)
+
         stateFlow.subscribe(subscription)
 
         kaskade.process(TestAction.Action2)

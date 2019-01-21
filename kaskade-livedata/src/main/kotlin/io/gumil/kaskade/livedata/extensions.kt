@@ -23,28 +23,23 @@ import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.State
 import kotlin.reflect.KClass
 
-fun <A : Action, S : State> Kaskade<A, S>.stateLiveData(initialAction: A? = null): LiveData<S> {
-    return createLiveData(MutableLiveData(), initialAction)
+fun <A : Action, S : State> Kaskade<A, S>.stateLiveData(): LiveData<S> {
+    return createLiveData(MutableLiveData())
 }
 
 fun <A : Action, S : State> Kaskade<A, S>.stateDamLiveData(
-    initialAction: A? = null,
     vararg excludedStates: KClass<out S>
 ): DamLiveData<S> {
-    val damLiveData: DamLiveData<S> = createLiveData(DamLiveData(), initialAction)
+    val damLiveData: DamLiveData<S> = createLiveData(DamLiveData())
     damLiveData.exclude(*excludedStates)
     return damLiveData
 }
 
 private fun <A : Action, S : State, L : MutableLiveData<S>> Kaskade<A, S>.createLiveData(
-    state: L,
-    initialAction: A?
+    state: L
 ): L {
     onStateChanged = {
         state.postValue(it)
     }
-
-    initialAction?.let { process(it) }
-
     return state
 }
