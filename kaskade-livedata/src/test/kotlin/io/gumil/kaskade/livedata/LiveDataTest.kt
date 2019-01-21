@@ -40,15 +40,6 @@ internal class LiveDataTest {
     }
 
     @Test
-    fun `create livedata with initial action`() {
-        val livedata = kaskade.stateLiveData(TestAction.Action1)
-
-        livedata.observeForever {
-            assertEquals(TestState.State1, it)
-        }
-    }
-
-    @Test
     fun `set value on livedata should invoke observer`() {
         val liveData = kaskade.stateLiveData() as MutableLiveData<TestState>
         liveData.observeForever {
