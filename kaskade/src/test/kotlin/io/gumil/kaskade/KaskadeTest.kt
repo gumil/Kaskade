@@ -132,4 +132,23 @@ internal class KaskadeTest {
     fun `get reducer with action not registered should return null`() {
         assertNull(kaskade.getReducer(TestAction.Action4))
     }
+
+    @Test
+    fun `emit all states before onStateChaged is null`() {
+        kaskade.onStateChanged = null
+        kaskade.process(TestAction.Action1)
+        kaskade.process(TestAction.Action2)
+        kaskade.process(TestAction.Action3)
+
+        val states = arrayOf(
+            TestState.State1,
+            TestState.State2,
+            TestState.State3
+        )
+
+        var index = 0
+        kaskade.onStateChanged = {
+            assertEquals(states[index++], it)
+        }
+    }
 }

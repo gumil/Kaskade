@@ -20,25 +20,37 @@ import kotlin.properties.Delegates.observable
 import kotlin.reflect.KClass
 
 class Kaskade<ACTION : Action, STATE : State> private constructor(
-    private val initialState: STATE
+    initialState: STATE
 ) {
 
     private val actionStateMap = mutableMapOf<KClass<out ACTION>, Reducer<ACTION, STATE>>()
 
+    /**
+     * Queue to save states that are not emitted while [onStateChanged] is null
+     */
+    private val stateQueue: MutableList<STATE> = mutableListOf(initialState)
+
+    /**
+     * Invokes [onStateChanged] or enqueues state when mutating the value
+     * @return current state
+     */
     private var currentState: STATE by observable(initialState) { _, _, newValue ->
-        onStateChanged?.invoke(newValue)
+        onStateChanged?.invoke(newValue) ?: stateQueue.add(newValue)
     }
 
-    private var isOnStateChangeSet = false
-
+    /**
+     * Listens to state changes on a Kaskade flow
+     *
+     * When mutating the function, it emits all states that are pending in the [stateQueue]
+     */
     var onStateChanged: ((state: STATE) -> Unit)? = null
         set(value) {
             field = value
 
-            if (!isOnStateChangeSet) {
-                currentState = initialState
-                isOnStateChangeSet = true
+            stateQueue.forEach {
+                currentState = it
             }
+            stateQueue.clear()
         }
 
     fun addActions(builder: Builder<ACTION, STATE>.() -> Unit) {
