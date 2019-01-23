@@ -9,21 +9,20 @@ import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.State
 import io.gumil.kaskade.livedata.stateDamLiveData
 import kotlinx.android.parcel.Parcelize
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 
 internal class DogViewModel(
     private val dogApi: RandomDogApi,
-    dispatcher: CoroutineDispatcher = Dispatchers.Main
+    scope: CoroutineScope? = null
 ) : ViewModel() {
 
     constructor() : this(ApiFactory.create())
 
-    private val job = Job()
+    private val job = scope?.coroutineContext?.get(Job) ?: Job()
 
-    private val uiScope = CoroutineScope(dispatcher + job)
+    private val uiScope = scope ?: CoroutineScope(Dispatchers.Main + job)
 
     private lateinit var kaskade: Kaskade<DogAction, DogState>
 
