@@ -1,6 +1,6 @@
 object deps {
     private object versions {
-        const val kotlin = "1.3.11"
+        const val kotlin = "1.3.20"
         const val navigation = "1.0.0-alpha09"
         const val ktlint = "6.3.1"
         const val coroutines = "1.1.0"
