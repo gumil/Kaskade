@@ -16,9 +16,20 @@
 
 package io.gumil.kaskade
 
-interface Event
-interface Action : Event
-interface State : Event
+/**
+ * Upper bound of all [Action]
+ */
+interface Action
+
+/**
+ * Upper bound of all [State]
+ */
+interface State
+
+/**
+ * Type to indicate that a [State]'s duty is to only show this state once.
+ */
+interface SingleEvent : State
 
 data class ActionState<A : Action, S : State>(
     val action: A,
