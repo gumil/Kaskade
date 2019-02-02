@@ -21,6 +21,7 @@ internal sealed class TestState : State {
     object State2 : TestState()
     object State3 : TestState()
     object State4 : TestState()
+    object SingleStateEvent : TestState(), SingleEvent
 }
 
 internal sealed class TestAction : Action {

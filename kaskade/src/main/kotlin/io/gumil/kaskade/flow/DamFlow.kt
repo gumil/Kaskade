@@ -1,5 +1,6 @@
 package io.gumil.kaskade.flow
 
+import io.gumil.kaskade.SingleEvent
 import kotlin.reflect.KClass
 
 class DamFlow<T : Any> : MutableFlow<T>() {
@@ -33,7 +34,7 @@ class SavedValueHolder<T : Any> {
     private val excludedValues = mutableSetOf<KClass<out T>>()
 
     fun saveValue(value: T) {
-        if (value::class !in excludedValues) {
+        if (value::class !in excludedValues && value !is SingleEvent) {
             _savedValues[value::class] = value
         }
     }

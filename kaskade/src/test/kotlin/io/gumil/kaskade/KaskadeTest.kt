@@ -151,4 +151,30 @@ internal class KaskadeTest {
             assertEquals(states[index++], it)
         }
     }
+
+    @Test
+    fun `single event should be emitted but not persisted in current state`() {
+        val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
+            on<TestAction.Action1> {
+                assertEquals(TestState.State1, state)
+                TestState.State1
+            }
+
+            on<TestAction.Action2> {
+                TestState.SingleStateEvent
+            }
+        }
+
+        var counter = 0
+        kaskade.onStateChanged = {
+            when (counter++) {
+                0, 1, 3 -> assertEquals(TestState.State1, it)
+                else -> assertEquals(TestState.SingleStateEvent, it)
+            }
+        }
+
+        kaskade.process(TestAction.Action1)
+        kaskade.process(TestAction.Action2)
+        kaskade.process(TestAction.Action1)
+    }
 }

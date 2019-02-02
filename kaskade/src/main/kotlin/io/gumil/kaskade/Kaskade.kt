@@ -35,6 +35,10 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
      * @return current state
      */
     private var currentState: STATE by observable(initialState) { _, _, newValue ->
+        emitOrEnqueueState(newValue)
+    }
+
+    private fun emitOrEnqueueState(newValue: STATE) {
         onStateChanged?.invoke(newValue) ?: stateQueue.add(newValue)
     }
 
@@ -61,7 +65,13 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
 
     fun process(action: ACTION) {
         getReducer(action)?.let { reducer ->
-            reducer(action, currentState) { currentState = it }
+            reducer(action, currentState) {
+                if (it !is SingleEvent) {
+                    currentState = it
+                } else {
+                    emitOrEnqueueState(it)
+                }
+            }
         } ?: throw IncompleteFlowException(action)
     }
 
