@@ -21,6 +21,9 @@ internal class DamLiveDataTest {
         on<TestAction.Action2> {
             TestState.State2
         }
+        on<TestAction.Action3> {
+            TestState.SingleStateEvent
+        }
     }
 
     @BeforeTest
@@ -131,12 +134,12 @@ internal class DamLiveDataTest {
 
     @Test
     fun `create DamLiveData from kaskade should not emit excluded state on new observer`() {
-        val stateLiveData = kaskade.stateDamLiveData(TestState.State2::class)
+        val stateLiveData = kaskade.stateDamLiveData()
         var counter = 0
 
         val observer = Observer<TestState> {
             if (counter++ == 1) {
-                assertEquals(TestState.State2, it)
+                assertEquals(TestState.SingleStateEvent, it)
             } else {
                 assertEquals(TestState.State1, it)
             }
@@ -146,10 +149,33 @@ internal class DamLiveDataTest {
 
         stateLiveData.observeForever(observer)
 
-        kaskade.process(TestAction.Action2)
+        kaskade.process(TestAction.Action3)
 
         stateLiveData.removeObserver(observer)
 
         stateLiveData.observeForever(observer)
+    }
+
+    @Test
+    fun `should emit initial state and processed state`() {
+        val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
+            on<TestAction.Action1> {
+                TestState.State1
+            }
+            on<TestAction.Action2> {
+                TestState.State2
+            }
+        }
+
+        kaskade.process(TestAction.Action2)
+
+        var counter = 0
+        kaskade.stateDamLiveData().observeForever {
+            if (counter++ == 0) {
+                assertEquals(TestState.State1, it)
+            } else {
+                assertEquals(TestState.State2, it)
+            }
+        }
     }
 }

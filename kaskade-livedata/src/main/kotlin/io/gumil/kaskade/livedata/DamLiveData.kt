@@ -2,7 +2,6 @@ package io.gumil.kaskade.livedata
 
 import androidx.lifecycle.MutableLiveData
 import io.gumil.kaskade.flow.SavedValueHolder
-import kotlin.reflect.KClass
 
 class DamLiveData<T : Any> : MutableLiveData<T>() {
 
@@ -21,10 +20,6 @@ class DamLiveData<T : Any> : MutableLiveData<T>() {
     override fun postValue(value: T) {
         savedValueHolder.saveValue(value)
         super.postValue(value)
-    }
-
-    fun exclude(vararg classes: KClass<out T>) {
-        savedValueHolder.exclude(*classes)
     }
 
     fun clear() {

@@ -20,10 +20,6 @@ class DamFlow<T : Any> : MutableFlow<T>() {
     fun clear() {
         savedValueHolder.clear()
     }
-
-    fun exclude(vararg classes: KClass<out T>) {
-        savedValueHolder.exclude(*classes)
-    }
 }
 
 class SavedValueHolder<T : Any> {
@@ -31,20 +27,13 @@ class SavedValueHolder<T : Any> {
 
     private val _savedValues = mutableMapOf<KClass<out T>, T>()
 
-    private val excludedValues = mutableSetOf<KClass<out T>>()
-
     fun saveValue(value: T) {
-        if (value::class !in excludedValues && value !is SingleEvent) {
+        if (value !is SingleEvent) {
             _savedValues[value::class] = value
         }
     }
 
-    fun exclude(vararg classes: KClass<out T>) {
-        excludedValues.addAll(classes)
-    }
-
     fun clear() {
         _savedValues.clear()
-        excludedValues.clear()
     }
 }
