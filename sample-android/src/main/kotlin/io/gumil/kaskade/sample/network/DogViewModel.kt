@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.gumil.kaskade.coroutines.coroutines
 import io.gumil.kaskade.Action
 import io.gumil.kaskade.Kaskade
+import io.gumil.kaskade.SingleEvent
 import io.gumil.kaskade.State
 import io.gumil.kaskade.livedata.stateDamLiveData
 import kotlinx.android.parcel.Parcelize
@@ -29,9 +30,7 @@ internal class DogViewModel(
     val state: LiveData<DogState> get() = _state
 
     private val _state by lazy {
-        kaskade.stateDamLiveData(
-            DogState.Error::class, DogState.Loading::class
-        )
+        kaskade.stateDamLiveData()
     }
 
     fun restore(state: DogState = DogState.Loading) {
@@ -69,8 +68,8 @@ internal class DogViewModel(
 }
 
 internal sealed class DogState : State, Parcelable {
-    @Parcelize object Loading : DogState()
-    @Parcelize data class Error(val exception: Throwable) : DogState()
+    @Parcelize object Loading : DogState(), SingleEvent
+    @Parcelize data class Error(val exception: Throwable) : DogState(), SingleEvent
     @Parcelize data class OnLoaded(val url: String) : DogState()
 }
 

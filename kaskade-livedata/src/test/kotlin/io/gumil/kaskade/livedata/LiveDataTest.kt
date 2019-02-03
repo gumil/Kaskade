@@ -92,4 +92,27 @@ internal class LiveDataTest {
             assertEquals(TestState.State1, it)
         }
     }
+
+    @Test
+    fun `livedata should only emit processed state`() {
+        val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
+            on<TestAction.Action1> {
+                TestState.State1
+            }
+            on<TestAction.Action2> {
+                TestState.State2
+            }
+        }
+
+        kaskade.process(TestAction.Action2)
+
+        var counter = 0
+        kaskade.stateLiveData().observeForever {
+            if (counter++ == 0) {
+                assertEquals(TestState.State2, it)
+            } else {
+                throw AssertionError("should not happen")
+            }
+        }
+    }
 }

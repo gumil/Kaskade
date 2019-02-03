@@ -177,4 +177,27 @@ internal class KaskadeTest {
         kaskade.process(TestAction.Action2)
         kaskade.process(TestAction.Action1)
     }
+
+    @Test
+    fun `should emit initial state and process state`() {
+        val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
+            on<TestAction.Action1> {
+                TestState.State1
+            }
+            on<TestAction.Action2> {
+                TestState.State2
+            }
+        }
+
+        kaskade.process(TestAction.Action2)
+
+        var counter = 0
+        kaskade.onStateChanged = {
+            if (counter++ == 0) {
+                assertEquals(TestState.State1, it)
+            } else {
+                assertEquals(TestState.State2, it)
+            }
+        }
+    }
 }
