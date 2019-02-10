@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/gumil/Kaskade.svg?branch=master)](https://travis-ci.org/gumil/Kaskade)
 [![](https://jitpack.io/v/gumil/Kaskade.svg)](https://jitpack.io/#gumil/Kaskade)
 [![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-Kaskade-green.svg?style=flat )]( https://android-arsenal.com/details/1/7421 )
+[![codebeat badge](https://codebeat.co/badges/72f8b972-b305-4575-a234-eda25469541b)](https://codebeat.co/projects/github-com-gumil-kaskade-master)
 
 State Container for Kotlin and Android.
 
@@ -9,25 +10,15 @@ The name comes from cascade, a waterfall, which reflects the objective of the li
 
 Inspired by **MVI** or **Model View Intent**.
 
-![Kaskade](art/kaskade.png)
+![Kaskade](art/kaskade.svg)
 
-# Installation
-
-Add the JitPack repository to your build file
-```
-allprojects {
-  repositories {
-    ...
-    maven { url 'https://jitpack.io' }
-  }
-}
-```
-Add the dependency
-```
-dependencies {
-  implementation 'com.github.gumil.kaskade:kaskade:0.2.0'
-}
-```
+### Kaskade is:
+* **Lightweight** - does not have external dependencies
+* **Modular** - add modules as you need
+* **Extendable** - create user defined `Reducers`
+* **Unidirectional** - data flows in one direction
+* **Predictable** - control on `state` changes and `action` triggers
+* **DSL** - easy to setup DSL to get started
 
 # Usage
 Create the `Action` and `State` objects.
@@ -72,7 +63,6 @@ on<TestAction.Action1> { actionState ->
     TestState.State1
 }
 ```
-_Syntax is made as simple as possible with lesser ceremonies in transfroming an action to state._
 
 Observing states
 ```Kotlin
@@ -92,98 +82,42 @@ kaskade.stateFlow.subscribe {
 
 Executing actions
 ```Kotlin
-kaskade.process(ToastAction.Action1)
+kaskade.process(TestAction.Action1)
 ```
 
-## Coroutines
+# Documentation
+Check out the [wiki](https://github.com/gumil/Kaskade/wiki) for documentation.
+
+Some of the topics covered are:
+* **[Coroutines](https://github.com/gumil/Kaskade/wiki/Coroutines)**
+* **[RxJava](https://github.com/gumil/Kaskade/wiki/RxJava)**
+* **[LiveData](https://github.com/gumil/Kaskade/wiki/LiveData)**
+* **[Handling Process Death](https://github.com/gumil/Kaskade/wiki/Android)**
+
+
+Also check out [sample-android](https://github.com/gumil/Kaskade/tree/master/sample-android) for Android use cases and [sample-kotlin](https://github.com/gumil/Kaskade/tree/master/sample-kotlin) for kotlin only project
+
+# Installation
+
+Add the JitPack repository to your build file
 ```
-dependencies {
-  implementation 'com.github.gumil.kaskade:kaskade-coroutines:0.2.0'
+allprojects {
+  repositories {
+    ...
+    maven { url 'https://jitpack.io' }
+  }
 }
 ```
-
-Creating `Kaskade` with `coroutines` dsl:
-
-Shared scope
-```Kotlin
-Kaskade.create<TestAction, TestState>(TestState.State1) {
-    coroutines(localScope) {
-        on<TestAction.Action1> {
-            TestState.State1
-        }
-        on<TestAction.Action2> {
-            TestState.State2
-        }
-    }
-}
-```
-
-Independent scopes
-```Kotlin
-Kaskade.create<TestAction, TestState>(TestState.State1) {
-    coroutines {
-        on<TestAction.Action1>(localScope) {
-            TestState.State1
-        }
-        on<TestAction.Action2>(newScope) {
-            TestState.State2
-        }
-    }
-}
-```
-
-## RxJava2
 Add the dependency
 ```
 dependencies {
-  implementation 'com.github.gumil.kaskade:kaskade-rx:0.2.0'
+  // core module
+  implementation 'com.github.gumil.kaskade:kaskade:0.2.2'
+  // coroutines module
+  implementation 'com.github.gumil.kaskade:kaskade-coroutines:0.2.2'
+  // rx module
+  implementation 'com.github.gumil.kaskade:kaskade-rx:0.2.2'
+  // livedata module
+  implementation 'com.github.gumil.kaskade:kaskade-livedata:0.2.2'
 }
-```
-
-Creating `Kaskade` with `rx` dsl:
-
-Shared observer
-```Kotlin
-Kaskade.create<TestAction, TestState>(TestState.State1) {
-    rx({ observer }) {
-        on<TestAction.Action1> {
-            TestState.State1
-        }
-        on<TestAction.Action2> {
-            TestState.State2
-        }
-    }
-}
-```
-
-Independent observers
-```Kotlin
-Kaskade.create<TestAction, TestState>(TestState.State1) {
-    rx {
-        on<TestAction.Action1>({ observer1 }) {
-            TestState.State1
-        }
-        on<TestAction.Action2>({ observer2 }) {
-            TestState.State2
-        }
-    }
-}
-```
-
-Observing state as `Observable`
-```Kotlin
-kaskade.stateObservable()
-```
-
-## LiveData
-Add the dependency
-```
-dependencies {
-  implementation 'com.github.gumil.kaskade:kaskade-livedata:0.2.0'
-}
-```
-
-Observing state as `LiveData`
-```Kotlin
-kaskade.stateLiveData()
 ```
