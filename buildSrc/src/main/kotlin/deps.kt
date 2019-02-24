@@ -1,22 +1,17 @@
 @file:Suppress("unused", "ClassName")
 
-/**
- * Public versions
- */
 object versions {
     const val jacoco = "0.8.3"
+    const val detekt = "1.0.0-RC12"
+
+    internal const val kotlin = "1.3.20"
+    internal const val navigation = "1.0.0-alpha09"
+    internal const val coroutines = "1.1.0"
+    internal const val lifecycle = "2.0.0"
+    internal const val retrofit = "2.5.0"
 }
 
 object deps {
-    private object versions {
-        const val kotlin = "1.3.20"
-        const val navigation = "1.0.0-alpha09"
-        const val ktlint = "6.3.1"
-        const val coroutines = "1.1.0"
-        const val lifecycle = "2.0.0"
-        const val retrofit = "2.5.0"
-    }
-
     object android {
         object build {
             const val buildToolsVersion = "28.0.3"
@@ -78,8 +73,12 @@ object deps {
 
         object plugins {
             const val androidMaven = "com.github.dcendents:android-maven-gradle-plugin:2.1"
-            const val ktlint = "org.jlleitschuh.gradle:ktlint-gradle:${versions.ktlint}"
+            const val detekt = "io.gitlab.arturbosch.detekt"
         }
+    }
+
+    object detekt {
+        const val lint = "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
     }
 
     object test {
