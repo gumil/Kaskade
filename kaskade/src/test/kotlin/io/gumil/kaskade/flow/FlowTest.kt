@@ -38,9 +38,9 @@ internal class FlowTest {
     fun `mutableFlow only invoke values after subscribe`() {
         val flow = MutableFlow<String>()
         flow.sendValue("world")
-        flow.subscribe {
-            assertNotEquals("world", it)
-            assertEquals("hello", it)
+        flow.subscribe { value ->
+            assertNotEquals("world", value)
+            assertEquals("hello", value)
         }
         flow.sendValue("hello")
     }

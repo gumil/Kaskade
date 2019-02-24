@@ -44,14 +44,14 @@ internal class TodoKaskade(
     }
 }
 
-internal sealed class TodoState : State {
+sealed class TodoState : State {
     data class OnLoaded(val list: List<TodoItem>) : TodoState()
     data class OnDeleted(val position: Int) : TodoState()
     data class OnAdded(val item: TodoItem) : TodoState()
     data class OnUpdated(val position: Int, val item: TodoItem) : TodoState()
 }
 
-internal sealed class TodoAction : Action {
+sealed class TodoAction : Action {
     object Refresh : TodoAction()
     data class Delete(val position: Int, val todoItem: TodoItem) : TodoAction()
     data class Add(val todoItem: TodoItem) : TodoAction()

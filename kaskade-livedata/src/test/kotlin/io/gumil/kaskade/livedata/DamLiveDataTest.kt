@@ -49,12 +49,12 @@ internal class DamLiveDataTest {
 
         liveData.setValue("test")
         liveData.setValue("world")
-        liveData.observeForever {
+        liveData.observeForever { value ->
             if (counter++ == 0) {
-                assertEquals("world", it)
+                assertEquals("world", value)
                 return@observeForever
             }
-            assertEquals("hello", it)
+            assertEquals("hello", value)
         }
         liveData.setValue("hello")
     }
@@ -137,11 +137,11 @@ internal class DamLiveDataTest {
         val stateLiveData = kaskade.stateDamLiveData()
         var counter = 0
 
-        val observer = Observer<TestState> {
+        val observer = Observer<TestState> { state ->
             if (counter++ == 1) {
-                assertEquals(TestState.SingleStateEvent, it)
+                assertEquals(TestState.SingleStateEvent, state)
             } else {
-                assertEquals(TestState.State1, it)
+                assertEquals(TestState.State1, state)
             }
         }
 
@@ -170,11 +170,11 @@ internal class DamLiveDataTest {
         kaskade.process(TestAction.Action2)
 
         var counter = 0
-        kaskade.stateDamLiveData().observeForever {
+        kaskade.stateDamLiveData().observeForever { state ->
             if (counter++ == 0) {
-                assertEquals(TestState.State1, it)
+                assertEquals(TestState.State1, state)
             } else {
-                assertEquals(TestState.State2, it)
+                assertEquals(TestState.State2, state)
             }
         }
     }

@@ -25,15 +25,8 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
 
     private val actionStateMap = mutableMapOf<KClass<out ACTION>, Reducer<ACTION, STATE>>()
 
-    /**
-     * Queue to save states that are not emitted while [onStateChanged] is null
-     */
     private val stateQueue: MutableList<STATE> = mutableListOf(initialState)
 
-    /**
-     * Invokes [onStateChanged] or enqueues state when mutating the value
-     * @return current state
-     */
     private var currentState: STATE by observable(initialState) { _, _, newValue ->
         emitOrEnqueueState(newValue)
     }
@@ -45,7 +38,7 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
     /**
      * Listens to state changes on a Kaskade flow
      *
-     * When mutating the function, it emits all states that are pending in the [stateQueue]
+     * When mutating the function, it emits all states that are pending in the [stateQueue].
      */
     var onStateChanged: ((state: STATE) -> Unit)? = null
         set(value) {
@@ -65,20 +58,19 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
 
     fun process(action: ACTION) {
         getReducer(action)?.let { reducer ->
-            reducer(action, currentState) {
-                if (it !is SingleEvent) {
-                    currentState = it
+            reducer(action, currentState) { state ->
+                if (state !is SingleEvent) {
+                    currentState = state
                 } else {
-                    emitOrEnqueueState(it)
+                    emitOrEnqueueState(state)
                 }
             }
         } ?: throw IncompleteFlowException(action)
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T : ACTION> getReducer(action: T): Reducer<T, STATE>? {
-        return actionStateMap[action::class] as? Reducer<T, STATE>
-    }
+    fun <T : ACTION> getReducer(action: T): Reducer<T, STATE>? =
+        actionStateMap[action::class] as? Reducer<T, STATE>
 
     fun unsubscribe() {
         onStateChanged = null
@@ -107,9 +99,9 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
             initialState: STATE,
             builder: Builder<ACTION, STATE>.() -> Unit
         ): Kaskade<ACTION, STATE> {
-            return Kaskade<ACTION, STATE>(initialState).apply {
-                addActions(builder)
-            }
+            val kaskade = Kaskade<ACTION, STATE>(initialState)
+            kaskade.addActions(builder)
+            return kaskade
         }
     }
 }

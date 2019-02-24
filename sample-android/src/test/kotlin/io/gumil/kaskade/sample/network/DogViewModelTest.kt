@@ -8,6 +8,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.runBlocking
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -20,12 +21,14 @@ internal class DogViewModelTest {
 
     private val mockDog = Dog(mockUrl)
 
-    private val mockDeferredDog = mockk<Deferred<Dog>>().apply {
-        coEvery { await() } returns mockDog
-    }
+    private val mockDeferredDog = mockk<Deferred<Dog>>()
 
-    private val mockApi = mockk<RandomDogApi>().apply {
-        every { getDog() } returns mockDeferredDog
+    private val mockApi = mockk<RandomDogApi>()
+
+    @Before
+    fun setUp() {
+        coEvery { mockDeferredDog.await() } returns mockDog
+        every { mockApi.getDog() } returns mockDeferredDog
     }
 
     @Test

@@ -25,6 +25,7 @@ internal class DogViewModel(
 
     private val uiScope = scope ?: CoroutineScope(Dispatchers.Main + job)
 
+    @field:Suppress("LateinitUsage")
     private lateinit var kaskade: Kaskade<DogAction, DogState>
 
     val state: LiveData<DogState> get() = _state
@@ -67,13 +68,13 @@ internal class DogViewModel(
     }
 }
 
-internal sealed class DogState : State, Parcelable {
+sealed class DogState : State, Parcelable {
     @Parcelize object Loading : DogState(), SingleEvent
     @Parcelize data class Error(val exception: Throwable) : DogState(), SingleEvent
     @Parcelize data class OnLoaded(val url: String) : DogState()
 }
 
-internal sealed class DogAction : Action {
+sealed class DogAction : Action {
     object Refresh : DogAction()
     object GetDog : DogAction()
     data class OnError(val exception: Throwable) : DogAction()

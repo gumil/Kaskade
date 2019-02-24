@@ -56,12 +56,12 @@ internal class LiveDataTest {
 
         liveData.value = TestState.State2
         liveData.value = TestState.State1
-        liveData.observeForever {
+        liveData.observeForever { state ->
             if (counter++ == 0) {
-                assertEquals(TestState.State1, it)
+                assertEquals(TestState.State1, state)
                 return@observeForever
             }
-            assertEquals(TestState.State2, it)
+            assertEquals(TestState.State2, state)
         }
         liveData.value = TestState.State2
     }
@@ -107,9 +107,9 @@ internal class LiveDataTest {
         kaskade.process(TestAction.Action2)
 
         var counter = 0
-        kaskade.stateLiveData().observeForever {
+        kaskade.stateLiveData().observeForever { state ->
             if (counter++ == 0) {
-                assertEquals(TestState.State2, it)
+                assertEquals(TestState.State2, state)
             } else {
                 throw AssertionError("should not happen")
             }

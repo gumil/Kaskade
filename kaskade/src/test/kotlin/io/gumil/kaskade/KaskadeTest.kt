@@ -91,7 +91,8 @@ internal class KaskadeTest {
             TestState.State4
         }
 
-        val builder = Kaskade.Builder<TestAction, TestState>().apply { on(transformer) }
+        val builder = Kaskade.Builder<TestAction, TestState>()
+        builder.on(transformer)
 
         val expected = mapOf<KClass<out TestAction>, Reducer<out TestAction, TestState>>(
             TestAction.Action4::class to BlockingReducer(transformer)
@@ -166,10 +167,10 @@ internal class KaskadeTest {
         }
 
         var counter = 0
-        kaskade.onStateChanged = {
+        kaskade.onStateChanged = { state ->
             when (counter++) {
-                0, 1, 3 -> assertEquals(TestState.State1, it)
-                else -> assertEquals(TestState.SingleStateEvent, it)
+                0, 1, 3 -> assertEquals(TestState.State1, state)
+                else -> assertEquals(TestState.SingleStateEvent, state)
             }
         }
 
@@ -192,11 +193,11 @@ internal class KaskadeTest {
         kaskade.process(TestAction.Action2)
 
         var counter = 0
-        kaskade.onStateChanged = {
+        kaskade.onStateChanged = { state ->
             if (counter++ == 0) {
-                assertEquals(TestState.State1, it)
+                assertEquals(TestState.State1, state)
             } else {
-                assertEquals(TestState.State2, it)
+                assertEquals(TestState.State2, state)
             }
         }
     }

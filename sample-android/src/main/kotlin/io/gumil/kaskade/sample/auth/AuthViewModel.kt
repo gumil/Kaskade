@@ -40,9 +40,9 @@ internal class AuthViewModel(
         rx {
             on<AuthAction.Login>({ observer }) {
                 delay(delay, TimeUnit.SECONDS)
-                    .map {
-                        if (it.action.password == "world" &&
-                            it.action.username == "hello"
+                    .map { actionState ->
+                        if (actionState.action.password == "world" &&
+                            actionState.action.username == "hello"
                         ) {
                             AuthState.Success
                         } else {
@@ -72,20 +72,16 @@ internal class AuthViewModel(
         kaskade.unsubscribe()
         disposables.clear()
     }
-
-    companion object {
-        private const val TAG = "AuthViewModel"
-    }
 }
 
-internal sealed class AuthState : State {
+sealed class AuthState : State {
     object Initial : AuthState()
     object Loading : AuthState()
     object Error : AuthState()
     object Success : AuthState()
 }
 
-internal sealed class AuthAction : Action {
+sealed class AuthAction : Action {
     data class Login(val username: String, val password: String) : AuthAction()
     object OnError : AuthAction()
 }

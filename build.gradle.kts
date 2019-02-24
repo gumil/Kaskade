@@ -1,6 +1,6 @@
 import io.gitlab.arturbosch.detekt.DetektPlugin
 
-plugins { id(deps.build.plugins.detekt) version (versions.detekt) }
+plugins { id(deps.build.plugins.detekt) version versions.detekt }
 
 buildscript {
     repositories {

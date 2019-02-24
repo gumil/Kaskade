@@ -26,17 +26,15 @@ internal class DogFragment : Fragment(), Callback {
         super.onCreate(savedInstanceState)
 
         savedInstanceState?.let { bundle ->
-            val state = bundle.getParcelable<DogState.OnLoaded>(ARG_STATE)
-            state?.let {
-                currentState = it
-                dogViewModel.restore(it)
+            bundle.getParcelable<DogState.OnLoaded>(ARG_STATE)?.let { state ->
+                currentState = state
+                dogViewModel.restore(state)
             }
         } ?: dogViewModel.restore()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_dog, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+        inflater.inflate(R.layout.fragment_dog, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,20 +53,18 @@ internal class DogFragment : Fragment(), Callback {
         }
     }
 
-    private fun render(state: DogState) {
-        return when (state) {
-            is DogState.Loading -> {
-                progressBar.visibility = View.VISIBLE
-                imageView.visibility = View.GONE
-            }
-            is DogState.Error -> {
-                Log.e(DogFragment::class.java.simpleName, "error", state.exception)
-                Toast.makeText(context, "Error loading image", Toast.LENGTH_SHORT).show()
-            }
-            is DogState.OnLoaded -> {
-                currentState = state
-                Picasso.get().load(state.url).into(imageView, this)
-            }
+    private fun render(state: DogState) = when (state) {
+        is DogState.Loading -> {
+            progressBar.visibility = View.VISIBLE
+            imageView.visibility = View.GONE
+        }
+        is DogState.Error -> {
+            Log.e(DogFragment::class.java.simpleName, "error", state.exception)
+            Toast.makeText(context, "Error loading image", Toast.LENGTH_SHORT).show()
+        }
+        is DogState.OnLoaded -> {
+            currentState = state
+            Picasso.get().load(state.url).into(imageView, this)
         }
     }
 
