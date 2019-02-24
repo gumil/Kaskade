@@ -17,12 +17,12 @@
 package io.gumil.kaskade
 
 /**
- * Upper bound of all [Action]
+ * Upper bound of all [Action].
  */
 interface Action
 
 /**
- * Upper bound of all [State]
+ * Upper bound of all [State].
  */
 interface State
 

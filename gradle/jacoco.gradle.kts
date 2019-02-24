@@ -8,8 +8,9 @@ if (!displayName.contains("sample")) {
         version = versions.jacoco
     }
 
+    val task = "jacocoTestReport"
     if (plugins.hasPlugin("com.android.library")) {
-        tasks.register<JacocoReport>("jacocoTestReport") {
+        tasks.register<JacocoReport>(task) {
             setDependsOn(setOf("testDebugUnitTest", "createDebugCoverageReport"))
             group = "verification"
             description = "Runs jacoco test report for android"
@@ -25,12 +26,12 @@ if (!displayName.contains("sample")) {
             }
         }
     } else {
-        tasks.named<JacocoReport>("jacocoTestReport").configure {
+        tasks.named<JacocoReport>(task).configure {
             dependsOn(tasks.named("test"))
         }
     }
 
-    tasks.named<JacocoReport>("jacocoTestReport").configure {
+    tasks.named<JacocoReport>(task).configure {
         reports.apply {
             xml.apply {
                 isEnabled = true

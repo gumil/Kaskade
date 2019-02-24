@@ -18,9 +18,10 @@ fun <A : Action, S : State> Kaskade.Builder<A, S>.rx(
     builder(RxSharedObserverKaskadeBuilder(observer, this))
 }
 
-fun <A : Action, S : State> Kaskade<A, S>.stateObservable(): Observable<S> =
-    PublishSubject.create<S>().apply {
-        onStateChanged = {
-            onNext(it)
-        }
+fun <A : Action, S : State> Kaskade<A, S>.stateObservable(): Observable<S> {
+    val observable = PublishSubject.create<S>()
+    onStateChanged = {
+        observable.onNext(it)
     }
+    return observable
+}

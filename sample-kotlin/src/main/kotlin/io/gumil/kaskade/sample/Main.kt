@@ -2,7 +2,8 @@ package io.gumil.kaskade.sample
 
 import io.gumil.kaskade.stateFlow
 
-fun main(args: Array<String>) {
+@Suppress("ComplexMethod", "LabeledExpression")
+fun main() {
     println(
         """
 
@@ -24,9 +25,9 @@ fun main(args: Array<String>) {
 
     val kaskade = MusicPlayerKaskade().kaskade
 
-    kaskade.stateFlow().subscribe {
-        when (it) {
-            is PlayerState.Playing -> println("Now Playing: ${it.music}")
+    kaskade.stateFlow().subscribe { state ->
+        when (state) {
+            is PlayerState.Playing -> println("Now Playing: ${state.music}")
             PlayerState.Stopped -> println("STOPPED")
             PlayerState.Paused -> println("Paused")
         }

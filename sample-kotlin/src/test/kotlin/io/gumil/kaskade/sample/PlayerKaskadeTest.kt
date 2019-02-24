@@ -28,12 +28,12 @@ internal class PlayerKaskadeTest {
         }
 
         var counter = 0
-        kaskade.stateFlow().subscribe {
+        kaskade.stateFlow().subscribe { state ->
             if (counter++ == 0) {
-                assertEquals(PlayerState.Playing("Like Ooh-Ahh"), it)
+                assertEquals(PlayerState.Playing("Like Ooh-Ahh"), state)
                 return@subscribe
             }
-            assertEquals(PlayerState.Paused, it)
+            assertEquals(PlayerState.Paused, state)
         }
 
         kaskade.process(PlayerAction.PausePlay)

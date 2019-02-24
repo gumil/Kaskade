@@ -18,6 +18,6 @@ fun <A : Action, S : State> Kaskade.Builder<A, S>.coroutines(
     builder(CoroutinesScopedKaskadeBuilder(scope, this))
 }
 
-fun <A : Action, S : State> Reducer<A, S>.asJob(action: A, state: S, onStateChanged: (state: S) -> Unit): Job {
-    return (this as ScopedReducer).startJob(action, state, onStateChanged)
-}
+@Suppress("UnsafeCast")
+fun <A : Action, S : State> Reducer<A, S>.asJob(action: A, state: S, onStateChanged: (state: S) -> Unit): Job =
+    (this as ScopedReducer).startJob(action, state, onStateChanged)

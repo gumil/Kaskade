@@ -45,12 +45,12 @@ internal class DamFlowTest {
 
         flow.sendValue("test")
         flow.sendValue("world")
-        flow.subscribe {
+        flow.subscribe { value ->
             if (counter++ == 0) {
-                assertEquals("world", it)
+                assertEquals("world", value)
                 return@subscribe
             }
-            assertEquals("hello", it)
+            assertEquals("hello", value)
         }
         flow.sendValue("hello")
     }
@@ -136,11 +136,11 @@ internal class DamFlowTest {
         val stateFlow = kaskade.stateDamFlow()
         var counter = 0
 
-        val subscription: (TestState) -> Unit = {
+        val subscription: (TestState) -> Unit = { state ->
             if (counter++ == 1) {
-                assertEquals(TestState.SingleStateEvent, it)
+                assertEquals(TestState.SingleStateEvent, state)
             } else {
-                assertEquals(TestState.State1, it)
+                assertEquals(TestState.State1, state)
             }
         }
 
@@ -169,11 +169,11 @@ internal class DamFlowTest {
         kaskade.process(TestAction.Action2)
 
         var counter = 0
-        kaskade.stateDamFlow().subscribe {
+        kaskade.stateDamFlow().subscribe { state ->
             if (counter++ == 0) {
-                assertEquals(TestState.State1, it)
+                assertEquals(TestState.State1, state)
             } else {
-                assertEquals(TestState.State2, it)
+                assertEquals(TestState.State2, state)
             }
         }
     }

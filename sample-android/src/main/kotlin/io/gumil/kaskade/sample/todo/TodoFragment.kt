@@ -4,20 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.gumil.kaskade.sample.R
 import io.gumil.kaskade.sample.todo.data.ListTodoRepository
 import kotlinx.android.synthetic.main.fragment_list.*
 
-internal class TodoFragment : androidx.fragment.app.Fragment() {
+internal class TodoFragment : Fragment() {
 
     private val todoKaskade = TodoKaskade(ListTodoRepository())
 
     private val adapter = TodoAdapter(emptyList())
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_list, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+        inflater.inflate(R.layout.fragment_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

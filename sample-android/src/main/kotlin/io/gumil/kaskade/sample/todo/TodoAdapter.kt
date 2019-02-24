@@ -71,7 +71,7 @@ internal class TodoAdapter(
         notifyItemChanged(position)
     }
 
-    inner class TodoViewHolder(view: View) : BindableViewHolder(view) {
+    internal inner class TodoViewHolder(view: View) : BindableViewHolder(view) {
 
         override fun bind(item: TodoItem?) {
             if (item == null) return
@@ -89,16 +89,17 @@ internal class TodoAdapter(
                 _onItemAction.sendValue(TodoAction.Delete(layoutPosition, item))
             }
 
-            itemView.checkbox.setOnClickListener {
-                it as CheckBox
-                _onItemAction.sendValue(TodoAction.Update(layoutPosition, item.copy(isDone = it.isChecked)))
+            itemView.checkbox.setOnClickListener { view ->
+                (view as? CheckBox)?.let {
+                    _onItemAction.sendValue(TodoAction.Update(layoutPosition, item.copy(isDone = it.isChecked)))
+                }
             }
 
             itemView.setOnClickListener { itemView.checkbox.performClick() }
         }
     }
 
-    inner class FooterViewHolder(view: View) : BindableViewHolder(view) {
+    internal inner class FooterViewHolder(view: View) : BindableViewHolder(view) {
 
         override fun bind(item: TodoItem?) {
             itemView.buttonAdd.setOnClickListener {
@@ -114,7 +115,7 @@ internal class TodoAdapter(
         }
     }
 
-    abstract class BindableViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    internal abstract class BindableViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         abstract fun bind(item: TodoItem?)
     }
 

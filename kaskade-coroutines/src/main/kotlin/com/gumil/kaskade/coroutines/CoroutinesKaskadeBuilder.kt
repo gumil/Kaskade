@@ -6,8 +6,8 @@ import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.KaskadeBuilderMarker
 import io.gumil.kaskade.Reducer
 import io.gumil.kaskade.State
-import kotlinx.coroutines.CoroutineScope
 import kotlin.reflect.KClass
+import kotlinx.coroutines.CoroutineScope
 
 @KaskadeBuilderMarker
 class CoroutinesKaskadeBuilder<ACTION : Action, STATE : State>(

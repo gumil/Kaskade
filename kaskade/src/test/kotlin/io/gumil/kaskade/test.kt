@@ -16,7 +16,7 @@
 
 package io.gumil.kaskade
 
-internal sealed class TestState : State {
+sealed class TestState : State {
     object State1 : TestState()
     object State2 : TestState()
     object State3 : TestState()
@@ -24,7 +24,7 @@ internal sealed class TestState : State {
     object SingleStateEvent : TestState(), SingleEvent
 }
 
-internal sealed class TestAction : Action {
+sealed class TestAction : Action {
     object Action1 : TestAction()
     object Action2 : TestAction()
     object Action3 : TestAction()

@@ -20,9 +20,8 @@ internal class AuthFragment : Fragment() {
 
     private var disposable: Disposable? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_auth, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+        inflater.inflate(R.layout.fragment_auth, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,27 +43,25 @@ internal class AuthFragment : Fragment() {
         disposable?.dispose()
     }
 
-    private fun render(state: AuthState) {
-        return when (state) {
-            AuthState.Initial -> {
-                // do nothing
-            }
-            AuthState.Loading -> {
-                buttonLogin.visibility = View.GONE
-                progressBar.visibility = View.VISIBLE
-                textError.visibility = View.GONE
-            }
-            AuthState.Error -> {
-                buttonLogin.visibility = View.VISIBLE
-                progressBar.visibility = View.GONE
-                textError.visibility = View.VISIBLE
-            }
-            AuthState.Success -> {
-                buttonLogin.visibility = View.VISIBLE
-                progressBar.visibility = View.GONE
-                textError.visibility = View.GONE
-                Toast.makeText(context, "Logged in successfully", Toast.LENGTH_SHORT).show()
-            }
+    private fun render(state: AuthState) = when (state) {
+        AuthState.Initial -> {
+            // do nothing
+        }
+        AuthState.Loading -> {
+            buttonLogin.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
+            textError.visibility = View.GONE
+        }
+        AuthState.Error -> {
+            buttonLogin.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
+            textError.visibility = View.VISIBLE
+        }
+        AuthState.Success -> {
+            buttonLogin.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
+            textError.visibility = View.GONE
+            Toast.makeText(context, "Logged in successfully", Toast.LENGTH_SHORT).show()
         }
     }
 }
