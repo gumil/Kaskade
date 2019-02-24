@@ -1,4 +1,6 @@
-import org.jlleitschuh.gradle.ktlint.KtlintPlugin
+import io.gitlab.arturbosch.detekt.DetektPlugin
+
+plugins { id(deps.build.plugins.detekt) version (versions.detekt) }
 
 buildscript {
     repositories {
@@ -11,7 +13,6 @@ buildscript {
         classpath(deps.android.build.navigationPlugin)
         classpath(deps.kotlin.build.gradlePlugin)
         classpath(deps.build.plugins.androidMaven)
-        classpath(deps.build.plugins.ktlint)
     }
 }
 
@@ -23,10 +24,27 @@ allprojects {
 }
 
 subprojects {
-    apply<KtlintPlugin>()
+    apply<DetektPlugin>()
 
     afterEvaluate {
-        apply { from(rootProject.file("gradle/jacoco.gradle.kts")) }
+        apply {
+            from(rootProject.file("gradle/jacoco.gradle.kts"))
+        }
+
+        val configFile = if (project.displayName.contains("sample")) {
+            "../detekt/config-comments-disabled.yml"
+        } else {
+            "../detekt/config.yml"
+        }
+
+        detekt {
+            toolVersion = versions.detekt
+            input = files("src/main/kotlin", "src/test/kotlin")
+            config = files(configFile)
+        }
+        dependencies {
+            detektPlugins(deps.detekt.lint)
+        }
     }
 }
 
