@@ -13,6 +13,12 @@ android {
         minSdkVersion(deps.android.build.minSdkVersion)
         targetSdkVersion(deps.android.build.targetSdkVersion)
     }
+
+    buildTypes {
+        getByName("debug") {
+            isTestCoverageEnabled = true
+        }
+    }
 }
 
 dependencies {
