@@ -7,6 +7,12 @@ import io.gumil.kaskade.State
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+/**
+ * [ScopedReducer] launches a suspending function that takes the current state and an action and returns a new state.
+ *
+ * @param coroutineScope to be used in launching [transformerFunction].
+ * @param transformerFunction suspending function specifying transformation to new state.
+ */
 data class ScopedReducer<ACTION : Action, STATE : State>(
     private val coroutineScope: CoroutineScope,
     private val transformerFunction: suspend ActionState<ACTION, STATE>.() -> STATE

@@ -3,6 +3,11 @@ package io.gumil.kaskade.livedata
 import androidx.lifecycle.MutableLiveData
 import io.gumil.kaskade.flow.SavedValueHolder
 
+/**
+ * Dam version of [androidx.lifecycle.LiveData].
+ *
+ * @see io.gumil.kaskade.flow.DamFlow
+ */
 class DamLiveData<T : Any> : MutableLiveData<T>() {
 
     private val savedValueHolder = SavedValueHolder<T>()
@@ -22,6 +27,9 @@ class DamLiveData<T : Any> : MutableLiveData<T>() {
         super.postValue(value)
     }
 
+    /**
+     * Clears all saved values.
+     */
     fun clear() {
         savedValueHolder.clear()
     }

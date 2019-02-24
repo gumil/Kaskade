@@ -22,9 +22,15 @@ import io.gumil.kaskade.Action
 import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.State
 
+/**
+ * @return [LiveData] of states from Kaskade.
+ */
 fun <A : Action, S : State> Kaskade<A, S>.stateLiveData(): LiveData<S> =
     createLiveData(MutableLiveData())
 
+/**
+ * @return [DamLiveData] of states from Kaskade.
+ */
 fun <A : Action, S : State> Kaskade<A, S>.stateDamLiveData(): DamLiveData<S> =
     createLiveData(DamLiveData())
 
