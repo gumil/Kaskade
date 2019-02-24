@@ -31,6 +31,11 @@ interface State
  */
 interface SingleEvent : State
 
+/**
+ * A pair of [Action] and [State].
+ *
+ * Receiver used in [Reducer] for ease of use in the DSL.
+ */
 data class ActionState<A : Action, S : State>(
     val action: A,
     val state: S
