@@ -1,7 +1,5 @@
 import org.jlleitschuh.gradle.ktlint.KtlintPlugin
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         google()
@@ -22,8 +20,14 @@ allprojects {
         google()
         jcenter()
     }
+}
 
+subprojects {
     apply<KtlintPlugin>()
+
+    afterEvaluate {
+        apply { from(rootProject.file("gradle/jacoco.gradle.kts")) }
+    }
 }
 
 val clean by tasks.creating(Delete::class) {

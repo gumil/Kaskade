@@ -1,3 +1,12 @@
+@file:Suppress("unused", "ClassName")
+
+/**
+ * Public versions
+ */
+object versions {
+    const val jacoco = "0.8.3"
+}
+
 object deps {
     private object versions {
         const val kotlin = "1.3.20"
