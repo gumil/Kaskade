@@ -17,5 +17,3 @@ if (project.plugins.hasPlugin("kotlin-android")) {
     sourceCompatibility = "1.8"
     targetCompatibility = "1.8"
 }
-
-
