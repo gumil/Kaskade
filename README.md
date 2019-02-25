@@ -94,7 +94,6 @@ Some of the topics covered are:
 * **[LiveData](https://github.com/gumil/Kaskade/wiki/LiveData)**
 * **[Handling Process Death](https://github.com/gumil/Kaskade/wiki/Android)**
 
-
 Also check out [sample-android](https://github.com/gumil/Kaskade/tree/master/sample-android) for Android use cases and [sample-kotlin](https://github.com/gumil/Kaskade/tree/master/sample-kotlin) for kotlin only project
 
 # Installation
