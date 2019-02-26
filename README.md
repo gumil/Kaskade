@@ -12,15 +12,15 @@ Inspired by **MVI** or **Model View Intent**.
 
 ![Kaskade](art/kaskade.svg)
 
-### Kaskade is:
-* **Lightweight** - does not have external dependencies
-* **Modular** - add modules as you need
-* **Extendable** - create user defined `Reducers`
-* **Unidirectional** - data flows in one direction
-* **Predictable** - control on `state` changes and `action` triggers
-* **DSL** - easy to setup DSL to get started
+## Why Kaskade?
+* **Lightweight** - enforces unidirectional data flow without the use of external dependencies.
+* **Modular** - can be easily substituted to different implementation with or without the use of another library.
+* **Extendable** - in relation to modular and lightweight, it's important to extend the API and create user defined implementation to fit specific requirements.
+* **Unidirectional** - data flows in one direction.
+* **Predictable** - control on `state` changes and `action` triggers.
+* **DSL** - able to hide complexity in a fluent way.
 
-# Usage
+## Usage
 Create the `Action` and `State` objects.
 
 _Note: objects are only used here for simplicity in real projects data classes are more appropriate_
@@ -85,7 +85,7 @@ Executing actions
 kaskade.process(TestAction.Action1)
 ```
 
-# Documentation
+## Documentation
 Check out the [wiki](https://github.com/gumil/Kaskade/wiki) for documentation.
 
 Some of the topics covered are:
@@ -96,7 +96,7 @@ Some of the topics covered are:
 
 Also check out [sample-android](https://github.com/gumil/Kaskade/tree/master/sample-android) for Android use cases and [sample-kotlin](https://github.com/gumil/Kaskade/tree/master/sample-kotlin) for kotlin only project
 
-# Installation
+## Installation
 
 Add the JitPack repository to your build file
 ```
