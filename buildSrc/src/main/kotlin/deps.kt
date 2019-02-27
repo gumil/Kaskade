@@ -83,7 +83,7 @@ object deps {
 
     object test {
         const val kotlinjUnit = "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}"
-        const val mockK = "io.mockk:mockk:1.8.13.kotlin13"
+        const val mockK = "io.mockk:mockk:1.9.1"
         const val lifecycle = "androidx.arch.core:core-testing:${versions.lifecycle}"
     }
 }
