@@ -20,7 +20,7 @@ interface Reducer<ACTION : Action, STATE : State> {
  *
  * @property transformerFunction function specifying transformation to new state.
  */
-data class BlockingReducer<ACTION : Action, STATE : State>(
+class BlockingReducer<ACTION : Action, STATE : State>(
     private val transformerFunction: ActionState<ACTION, STATE>.() -> STATE
 ) : Reducer<ACTION, STATE> {
 
