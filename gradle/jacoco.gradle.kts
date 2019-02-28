@@ -4,9 +4,7 @@
 if (!displayName.contains("sample")) {
     apply<JacocoPlugin>()
 
-    plugins.getPlugin(JacocoPlugin::class.java).apply {
-        version = versions.jacoco
-    }
+    extensions.getByType(JacocoPluginExtension::class.java).toolVersion = versions.jacoco
 
     val task = "jacocoTestReport"
     if (plugins.hasPlugin("com.android.library")) {
