@@ -26,7 +26,7 @@ test-pattern: # Configure exclusions for test sources
     - 'ThrowsCount'
 
 build:
-  maxIssues: 10
+  maxIssues: 0
   weights:
     comments: 0
     # complexity: 2
