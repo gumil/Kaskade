@@ -13,11 +13,25 @@ android:
   - extra-android-m2repository        # Support repo
   - sys-img-armeabi-v7a-android-28    # Emulator
 
-script:
-  - ./gradlew test
-  - ./gradlew lint
-  - ./gradlew ktlintCheck
+jobs:
+  include:
+  - stage: "Assemble"
+    script: ./gradlew assemble
+  - stage: "Reports"
+    name: "Unit Tests"
+    script: ./gradlew jacocoTestReport
+  - name: "Detekt"
+    script: ./gradlew detekt
 
 branches:
   only:
   - master
+
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+  - $HOME/.android/build-cache
