@@ -29,4 +29,5 @@ dependencies {
 
     testImplementation(deps.test.lifecycle)
     testImplementation(deps.test.kotlinjUnit)
+    testImplementation(deps.test.mockK)
 }
