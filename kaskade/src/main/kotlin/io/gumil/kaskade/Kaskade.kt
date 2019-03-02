@@ -85,13 +85,8 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
         } ?: throw IncompleteFlowException(action)
     }
 
-    /**
-     * Get the [Reducer] mapped to an [ACTION].
-     *
-     * @param action key to get the reducer.
-     */
     @Suppress("UNCHECKED_CAST")
-    fun <T : ACTION> getReducer(action: T): Reducer<T, STATE>? =
+    internal fun <T : ACTION> getReducer(action: T): Reducer<T, STATE>? =
         actionStateMap[action::class] as? Reducer<T, STATE>
 
     /**
