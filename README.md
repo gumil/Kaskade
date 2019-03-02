@@ -2,7 +2,8 @@
 [![Build Status](https://travis-ci.org/gumil/Kaskade.svg?branch=master)](https://travis-ci.org/gumil/Kaskade)
 [![](https://jitpack.io/v/gumil/Kaskade.svg)](https://jitpack.io/#gumil/Kaskade)
 [![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-Kaskade-green.svg?style=flat )]( https://android-arsenal.com/details/1/7421 )
-[![codebeat badge](https://codebeat.co/badges/72f8b972-b305-4575-a234-eda25469541b)](https://codebeat.co/projects/github-com-gumil-kaskade-master)
+[![codecov](https://codecov.io/gh/gumil/Kaskade/branch/master/graph/badge.svg)](https://codecov.io/gh/gumil/Kaskade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/832c3f8fcb4c4213bc72d674db75138f)](https://www.codacy.com/app/gumil/Kaskade?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gumil/Kaskade&amp;utm_campaign=Badge_Grade)
 
 State Container for Kotlin and Android.
 
