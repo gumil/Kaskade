@@ -8,4 +8,5 @@ dependencies {
     implementation(deps.kotlin.stdlib.core)
 
     testImplementation(deps.test.kotlinjUnit)
+    testImplementation(deps.test.mockK)
 }
