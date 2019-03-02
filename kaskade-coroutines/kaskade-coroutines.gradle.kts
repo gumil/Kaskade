@@ -12,4 +12,5 @@ dependencies {
     implementation(deps.kotlin.coroutines.core)
 
     testImplementation(deps.test.kotlinjUnit)
+    testImplementation(deps.test.mockK)
 }
