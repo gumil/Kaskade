@@ -3,6 +3,7 @@ package io.gumil.kaskade.sample.network
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import io.mockk.coEvery
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -42,6 +43,7 @@ internal class DogViewModelTest {
         }
         verify(exactly = 2) { mockObserver.onChanged(DogState.Loading) }
         verify(exactly = 2) { mockObserver.onChanged(DogState.OnLoaded(mockUrl)) }
+        confirmVerified(mockObserver)
     }
 
     @Test
@@ -57,6 +59,7 @@ internal class DogViewModelTest {
         verify(exactly = 1) { mockObserver.onChanged(DogState.Loading) }
         verify(exactly = 1) { mockObserver.onChanged(DogState.OnLoaded(mockUrl)) }
         verify(exactly = 1) { mockObserver.onChanged(DogState.Error(exception)) }
+        confirmVerified(mockObserver)
     }
 
     @Test
@@ -70,6 +73,7 @@ internal class DogViewModelTest {
         }
         verify(exactly = 1) { mockObserver.onChanged(DogState.Loading) }
         verify(exactly = 2) { mockObserver.onChanged(DogState.OnLoaded(mockUrl)) }
+        confirmVerified(mockObserver)
     }
 
     @Test
@@ -83,5 +87,6 @@ internal class DogViewModelTest {
         }
         verify(exactly = 0) { mockObserver.onChanged(DogState.Loading) }
         verify(exactly = 1) { mockObserver.onChanged(state) }
+        confirmVerified(mockObserver)
     }
 }

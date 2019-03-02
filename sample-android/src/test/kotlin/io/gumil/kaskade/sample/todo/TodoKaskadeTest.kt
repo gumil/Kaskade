@@ -2,6 +2,7 @@ package io.gumil.kaskade.sample.todo
 
 import io.gumil.kaskade.sample.todo.data.TodoItem
 import io.gumil.kaskade.sample.todo.data.TodoRepository
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -29,6 +30,7 @@ class TodoKaskadeTest {
 
         todoKaskade.process(TodoAction.Refresh)
         verify { subscriber.invoke(TodoState.OnLoaded(emptyList())) }
+        confirmVerified(subscriber)
     }
 
     @Test
@@ -38,6 +40,7 @@ class TodoKaskadeTest {
         todoKaskade.process(TodoAction.Delete(1, TodoItem(1, "test", false)))
 
         verify { subscriber.invoke(TodoState.OnDeleted(1)) }
+        confirmVerified(subscriber)
     }
 
     @Test
@@ -49,6 +52,7 @@ class TodoKaskadeTest {
         todoKaskade.process(TodoAction.Add(todoItem))
 
         verify { subscriber.invoke(TodoState.OnAdded(todoItem)) }
+        confirmVerified(subscriber)
     }
 
     @Test
@@ -60,5 +64,6 @@ class TodoKaskadeTest {
         todoKaskade.process(TodoAction.Update(1, todoItem))
 
         verify { subscriber.invoke(TodoState.OnUpdated(1, todoItem)) }
+        confirmVerified(subscriber)
     }
 }
