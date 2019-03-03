@@ -12,15 +12,10 @@ android:
   - extra-android-support             # Support repo
   - extra-android-m2repository        # Support repo
 
-jobs:
-  include:
-  - stage: "Assemble"
-    script: ./gradlew assemble
-  - stage: "Reports"
-    name: "Unit Tests"
-    script: ./gradlew jacocoTestReport
-  - name: "Detekt"
-    script: ./gradlew detekt
+script:
+  - ./gradlew jacocoTestReport
+  - ./gradlew detekt
+  - ./gradlew lint
 
 branches:
   only:
