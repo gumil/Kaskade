@@ -19,6 +19,10 @@ android {
             isTestCoverageEnabled = true
         }
     }
+
+    lintOptions {
+        isAbortOnError = true
+    }
 }
 
 dependencies {
