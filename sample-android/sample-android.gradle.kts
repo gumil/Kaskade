@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
 
 plugins {
     id("com.android.application")
-    id("androidx.navigation.safeargs")
     kotlin("android")
     kotlin("android.extensions")
 }

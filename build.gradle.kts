@@ -10,7 +10,6 @@ buildscript {
     }
     dependencies {
         classpath(deps.android.build.gradlePlugin)
-        classpath(deps.android.build.navigationPlugin)
         classpath(deps.kotlin.build.gradlePlugin)
         classpath(deps.build.plugins.androidMaven)
     }
