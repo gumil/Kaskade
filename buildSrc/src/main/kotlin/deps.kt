@@ -5,7 +5,7 @@ object versions {
     const val detekt = "1.0.0-RC12"
 
     internal const val kotlin = "1.3.20"
-    internal const val navigation = "1.0.0-alpha09"
+    internal const val navigation = "2.0.0-rc02"
     internal const val coroutines = "1.1.0"
     internal const val lifecycle = "2.0.0"
     internal const val retrofit = "2.5.0"
@@ -21,7 +21,6 @@ object deps {
             const val targetSdkVersion = 28
 
             const val gradlePlugin = "com.android.tools.build:gradle:3.3.0"
-            const val navigationPlugin = "android.arch.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
         }
 
         object lifecycle {
@@ -32,7 +31,7 @@ object deps {
         const val appCompat = "androidx.appcompat:appcompat:1.0.2"
         const val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
         const val material = "com.google.android.material:material:1.1.0-alpha02"
-        const val navigation = "android.arch.navigation:navigation-fragment:1.0.0-alpha09"
+        const val navigation = "androidx.navigation:navigation-fragment:${versions.navigation}"
     }
 
     object kotlin {
