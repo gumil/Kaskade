@@ -7,6 +7,7 @@ test-pattern: # Configure exclusions for test sources
     - '.*/test/.*'
     - '.*Test.kt'
     - '.*Spec.kt'
+    - '.*test.kt'
   exclude-rule-sets:
     - 'comments'
   exclude-rules:
