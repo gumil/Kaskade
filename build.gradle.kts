@@ -38,7 +38,8 @@ subprojects {
 
         detekt {
             toolVersion = versions.detekt
-            input = files("src/main/kotlin", "src/test/kotlin")
+            input = files("src/main/kotlin", "src/test/kotlin",
+                "src/commonMain/kotlin", "src/commonTest/kotlin")
             config = files(configFile)
         }
         dependencies {
