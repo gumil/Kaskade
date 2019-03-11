@@ -49,19 +49,19 @@ internal class KaskadeTest {
     }
 
     @BeforeTest
-    fun `should emit initial state`() {
+    fun should_emit_initial_state() {
         stateChanged.verifyInvokedWithValue(TestState.State1)
     }
 
     @Test
-    fun `action not in Kaskade should throw exception`() {
+    fun action_not_in_Kaskade_should_throw_exception() {
         assertFailsWith(IncompleteFlowException::class) {
             kaskade.process(TestAction.Action4)
         }
     }
 
     @Test
-    fun `process action after unsubscribing should throw exception`() {
+    fun process_action_after_unsubscribing_should_throw_exception() {
         kaskade.unsubscribe()
         assertFailsWith(IncompleteFlowException::class) {
             kaskade.process(TestAction.Action1)
@@ -69,25 +69,25 @@ internal class KaskadeTest {
     }
 
     @Test
-    fun `action1 should emit State1`() {
+    fun action1_should_emit_State1() {
         kaskade.process(TestAction.Action1)
         stateChanged.verifyInvokedWithValue(TestState.State1, 2)
     }
 
     @Test
-    fun `action2 should emit State2`() {
+    fun action2_should_emit_State2() {
         kaskade.process(TestAction.Action2)
         stateChanged.verifyInvokedWithValue(TestState.State2)
     }
 
     @Test
-    fun `action3 should emit state3`() {
+    fun action3_should_emit_State3() {
         kaskade.process(TestAction.Action3)
         stateChanged.verifyInvokedWithValue(TestState.State3)
     }
 
     @Test
-    fun `verify builder transformer`() {
+    fun verify_builder_transformer() {
         val transformer: ActionState<TestAction.Action4, TestState>.() -> TestState.State4 = {
             TestState.State4
         }
@@ -107,13 +107,13 @@ internal class KaskadeTest {
     }
 
     @Test
-    fun `builder should be empty on initialized`() {
+    fun builder_should_be_empty_on_initialized() {
         val builder = Kaskade.Builder<TestAction, TestState>()
         assertEquals(emptyMap(), builder.transformer)
     }
 
     @Test
-    fun `verify reducer transformer is invokes state changed`() {
+    fun verify_reducer_transformer_is_invokes_state_changed() {
         val transformer: ActionState<TestAction.Action4, TestState>.() -> TestState.State4 = {
             TestState.State4
         }
@@ -126,7 +126,7 @@ internal class KaskadeTest {
     }
 
     @Test
-    fun `get reducer with Action1 should return correct reducer`() {
+    fun get_reducer_with_Action1_should_return_correct_reducer() {
         val expected = BlockingReducer<TestAction, TestState> { TestState.State1 }
         val actual = kaskade.getReducer(TestAction.Action1) as BlockingReducer
         assertEquals(
@@ -136,12 +136,12 @@ internal class KaskadeTest {
     }
 
     @Test
-    fun `get reducer with action not registered should return null`() {
+    fun get_reducer_with_action_not_registered_should_return_null() {
         assertNull(kaskade.getReducer(TestAction.Action4))
     }
 
     @Test
-    fun `emit all states before onStateChaged is set`() {
+    fun emit_all_states_before_onStateChanged_is_set() {
         kaskade.onStateChanged = null
         kaskade.process(TestAction.Action1)
         kaskade.process(TestAction.Action2)
@@ -159,7 +159,7 @@ internal class KaskadeTest {
     }
 
     @Test
-    fun `single event should be emitted but not persisted in current state`() {
+    fun single_event_should_be_emitted_but_not_persisted_in_current_state() {
         val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
             on<TestAction.Action1> {
                 // assert SingleEvent not persisted as current state
@@ -191,7 +191,7 @@ internal class KaskadeTest {
     }
 
     @Test
-    fun `should emit initial state and process state`() {
+    fun should_emit_initial_state_and_process_state() {
         val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
             on<TestAction.Action1> {
                 TestState.State1

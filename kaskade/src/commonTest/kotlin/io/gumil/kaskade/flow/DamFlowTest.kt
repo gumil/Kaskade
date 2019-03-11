@@ -29,12 +29,12 @@ internal class DamFlowTest {
     }
 
     @BeforeTest
-    fun `should emit initial state`() {
+    fun should_emit_initial_state() {
         stateChanged.verifyInvokedWithValue(TestState.State1)
     }
 
     @Test
-    fun `damFlow when value sent should invoke subscribe`() {
+    fun damFlow_when_value_sent_should_invoke_subscribe() {
         val flow = DamFlow<String>()
         val subscriber = TestFunction<String>()
 
@@ -45,7 +45,7 @@ internal class DamFlowTest {
     }
 
     @Test
-    fun `damFlow invoke latest emitted value before subscribe`() {
+    fun damFlow_invoke_latest_emitted_value_before_subscribe() {
         val flow = DamFlow<String>()
         val subscriber = TestFunction<String>()
 
@@ -61,7 +61,7 @@ internal class DamFlowTest {
     }
 
     @Test
-    fun `damFlow should not invoke anything after unsubscribe`() {
+    fun damFlow_should_not_invoke_anything_after_unsubscribe() {
         val flow = DamFlow<String>()
         val subscriber = TestFunction<String>()
 
@@ -74,7 +74,7 @@ internal class DamFlowTest {
     }
 
     @Test
-    fun `damFlow should invoke last emitted after unsubscribe`() {
+    fun damFlow_should_invoke_last_emitted_after_unsubscribe() {
         val flow = DamFlow<String>()
         val subscriber = TestFunction<String>()
         val subscriberNoEmissions = TestFunction<String>()
@@ -90,7 +90,7 @@ internal class DamFlowTest {
     }
 
     @Test
-    fun `damFlow should not invoke last emitted after cleared`() {
+    fun damFlow_should_not_invoke_last_emitted_after_cleared() {
         val flow = DamFlow<String>()
         val subscriber = TestFunction<String>()
         val subscriberNoEmissions = TestFunction<String>()
@@ -106,7 +106,7 @@ internal class DamFlowTest {
     }
 
     @Test
-    fun `create flow from kaskade using extension function`() {
+    fun create_flow_from_kaskade_using_extension_function() {
         val stateFlow = kaskade.stateDamFlow()
         val subscriber = TestFunction<TestState>()
 
@@ -117,7 +117,7 @@ internal class DamFlowTest {
     }
 
     @Test
-    fun `create flow from kaskade no emissions on initialized`() {
+    fun create_flow_from_kaskade_no_emissions_on_initialized() {
         val stateFlow = kaskade.stateDamFlow()
         val subscriber = TestFunction<TestState>()
         stateFlow.subscribe(subscriber)
@@ -126,7 +126,7 @@ internal class DamFlowTest {
     }
 
     @Test
-    fun `create flow from kaskade should emit last state on new subscriber`() {
+    fun create_flow_from_kaskade_should_emit_last_state_on_new_subscriber() {
         val stateFlow = kaskade.stateDamFlow()
         val subscriber = TestFunction<TestState>()
 
@@ -138,7 +138,7 @@ internal class DamFlowTest {
     }
 
     @Test
-    fun `create flow from kaskade should not emit excluded state on new subscriber`() {
+    fun create_flow_from_kaskade_should_not_emit_excluded_state_on_new_subscriber() {
         val stateFlow = kaskade.stateDamFlow()
         val subscriber = TestFunction<TestState>()
 
@@ -156,7 +156,7 @@ internal class DamFlowTest {
     }
 
     @Test
-    fun `should emit initial state and processed state`() {
+    fun should_emit_initial_state_and_processed_state() {
         val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
             on<TestAction.Action1> {
                 TestState.State1

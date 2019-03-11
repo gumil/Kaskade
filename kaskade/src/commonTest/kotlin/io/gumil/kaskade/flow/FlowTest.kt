@@ -24,12 +24,12 @@ internal class FlowTest {
     }
 
     @BeforeTest
-    fun `should emit initial state`() {
+    fun should_emit_initial_state() {
         stateChanged.verifyInvokedWithValue(TestState.State1)
     }
 
     @Test
-    fun `mutableFlow when value sent should invoke subscribe`() {
+    fun mutableFlow_when_value_sent_should_invoke_subscribe() {
         val flow = MutableFlow<String>()
         val subscriber = TestFunction<String>()
 
@@ -40,7 +40,7 @@ internal class FlowTest {
     }
 
     @Test
-    fun `mutableFlow only invoke values after subscribe`() {
+    fun mutableFlow_only_invoke_values_after_subscribe() {
         val flow = MutableFlow<String>()
         val subscriber = TestFunction<String>()
 
@@ -53,7 +53,7 @@ internal class FlowTest {
     }
 
     @Test
-    fun `mutableFlow should not invoke anything after unsubscribe`() {
+    fun mutableFlow_should_not_invoke_anything_after_unsubscribe() {
         val flow = MutableFlow<String>()
         val subscriber = TestFunction<String>()
 
@@ -66,7 +66,7 @@ internal class FlowTest {
     }
 
     @Test
-    fun `create flow from kaskade using extension function`() {
+    fun create_flow_from_kaskade_using_extension_function() {
         val stateFlow = kaskade.stateFlow()
         val subscriber = TestFunction<TestState>()
 
@@ -78,7 +78,7 @@ internal class FlowTest {
     }
 
     @Test
-    fun `create flow from kaskade no emissions on initialized`() {
+    fun create_flow_from_kaskade_no_emissions_on_initialized() {
         val stateFlow = kaskade.stateFlow()
         val subscriber = TestFunction<TestState>()
 
