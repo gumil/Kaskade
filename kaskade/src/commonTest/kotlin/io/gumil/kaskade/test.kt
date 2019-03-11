@@ -16,6 +16,9 @@
 
 package io.gumil.kaskade
 
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
+
 sealed class TestState : State {
     object State1 : TestState()
     object State2 : TestState()
@@ -29,4 +32,39 @@ sealed class TestAction : Action {
     object Action2 : TestAction()
     object Action3 : TestAction()
     object Action4 : TestAction()
+}
+
+internal class TestFunction<T> : (T) -> Unit {
+
+    private var invokedValues = mutableListOf<T>()
+
+    override operator fun invoke(value: T) {
+        invokedValues.add(value)
+    }
+
+    fun verifyInvokedWithValue(value: T, times: Int = 1) {
+        assertEquals(invokedValues.filter { it == value }.size, times)
+    }
+
+    fun verifyNoInvocations() {
+        assertTrue { invokedValues.isEmpty() }
+    }
+
+    fun verifyOrder(verifyBuilder: OrderedBuilder<T>.() -> Unit) {
+        val orderedBuilder = OrderedBuilder<T>()
+        verifyBuilder(orderedBuilder)
+        orderedBuilder.values.forEachIndexed { index, value ->
+            assertEquals(invokedValues[index], value)
+        }
+    }
+
+    internal class OrderedBuilder<T> {
+        private val _values = mutableListOf<T>()
+
+        val values: List<T> = _values
+
+        fun verify(value: T) {
+            _values.add(value)
+        }
+    }
 }

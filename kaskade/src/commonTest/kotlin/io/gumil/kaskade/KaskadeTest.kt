@@ -16,11 +16,6 @@
 
 package io.gumil.kaskade
 
-import io.mockk.confirmVerified
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
-import io.mockk.verifyOrder
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -47,16 +42,15 @@ internal class KaskadeTest {
         }
     }
 
-    private val mockStateChanged = mockk<(state: TestState) -> Unit>()
+    private val stateChanged = TestFunction<TestState>()
 
     init {
-        every { mockStateChanged.invoke(any()) } returns Unit
-        kaskade.onStateChanged = mockStateChanged
+        kaskade.onStateChanged = stateChanged
     }
 
     @BeforeTest
     fun `should emit initial state`() {
-        verify { mockStateChanged.invoke(TestState.State1) }
+        stateChanged.verifyInvokedWithValue(TestState.State1)
     }
 
     @Test
@@ -77,22 +71,19 @@ internal class KaskadeTest {
     @Test
     fun `action1 should emit State1`() {
         kaskade.process(TestAction.Action1)
-        verify { mockStateChanged.invoke(TestState.State1) }
-        confirmVerified(mockStateChanged)
+        stateChanged.verifyInvokedWithValue(TestState.State1, 2)
     }
 
     @Test
     fun `action2 should emit State2`() {
         kaskade.process(TestAction.Action2)
-        verify { mockStateChanged.invoke(TestState.State2) }
-        confirmVerified(mockStateChanged)
+        stateChanged.verifyInvokedWithValue(TestState.State2)
     }
 
     @Test
     fun `action3 should emit state3`() {
         kaskade.process(TestAction.Action3)
-        verify { mockStateChanged.invoke(TestState.State3) }
-        confirmVerified(mockStateChanged)
+        stateChanged.verifyInvokedWithValue(TestState.State3)
     }
 
     @Test
@@ -104,16 +95,15 @@ internal class KaskadeTest {
         val builder = Kaskade.Builder<TestAction, TestState>()
         builder.on(transformer)
 
-        val mockOnStateChanged = mockk<(state: TestState) -> Unit>(relaxed = true)
+        val stateChanged = TestFunction<TestState>()
 
         val actual = builder.transformer
         assertEquals(1, actual.size)
         assertTrue { actual.containsKey(TestAction.Action4::class) }
 
         val actualReducer = actual.getValue(TestAction.Action4::class)
-        actualReducer(TestAction.Action4, TestState.State4, mockOnStateChanged)
-        verify { mockOnStateChanged.invoke(TestState.State4) }
-        confirmVerified(mockOnStateChanged)
+        actualReducer(TestAction.Action4, TestState.State4, stateChanged)
+        stateChanged.verifyInvokedWithValue(TestState.State4)
     }
 
     @Test
@@ -128,12 +118,11 @@ internal class KaskadeTest {
             TestState.State4
         }
         val reducer = BlockingReducer(transformer)
-        val mockOnStateChanged = mockk<(state: TestState) -> Unit>(relaxed = true)
+        val stateChanged = TestFunction<TestState>()
 
-        reducer.invoke(TestAction.Action4, TestState.State4, mockOnStateChanged)
+        reducer.invoke(TestAction.Action4, TestState.State4, stateChanged)
 
-        verify { mockOnStateChanged.invoke(TestState.State4) }
-        confirmVerified(mockOnStateChanged)
+        stateChanged.verifyInvokedWithValue(TestState.State4)
     }
 
     @Test
@@ -157,17 +146,16 @@ internal class KaskadeTest {
         kaskade.process(TestAction.Action1)
         kaskade.process(TestAction.Action2)
         kaskade.process(TestAction.Action3)
-        val mockOnStateChanged = mockk<(state: TestState) -> Unit>()
-        every { mockOnStateChanged.invoke(any()) } returns Unit
 
-        kaskade.onStateChanged = mockOnStateChanged
+        val stateChanged = TestFunction<TestState>()
 
-        verifyOrder {
-            mockOnStateChanged.invoke(TestState.State1)
-            mockOnStateChanged.invoke(TestState.State2)
-            mockOnStateChanged.invoke(TestState.State3)
+        kaskade.onStateChanged = stateChanged
+
+        stateChanged.verifyOrder {
+            verify(TestState.State1)
+            verify(TestState.State2)
+            verify(TestState.State3)
         }
-        confirmVerified(mockOnStateChanged)
     }
 
     @Test
@@ -187,21 +175,19 @@ internal class KaskadeTest {
             }
         }
 
-        val mockOnStateChanged = mockk<(state: TestState) -> Unit>()
-        every { mockOnStateChanged.invoke(any()) } returns Unit
-        kaskade.onStateChanged = mockOnStateChanged
+        val stateChanged = TestFunction<TestState>()
+        kaskade.onStateChanged = stateChanged
 
         kaskade.process(TestAction.Action1)
         kaskade.process(TestAction.Action2)
         kaskade.process(TestAction.Action1)
 
-        verifyOrder {
-            mockOnStateChanged.invoke(TestState.State1)
-            mockOnStateChanged.invoke(TestState.State1)
-            mockOnStateChanged.invoke(TestState.SingleStateEvent)
-            mockOnStateChanged.invoke(TestState.State1)
+        stateChanged.verifyOrder {
+            verify(TestState.State1)
+            verify(TestState.State1)
+            verify(TestState.SingleStateEvent)
+            verify(TestState.State1)
         }
-        confirmVerified(mockOnStateChanged)
     }
 
     @Test
@@ -215,18 +201,15 @@ internal class KaskadeTest {
             }
         }
 
-        val mockOnStateChanged = mockk<(state: TestState) -> Unit>()
-        every { mockOnStateChanged.invoke(any()) } returns Unit
+        val stateChanged = TestFunction<TestState>()
 
         kaskade.process(TestAction.Action2)
 
-        kaskade.onStateChanged = mockOnStateChanged
+        kaskade.onStateChanged = stateChanged
 
-        verifyOrder {
-            mockOnStateChanged.invoke(TestState.State1)
-            mockOnStateChanged.invoke(TestState.State2)
+        stateChanged.verifyOrder {
+            verify(TestState.State1)
+            verify(TestState.State2)
         }
-
-        confirmVerified(mockOnStateChanged)
     }
 }
