@@ -25,7 +25,6 @@ kotlin {
         jvm().compilations["test"].defaultSourceSet {
             dependencies {
                 implementation(kotlin("test-junit"))
-                implementation(deps.test.mockK)
             }
         }
 
@@ -37,13 +36,11 @@ kotlin {
         js().compilations["test"].defaultSourceSet {
             dependencies {
                 implementation(kotlin("test-js"))
-                implementation(deps.test.mockK)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation("io.mockk:mockk-common:1.9.1")
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }

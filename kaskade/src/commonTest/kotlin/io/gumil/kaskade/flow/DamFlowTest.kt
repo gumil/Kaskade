@@ -2,13 +2,9 @@ package io.gumil.kaskade.flow
 
 import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.TestAction
+import io.gumil.kaskade.TestFunction
 import io.gumil.kaskade.TestState
 import io.gumil.kaskade.stateDamFlow
-import io.mockk.confirmVerified
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
-import io.mockk.verifyOrder
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -26,151 +22,137 @@ internal class DamFlowTest {
         }
     }
 
-    private val mockStateChanged = mockk<(state: TestState) -> Unit>()
+    private val stateChanged = TestFunction<TestState>()
 
     init {
-        every { mockStateChanged.invoke(any()) } returns Unit
-        kaskade.onStateChanged = mockStateChanged
+        kaskade.onStateChanged = stateChanged
     }
 
     @BeforeTest
     fun `should emit initial state`() {
-        verify { mockStateChanged.invoke(TestState.State1) }
+        stateChanged.verifyInvokedWithValue(TestState.State1)
     }
 
     @Test
     fun `damFlow when value sent should invoke subscribe`() {
         val flow = DamFlow<String>()
-        val mockSubscriber = mockk<(String) -> Unit>()
-        every { mockSubscriber.invoke(any()) } returns Unit
+        val subscriber = TestFunction<String>()
 
-        flow.subscribe(mockSubscriber)
+        flow.subscribe(subscriber)
         flow.sendValue("hello")
 
-        verify { mockSubscriber.invoke("hello") }
-        confirmVerified(mockSubscriber)
+        subscriber.verifyInvokedWithValue("hello")
     }
 
     @Test
     fun `damFlow invoke latest emitted value before subscribe`() {
         val flow = DamFlow<String>()
-        val mockSubscriber = mockk<(String) -> Unit>()
-        every { mockSubscriber.invoke(any()) } returns Unit
+        val subscriber = TestFunction<String>()
 
         flow.sendValue("test")
         flow.sendValue("world")
-        flow.subscribe(mockSubscriber)
+        flow.subscribe(subscriber)
         flow.sendValue("hello")
 
-        verifyOrder {
-            mockSubscriber.invoke("world")
-            mockSubscriber.invoke("hello")
+        subscriber.verifyOrder {
+            verify("world")
+            verify("hello")
         }
-        confirmVerified(mockSubscriber)
     }
 
     @Test
     fun `damFlow should not invoke anything after unsubscribe`() {
         val flow = DamFlow<String>()
-        val mockSubscriber = mockk<(String) -> Unit>()
+        val subscriber = TestFunction<String>()
 
-        flow.subscribe(mockSubscriber)
+        flow.subscribe(subscriber)
         flow.unsubscribe()
         flow.sendValue("hello")
 
-        verify(exactly = 0) { mockSubscriber.invoke("hello") }
-        confirmVerified(mockSubscriber)
+        subscriber.verifyInvokedWithValue("hello", 0)
+        subscriber.verifyNoInvocations()
     }
 
     @Test
     fun `damFlow should invoke last emitted after unsubscribe`() {
         val flow = DamFlow<String>()
-        val mockSubscriberNoEmission = mockk<(String) -> Unit>()
-        val mockSubscriber = mockk<(String) -> Unit>()
-        every { mockSubscriber.invoke(any()) } returns Unit
+        val subscriber = TestFunction<String>()
+        val subscriberNoEmissions = TestFunction<String>()
 
-        flow.subscribe(mockSubscriberNoEmission)
+        flow.subscribe(subscriberNoEmissions)
         flow.unsubscribe()
         flow.sendValue("hello")
-        flow.subscribe(mockSubscriber)
+        flow.subscribe(subscriber)
 
-        verify(exactly = 0) { mockSubscriberNoEmission.invoke("hello") }
-        verify { mockSubscriber.invoke("hello") }
-        confirmVerified(mockSubscriber)
+        subscriber.verifyInvokedWithValue("hello")
+        subscriberNoEmissions.verifyInvokedWithValue("hello", 0)
+        subscriberNoEmissions.verifyNoInvocations()
     }
 
     @Test
     fun `damFlow should not invoke last emitted after cleared`() {
         val flow = DamFlow<String>()
-        val mockSubscriberNoEmission = mockk<(String) -> Unit>()
-        val mockSubscriber = mockk<(String) -> Unit>()
-        every { mockSubscriber.invoke(any()) } returns Unit
+        val subscriber = TestFunction<String>()
+        val subscriberNoEmissions = TestFunction<String>()
 
-        flow.subscribe(mockSubscriber)
+        flow.subscribe(subscriber)
         flow.sendValue("hello")
         flow.clear()
-        flow.subscribe(mockSubscriberNoEmission)
+        flow.subscribe(subscriberNoEmissions)
 
-        verify(exactly = 0) { mockSubscriberNoEmission.invoke("hello") }
-        verify { mockSubscriber.invoke("hello") }
-        confirmVerified(mockSubscriber)
+        subscriber.verifyInvokedWithValue("hello")
+        subscriberNoEmissions.verifyInvokedWithValue("hello", 0)
+        subscriberNoEmissions.verifyNoInvocations()
     }
 
     @Test
     fun `create flow from kaskade using extension function`() {
         val stateFlow = kaskade.stateDamFlow()
-        val mockSubscriber = mockk<(TestState) -> Unit>()
-        every { mockSubscriber.invoke(any()) } returns Unit
+        val subscriber = TestFunction<TestState>()
 
-        stateFlow.subscribe(mockSubscriber)
+        stateFlow.subscribe(subscriber)
         kaskade.process(TestAction.Action1)
 
-        verify { mockSubscriber.invoke(TestState.State1) }
-        confirmVerified(mockSubscriber)
+        subscriber.verifyInvokedWithValue(TestState.State1)
     }
 
     @Test
     fun `create flow from kaskade no emissions on initialized`() {
         val stateFlow = kaskade.stateDamFlow()
-        val mockSubscriber = mockk<(TestState) -> Unit>()
-        stateFlow.subscribe(mockSubscriber)
+        val subscriber = TestFunction<TestState>()
+        stateFlow.subscribe(subscriber)
 
-        verify(exactly = 0) { mockSubscriber.invoke(any()) }
-        confirmVerified(mockSubscriber)
+        subscriber.verifyNoInvocations()
     }
 
     @Test
     fun `create flow from kaskade should emit last state on new subscriber`() {
         val stateFlow = kaskade.stateDamFlow()
-        val mockSubscriber = mockk<(TestState) -> Unit>()
-        every { mockSubscriber.invoke(any()) } returns Unit
+        val subscriber = TestFunction<TestState>()
 
         kaskade.process(TestAction.Action1)
         stateFlow.unsubscribe()
-        stateFlow.subscribe(mockSubscriber)
+        stateFlow.subscribe(subscriber)
 
-        verify { mockSubscriber.invoke(TestState.State1) }
-        confirmVerified(mockSubscriber)
+        subscriber.verifyInvokedWithValue(TestState.State1)
     }
 
     @Test
     fun `create flow from kaskade should not emit excluded state on new subscriber`() {
         val stateFlow = kaskade.stateDamFlow()
-        val mockSubscriber = mockk<(TestState) -> Unit>()
-        every { mockSubscriber.invoke(any()) } returns Unit
+        val subscriber = TestFunction<TestState>()
 
         kaskade.process(TestAction.Action1)
-        stateFlow.subscribe(mockSubscriber)
+        stateFlow.subscribe(subscriber)
         kaskade.process(TestAction.Action3)
         stateFlow.unsubscribe()
-        stateFlow.subscribe(mockSubscriber)
+        stateFlow.subscribe(subscriber)
 
-        verifyOrder {
-            mockSubscriber.invoke(TestState.State1)
-            mockSubscriber.invoke(TestState.SingleStateEvent)
-            mockSubscriber.invoke(TestState.State1)
+        subscriber.verifyOrder {
+            verify(TestState.State1)
+            verify(TestState.SingleStateEvent)
+            verify(TestState.State1)
         }
-        confirmVerified(mockSubscriber)
     }
 
     @Test
@@ -184,17 +166,15 @@ internal class DamFlowTest {
             }
         }
 
-        val mockSubscriber = mockk<(TestState) -> Unit>()
-        every { mockSubscriber.invoke(any()) } returns Unit
+        val subscriber = TestFunction<TestState>()
 
         kaskade.process(TestAction.Action2)
 
-        kaskade.stateDamFlow().subscribe(mockSubscriber)
+        kaskade.stateDamFlow().subscribe(subscriber)
 
-        verifyOrder {
-            mockSubscriber.invoke(TestState.State1)
-            mockSubscriber.invoke(TestState.State2)
+        subscriber.verifyOrder {
+            verify(TestState.State1)
+            verify(TestState.State2)
         }
-        confirmVerified(mockSubscriber)
     }
 }
