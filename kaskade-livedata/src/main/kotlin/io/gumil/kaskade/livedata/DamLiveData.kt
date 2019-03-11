@@ -14,7 +14,9 @@ class DamLiveData<T : Any> : MutableLiveData<T>() {
 
     override fun onActive() {
         super.onActive()
-        savedValueHolder.savedValues.forEach { setValue(it.value) }
+        for (savedValue in savedValueHolder.savedValues) {
+            setValue(savedValue.value)
+        }
     }
 
     override fun setValue(value: T) {
