@@ -2,7 +2,7 @@ package io.gumil.kaskade.flow
 
 import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.TestAction
-import io.gumil.kaskade.TestFunction
+import io.gumil.kaskade.Verifier
 import io.gumil.kaskade.TestState
 import io.gumil.kaskade.stateDamFlow
 import kotlin.test.BeforeTest
@@ -22,7 +22,8 @@ internal class DamFlowTest {
         }
     }
 
-    private val stateChanged = TestFunction<TestState>()
+    private val stateChangeVerifier = Verifier<TestState>()
+    private val stateChanged = stateChangeVerifier.function
 
     init {
         kaskade.onStateChanged = stateChanged
@@ -30,31 +31,33 @@ internal class DamFlowTest {
 
     @BeforeTest
     fun should_emit_initial_state() {
-        stateChanged.verifyInvokedWithValue(TestState.State1)
+        stateChangeVerifier.verifyInvokedWithValue(TestState.State1)
     }
 
     @Test
     fun damFlow_when_value_sent_should_invoke_subscribe() {
         val flow = DamFlow<String>()
-        val subscriber = TestFunction<String>()
+        val verifier = Verifier<String>()
+        val subscriber = verifier.function
 
         flow.subscribe(subscriber)
         flow.sendValue("hello")
 
-        subscriber.verifyInvokedWithValue("hello")
+        verifier.verifyInvokedWithValue("hello")
     }
 
     @Test
     fun damFlow_invoke_latest_emitted_value_before_subscribe() {
         val flow = DamFlow<String>()
-        val subscriber = TestFunction<String>()
+        val verifier = Verifier<String>()
+        val subscriber = verifier.function
 
         flow.sendValue("test")
         flow.sendValue("world")
         flow.subscribe(subscriber)
         flow.sendValue("hello")
 
-        subscriber.verifyOrder {
+        verifier.verifyOrder {
             verify("world")
             verify("hello")
         }
@@ -63,84 +66,93 @@ internal class DamFlowTest {
     @Test
     fun damFlow_should_not_invoke_anything_after_unsubscribe() {
         val flow = DamFlow<String>()
-        val subscriber = TestFunction<String>()
+        val verifier = Verifier<String>()
+        val subscriber = verifier.function
 
         flow.subscribe(subscriber)
         flow.unsubscribe()
         flow.sendValue("hello")
 
-        subscriber.verifyInvokedWithValue("hello", 0)
-        subscriber.verifyNoInvocations()
+        verifier.verifyInvokedWithValue("hello", 0)
+        verifier.verifyNoInvocations()
     }
 
     @Test
     fun damFlow_should_invoke_last_emitted_after_unsubscribe() {
         val flow = DamFlow<String>()
-        val subscriber = TestFunction<String>()
-        val subscriberNoEmissions = TestFunction<String>()
+        val verifier = Verifier<String>()
+        val subscriber = verifier.function
+        val verifierNoEmissions = Verifier<String>()
+        val subscriberNoEmissions = verifierNoEmissions.function
 
         flow.subscribe(subscriberNoEmissions)
         flow.unsubscribe()
         flow.sendValue("hello")
         flow.subscribe(subscriber)
 
-        subscriber.verifyInvokedWithValue("hello")
-        subscriberNoEmissions.verifyInvokedWithValue("hello", 0)
-        subscriberNoEmissions.verifyNoInvocations()
+        verifier.verifyInvokedWithValue("hello")
+        verifierNoEmissions.verifyInvokedWithValue("hello", 0)
+        verifierNoEmissions.verifyNoInvocations()
     }
 
     @Test
     fun damFlow_should_not_invoke_last_emitted_after_cleared() {
         val flow = DamFlow<String>()
-        val subscriber = TestFunction<String>()
-        val subscriberNoEmissions = TestFunction<String>()
+        val verifier = Verifier<String>()
+        val subscriber = verifier.function
+        val verifierNoEmissions = Verifier<String>()
+        val subscriberNoEmissions = verifierNoEmissions.function
 
         flow.subscribe(subscriber)
         flow.sendValue("hello")
         flow.clear()
         flow.subscribe(subscriberNoEmissions)
 
-        subscriber.verifyInvokedWithValue("hello")
-        subscriberNoEmissions.verifyInvokedWithValue("hello", 0)
-        subscriberNoEmissions.verifyNoInvocations()
+        verifier.verifyInvokedWithValue("hello")
+        verifierNoEmissions.verifyInvokedWithValue("hello", 0)
+        verifierNoEmissions.verifyNoInvocations()
     }
 
     @Test
     fun create_flow_from_kaskade_using_extension_function() {
         val stateFlow = kaskade.stateDamFlow()
-        val subscriber = TestFunction<TestState>()
+        val verifier = Verifier<TestState>()
+        val subscriber = verifier.function
 
         stateFlow.subscribe(subscriber)
         kaskade.process(TestAction.Action1)
 
-        subscriber.verifyInvokedWithValue(TestState.State1)
+        verifier.verifyInvokedWithValue(TestState.State1)
     }
 
     @Test
     fun create_flow_from_kaskade_no_emissions_on_initialized() {
         val stateFlow = kaskade.stateDamFlow()
-        val subscriber = TestFunction<TestState>()
+        val verifier = Verifier<TestState>()
+        val subscriber = verifier.function
         stateFlow.subscribe(subscriber)
 
-        subscriber.verifyNoInvocations()
+        verifier.verifyNoInvocations()
     }
 
     @Test
     fun create_flow_from_kaskade_should_emit_last_state_on_new_subscriber() {
         val stateFlow = kaskade.stateDamFlow()
-        val subscriber = TestFunction<TestState>()
+        val verifier = Verifier<TestState>()
+        val subscriber = verifier.function
 
         kaskade.process(TestAction.Action1)
         stateFlow.unsubscribe()
         stateFlow.subscribe(subscriber)
 
-        subscriber.verifyInvokedWithValue(TestState.State1)
+        verifier.verifyInvokedWithValue(TestState.State1)
     }
 
     @Test
     fun create_flow_from_kaskade_should_not_emit_excluded_state_on_new_subscriber() {
         val stateFlow = kaskade.stateDamFlow()
-        val subscriber = TestFunction<TestState>()
+        val verifier = Verifier<TestState>()
+        val subscriber = verifier.function
 
         kaskade.process(TestAction.Action1)
         stateFlow.subscribe(subscriber)
@@ -148,7 +160,7 @@ internal class DamFlowTest {
         stateFlow.unsubscribe()
         stateFlow.subscribe(subscriber)
 
-        subscriber.verifyOrder {
+        verifier.verifyOrder {
             verify(TestState.State1)
             verify(TestState.SingleStateEvent)
             verify(TestState.State1)
@@ -166,13 +178,14 @@ internal class DamFlowTest {
             }
         }
 
-        val subscriber = TestFunction<TestState>()
+        val verifier = Verifier<TestState>()
+        val subscriber = verifier.function
 
         kaskade.process(TestAction.Action2)
 
         kaskade.stateDamFlow().subscribe(subscriber)
 
-        subscriber.verifyOrder {
+        verifier.verifyOrder {
             verify(TestState.State1)
             verify(TestState.State2)
         }
