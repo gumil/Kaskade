@@ -34,13 +34,13 @@ sealed class TestAction : Action {
     object Action4 : TestAction()
 }
 
-internal class TestFunction<T> : (T) -> Unit {
+internal class Verifier<T> {
+
+    val function: (T) -> Unit = {
+        invokedValues.add(it)
+    }
 
     private var invokedValues = mutableListOf<T>()
-
-    override operator fun invoke(value: T) {
-        invokedValues.add(value)
-    }
 
     fun verifyInvokedWithValue(value: T, times: Int = 1) {
         assertEquals(invokedValues.filter { it == value }.size, times)

@@ -2,7 +2,7 @@ package io.gumil.kaskade.flow
 
 import io.gumil.kaskade.Kaskade
 import io.gumil.kaskade.TestAction
-import io.gumil.kaskade.TestFunction
+import io.gumil.kaskade.Verifier
 import io.gumil.kaskade.TestState
 import io.gumil.kaskade.stateFlow
 import kotlin.test.BeforeTest
@@ -17,7 +17,8 @@ internal class FlowTest {
         }
     }
 
-    private val stateChanged = TestFunction<TestState>()
+    private val stateChangeVerifier = Verifier<TestState>()
+    private val stateChanged = stateChangeVerifier.function
 
     init {
         kaskade.onStateChanged = stateChanged
@@ -25,66 +26,71 @@ internal class FlowTest {
 
     @BeforeTest
     fun should_emit_initial_state() {
-        stateChanged.verifyInvokedWithValue(TestState.State1)
+        stateChangeVerifier.verifyInvokedWithValue(TestState.State1)
     }
 
     @Test
     fun mutableFlow_when_value_sent_should_invoke_subscribe() {
         val flow = MutableFlow<String>()
-        val subscriber = TestFunction<String>()
+        val verifier = Verifier<String>()
+        val subscriber = verifier.function
 
         flow.subscribe(subscriber)
         flow.sendValue("hello")
 
-        subscriber.verifyInvokedWithValue("hello")
+        verifier.verifyInvokedWithValue("hello")
     }
 
     @Test
     fun mutableFlow_only_invoke_values_after_subscribe() {
         val flow = MutableFlow<String>()
-        val subscriber = TestFunction<String>()
+        val verifier = Verifier<String>()
+        val subscriber = verifier.function
 
         flow.sendValue("world")
         flow.subscribe(subscriber)
         flow.sendValue("hello")
 
-        subscriber.verifyInvokedWithValue("world", 0)
-        subscriber.verifyInvokedWithValue("hello")
+        verifier.verifyInvokedWithValue("world", 0)
+        verifier.verifyInvokedWithValue("hello")
     }
 
     @Test
     fun mutableFlow_should_not_invoke_anything_after_unsubscribe() {
         val flow = MutableFlow<String>()
-        val subscriber = TestFunction<String>()
+        val verifier = Verifier<String>()
+        val subscriber = verifier.function
 
         flow.subscribe(subscriber)
         flow.unsubscribe()
         flow.sendValue("hello")
 
-        subscriber.verifyInvokedWithValue("hello", 0)
-        subscriber.verifyNoInvocations()
+        verifier.verifyInvokedWithValue("hello", 0)
+        verifier.verifyNoInvocations()
     }
 
     @Test
     fun create_flow_from_kaskade_using_extension_function() {
         val stateFlow = kaskade.stateFlow()
-        val subscriber = TestFunction<TestState>()
+        val verifier = Verifier<TestState>()
+        val subscriber = verifier.function
 
         stateFlow.subscribe(subscriber)
         kaskade.process(TestAction.Action1)
 
         assertTrue { stateFlow is MutableFlow<TestState> }
-        subscriber.verifyInvokedWithValue(TestState.State1)
+        verifier.verifyInvokedWithValue(TestState.State1)
     }
 
     @Test
     fun create_flow_from_kaskade_no_emissions_on_initialized() {
         val stateFlow = kaskade.stateFlow()
-        val subscriber = TestFunction<TestState>()
+        val verifier = Verifier<TestState>()
+        val subscriber = verifier.function
 
         stateFlow.subscribe(subscriber)
 
-        subscriber.verifyInvokedWithValue(TestState.State1, 0)
-        subscriber.verifyNoInvocations()
+        verifier.verifyInvokedWithValue(TestState.State1, 0)
+        verifier.verifyNoInvocations()
     }
 }

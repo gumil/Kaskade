@@ -42,7 +42,8 @@ internal class KaskadeTest {
         }
     }
 
-    private val stateChanged = TestFunction<TestState>()
+    private val stateChangeVerifier = Verifier<TestState>()
+    private val stateChanged = stateChangeVerifier.function
 
     init {
         kaskade.onStateChanged = stateChanged
@@ -50,7 +51,7 @@ internal class KaskadeTest {
 
     @BeforeTest
     fun should_emit_initial_state() {
-        stateChanged.verifyInvokedWithValue(TestState.State1)
+        stateChangeVerifier.verifyInvokedWithValue(TestState.State1)
     }
 
     @Test
@@ -71,19 +72,19 @@ internal class KaskadeTest {
     @Test
     fun action1_should_emit_State1() {
         kaskade.process(TestAction.Action1)
-        stateChanged.verifyInvokedWithValue(TestState.State1, 2)
+        stateChangeVerifier.verifyInvokedWithValue(TestState.State1, 2)
     }
 
     @Test
     fun action2_should_emit_State2() {
         kaskade.process(TestAction.Action2)
-        stateChanged.verifyInvokedWithValue(TestState.State2)
+        stateChangeVerifier.verifyInvokedWithValue(TestState.State2)
     }
 
     @Test
     fun action3_should_emit_State3() {
         kaskade.process(TestAction.Action3)
-        stateChanged.verifyInvokedWithValue(TestState.State3)
+        stateChangeVerifier.verifyInvokedWithValue(TestState.State3)
     }
 
     @Test
@@ -95,7 +96,8 @@ internal class KaskadeTest {
         val builder = Kaskade.Builder<TestAction, TestState>()
         builder.on(transformer)
 
-        val stateChanged = TestFunction<TestState>()
+        val verifier = Verifier<TestState>()
+        val stateChanged = verifier.function
 
         val actual = builder.transformer
         assertEquals(1, actual.size)
@@ -103,7 +105,7 @@ internal class KaskadeTest {
 
         val actualReducer = actual.getValue(TestAction.Action4::class)
         actualReducer(TestAction.Action4, TestState.State4, stateChanged)
-        stateChanged.verifyInvokedWithValue(TestState.State4)
+        verifier.verifyInvokedWithValue(TestState.State4)
     }
 
     @Test
@@ -118,11 +120,12 @@ internal class KaskadeTest {
             TestState.State4
         }
         val reducer = BlockingReducer(transformer)
-        val stateChanged = TestFunction<TestState>()
+        val verifier = Verifier<TestState>()
+        val stateChanged = verifier.function
 
         reducer.invoke(TestAction.Action4, TestState.State4, stateChanged)
 
-        stateChanged.verifyInvokedWithValue(TestState.State4)
+        verifier.verifyInvokedWithValue(TestState.State4)
     }
 
     @Test
@@ -147,11 +150,12 @@ internal class KaskadeTest {
         kaskade.process(TestAction.Action2)
         kaskade.process(TestAction.Action3)
 
-        val stateChanged = TestFunction<TestState>()
+        val verifier = Verifier<TestState>()
+        val stateChanged = verifier.function
 
         kaskade.onStateChanged = stateChanged
 
-        stateChanged.verifyOrder {
+        verifier.verifyOrder {
             verify(TestState.State1)
             verify(TestState.State2)
             verify(TestState.State3)
@@ -175,14 +179,15 @@ internal class KaskadeTest {
             }
         }
 
-        val stateChanged = TestFunction<TestState>()
+        val verifier = Verifier<TestState>()
+        val stateChanged = verifier.function
         kaskade.onStateChanged = stateChanged
 
         kaskade.process(TestAction.Action1)
         kaskade.process(TestAction.Action2)
         kaskade.process(TestAction.Action1)
 
-        stateChanged.verifyOrder {
+        verifier.verifyOrder {
             verify(TestState.State1)
             verify(TestState.State1)
             verify(TestState.SingleStateEvent)
@@ -201,13 +206,14 @@ internal class KaskadeTest {
             }
         }
 
-        val stateChanged = TestFunction<TestState>()
+        val verifier = Verifier<TestState>()
+        val stateChanged = verifier.function
 
         kaskade.process(TestAction.Action2)
 
         kaskade.onStateChanged = stateChanged
 
-        stateChanged.verifyOrder {
+        verifier.verifyOrder {
             verify(TestState.State1)
             verify(TestState.State2)
         }
