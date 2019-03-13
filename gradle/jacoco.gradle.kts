@@ -18,12 +18,12 @@ if (!displayName.contains("sample") && displayName != "project ':kaskade'") {
                 val debugTree = fileTree("${project.buildDir}/tmp/kotlin-classes/debug")
                 val mainSrc = "${project.projectDir}/src/main/kotlin"
 
-                sourceDirectories = files(mainSrc)
-                classDirectories = files(debugTree)
+                sourceDirectories.setFrom(files(mainSrc))
+                classDirectories.setFrom(files(debugTree))
 
-                executionData = fileTree(buildDir).apply {
+                executionData.setFrom(fileTree(buildDir).apply {
                     setIncludes(setOf("jacoco/testDebugUnitTest.exec", "outputs/code-coverage/connected/*coverage.ec"))
-                }
+                })
             }
 
             tasks.named<JacocoReport>(task).configure {
