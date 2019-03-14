@@ -6,8 +6,10 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 plugins {
     kotlin("multiplatform")
     id(deps.build.plugins.node) version versions.node
-    id(deps.build.plugins.jitpack)
+    id(deps.build.plugins.mavenPublish)
 }
+
+group = "com.github.gumil"
 
 kotlin {
     jvm()
