@@ -5,8 +5,8 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
-    id("com.moowork.node") version "1.2.0"
-    id("com.github.dcendents.android-maven")
+    id(deps.build.plugins.node) version versions.node
+    id(deps.build.plugins.jitpack)
 }
 
 kotlin {
