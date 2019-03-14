@@ -76,6 +76,7 @@ object deps {
             const val detekt = "io.gitlab.arturbosch.detekt"
             const val node = "com.moowork.node"
             const val jitpack = "com.github.dcendents.android-maven"
+            const val mavenPublish = "maven-publish"
         }
     }
 
