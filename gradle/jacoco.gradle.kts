@@ -1,7 +1,7 @@
 /**
  * Exclude sample modules
  */
-if (!displayName.contains("sample") && displayName != "project ':kaskade'") {
+if (!displayName.contains("sample")) {
     apply<JacocoPlugin>()
 
     extensions.getByType(JacocoPluginExtension::class.java).toolVersion = versions.jacoco
@@ -25,37 +25,40 @@ if (!displayName.contains("sample") && displayName != "project ':kaskade'") {
                     setIncludes(setOf("jacoco/testDebugUnitTest.exec", "outputs/code-coverage/connected/*coverage.ec"))
                 })
             }
-
-            tasks.named<JacocoReport>(task).configure {
-                reports.apply {
-                    xml.apply {
-                        isEnabled = true
-                        destination = File("${project.buildDir}/reports/jacocoTestReport.xml")
-                    }
-                    html.apply {
-                        isEnabled = true
-                        destination = File("${project.buildDir}/reports/jacoco")
-                    }
-                }
-            }
         }
         plugins.hasPlugin("org.jetbrains.kotlin.multiplatform") -> {
+            tasks.register<JacocoReport>(task) {
+                setDependsOn(setOf("jvmTest"))
+                group = "verification"
+                description = "Runs jacoco test report for jvm multiplatform"
+
+                val debugTree = fileTree("${project.buildDir}/classes/kotlin/jvm/")
+                val mainSrc = "${project.projectDir}/src/commonMain/kotlin"
+
+                sourceDirectories.setFrom(files(mainSrc))
+                classDirectories.setFrom(files(debugTree))
+
+                executionData.setFrom(fileTree(buildDir).apply {
+                    setIncludes(setOf("jacoco/jvmTest.exec"))
+                })
+            }
         }
         else -> {
             tasks.named<JacocoReport>(task).configure {
                 dependsOn(tasks.named("test"))
             }
-            tasks.named<JacocoReport>(task).configure {
-                reports.apply {
-                    xml.apply {
-                        isEnabled = true
-                        destination = File("${project.buildDir}/reports/jacocoTestReport.xml")
-                    }
-                    html.apply {
-                        isEnabled = true
-                        destination = File("${project.buildDir}/reports/jacoco")
-                    }
-                }
+        }
+    }
+
+    tasks.named<JacocoReport>(task).configure {
+        reports.apply {
+            xml.apply {
+                isEnabled = true
+                destination = File("${project.buildDir}/reports/jacocoTestReport.xml")
+            }
+            html.apply {
+                isEnabled = true
+                destination = File("${project.buildDir}/reports/jacoco")
             }
         }
     }
