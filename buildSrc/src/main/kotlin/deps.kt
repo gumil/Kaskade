@@ -3,6 +3,7 @@
 object versions {
     const val jacoco = "0.8.3"
     const val detekt = "1.0.0-RC12"
+    const val node = "1.2.0"
 
     internal const val kotlin = "1.3.21"
     internal const val navigation = "2.0.0-rc02"
@@ -73,6 +74,8 @@ object deps {
         object plugins {
             const val androidMaven = "com.github.dcendents:android-maven-gradle-plugin:2.1"
             const val detekt = "io.gitlab.arturbosch.detekt"
+            const val node = "com.moowork.node"
+            const val jitpack = "com.github.dcendents.android-maven"
         }
     }
 
