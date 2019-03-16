@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.moowork.gradle.node.npm.NpmTask
 import com.moowork.gradle.node.task.NodeTask
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilationToRunnableFiles
@@ -126,3 +127,5 @@ repositories.whenObjectAdded {
         }
     }
 }
+
+tasks.register("install").dependsOn("publishToMavenLocal")
