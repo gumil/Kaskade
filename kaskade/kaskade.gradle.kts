@@ -118,3 +118,11 @@ tasks.register<NodeTask>("runMocha") {
 }
 
 tasks["jsTest"].dependsOn("runMocha")
+
+repositories.whenObjectAdded {
+    if (this is IvyArtifactRepository) {
+        metadataSources {
+            artifact()
+        }
+    }
+}
