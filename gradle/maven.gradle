@@ -1,0 +1,39 @@
+apply plugin: 'maven-publish'
+apply from: rootProject.file('gradle/pom.gradle')
+
+if (plugins.hasPlugin("com.android.library")) {
+    publishToMavenLocal.dependsOn assemble
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier = 'sources'
+    if (plugins.hasPlugin("com.android.library")) {
+        from android.sourceSets.main.java.srcDirs
+    } else {
+        from sourceSets.main.java.srcDirs
+    }
+}
+
+def projectName = project.name.substring(project.name.lastIndexOf("-") + 1)
+
+publishing {
+    publications {
+        mavenProject(MavenPublication) {
+            if (!plugins.hasPlugin("com.android.library")) {
+                from components.java
+            }
+
+            groupId = project.group
+            version = project.version
+
+            if (plugins.hasPlugin("com.android.library")) {
+                artifact("$buildDir/outputs/aar/${project.name}-${project.version}.aar")
+            }
+
+            artifactId = projectName
+            artifact sourcesJar
+
+            withPom(pom)
+        }
+    }
+}

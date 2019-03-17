@@ -1,6 +1,5 @@
 plugins {
     id("com.android.library")
-    id("com.github.dcendents.android-maven")
     kotlin("android")
 }
 
@@ -35,3 +34,5 @@ dependencies {
     testImplementation(deps.test.kotlinjUnit)
     testImplementation(deps.test.mockK)
 }
+
+apply { from(rootProject.file("gradle/maven.gradle")) }
