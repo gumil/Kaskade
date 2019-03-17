@@ -12,6 +12,7 @@ buildscript {
         classpath(deps.android.build.gradlePlugin)
         classpath(deps.kotlin.build.gradlePlugin)
         classpath(deps.build.plugins.androidMaven)
+        classpath(deps.build.plugins.dokka)
     }
 }
 
