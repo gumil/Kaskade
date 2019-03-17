@@ -10,8 +10,6 @@ plugins {
     id(deps.build.plugins.mavenPublish)
 }
 
-group = "com.github.gumil"
-
 kotlin {
     jvm()
     js {
@@ -129,3 +127,5 @@ repositories.whenObjectAdded {
 }
 
 tasks.register("install").dependsOn("publishToMavenLocal")
+
+apply { from(rootProject.file("gradle/maven-mpp.gradle")) }
