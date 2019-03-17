@@ -72,11 +72,9 @@ object deps {
         }
 
         object plugins {
-            const val androidMaven = "com.github.dcendents:android-maven-gradle-plugin:2.1"
             const val dokka = "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
             const val detekt = "io.gitlab.arturbosch.detekt"
             const val node = "com.moowork.node"
-            const val jitpack = "com.github.dcendents.android-maven"
             const val mavenPublish = "maven-publish"
         }
     }
