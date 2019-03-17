@@ -1,5 +1,6 @@
 plugins {
     id("kotlin")
+    id(deps.bintray.plugin)
 }
 
 apply { from(rootProject.file("gradle/kotlin-sources.gradle")) }
@@ -13,4 +14,7 @@ dependencies {
     testImplementation(deps.test.kotlinjUnit)
 }
 
-apply { from(rootProject.file("gradle/maven.gradle")) }
+apply {
+    from(rootProject.file("gradle/maven.gradle"))
+    from(rootProject.file("gradle/bintray.gradle"))
+}

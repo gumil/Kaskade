@@ -10,6 +10,7 @@ object versions {
     internal const val coroutines = "1.1.0"
     internal const val lifecycle = "2.0.0"
     internal const val retrofit = "2.5.0"
+    internal const val bintray = "1.8.4"
 }
 
 object deps {
@@ -62,6 +63,11 @@ object deps {
         const val moshi = "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
         const val logging = "com.squareup.okhttp3:logging-interceptor:3.12.0"
         const val coroutines = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+    }
+
+    object bintray {
+        const val plugin = "com.jfrog.bintray"
+        const val classpath = "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.bintray}"
     }
 
     const val picasso = "com.squareup.picasso:picasso:2.71828"

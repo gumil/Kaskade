@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 plugins {
     kotlin("multiplatform")
     id(deps.build.plugins.node) version versions.node
-    id(deps.build.plugins.mavenPublish)
+    id(deps.bintray.plugin)
 }
 
 kotlin {
@@ -128,4 +128,7 @@ repositories.whenObjectAdded {
 
 tasks.register("install").dependsOn("publishToMavenLocal")
 
-apply { from(rootProject.file("gradle/maven-mpp.gradle")) }
+apply {
+    from(rootProject.file("gradle/maven-mpp.gradle"))
+    from(rootProject.file("gradle/bintray.gradle"))
+}
