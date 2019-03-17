@@ -1,0 +1,34 @@
+def getPublications =  {
+    def publications = []
+    project.publishing.publications.all {
+        publications.add(it.name)
+    }
+
+    return publications
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    publish = false
+    dryRun = false
+
+    pkg {
+        userOrg = projectBintrayUserOrg
+        repo = projectBintrayRepoName
+        name = projectBintrayArtifactName
+        licenses = ['Apache-2.0']
+        publications = getPublications()
+
+        version {
+            name = project.version
+            released = new Date()
+            vcsTag = project.version
+
+            gpg {
+                sign = true
+                passphrase = System.getenv('BINTRAY_PASSPHRASE')
+            }
+        }
+    }
+}
