@@ -7,7 +7,7 @@ object versions {
 
     internal const val kotlin = "1.3.21"
     internal const val navigation = "2.0.0-rc02"
-    internal const val coroutines = "1.1.0"
+    internal const val coroutines = "1.1.1"
     internal const val lifecycle = "2.0.0"
     internal const val retrofit = "2.5.0"
     internal const val bintray = "1.8.4"
@@ -47,6 +47,9 @@ object deps {
 
         object coroutines {
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
+            const val native = "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:${versions.coroutines}"
+            const val js = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${versions.coroutines}"
+            const val common = "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${versions.coroutines}"
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
         }
 
