@@ -55,7 +55,7 @@ dependencies {
     implementation(deps.retrofit.logging)
     implementation(deps.retrofit.coroutines)
 
-    implementation(deps.picasso)
+    implementation(deps.libs.picasso)
 
     implementation(deps.android.lifecycle.extensions)
     implementation(deps.android.navigation)
@@ -64,7 +64,7 @@ dependencies {
     implementation(deps.rx.android)
     implementation(deps.rx.binding)
 
-    testImplementation(deps.test.lifecycle)
-    testImplementation(deps.test.kotlinjUnit)
+    testImplementation(deps.android.lifecycle.test)
+    testImplementation(deps.kotlin.test.junit)
     testImplementation(deps.test.mockK)
 }

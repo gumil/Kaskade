@@ -11,7 +11,7 @@ dependencies {
     implementation(deps.kotlin.stdlib.core)
     implementation(deps.rx.java)
 
-    testImplementation(deps.test.kotlinjUnit)
+    testImplementation(deps.kotlin.test.junit)
 }
 
 apply {

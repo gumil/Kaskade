@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.moowork.gradle.node.npm.NpmTask
 import com.moowork.gradle.node.task.NodeTask
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilationToRunnableFiles
@@ -6,7 +5,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
-    id(deps.build.plugins.node) version versions.node
+    id(deps.plugins.node) version versions.node
     id(deps.bintray.plugin)
 }
 
@@ -29,14 +28,14 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(kotlin("stdlib-common"))
+                implementation(kotlin("stdlib-common"))
             }
         }
 
         val commonTest by getting {
             dependencies {
-                api(kotlin("test-common"))
-                api(kotlin("test-annotations-common"))
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
             }
         }
 
@@ -125,8 +124,6 @@ repositories.whenObjectAdded {
         }
     }
 }
-
-tasks.register("install").dependsOn("publishToMavenLocal")
 
 apply {
     from(rootProject.file("gradle/maven-mpp.gradle"))
