@@ -31,8 +31,8 @@ dependencies {
     implementation(deps.kotlin.stdlib.core)
     implementation(deps.android.lifecycle.livedata)
 
-    testImplementation(deps.test.lifecycle)
-    testImplementation(deps.test.kotlinjUnit)
+    testImplementation(deps.android.lifecycle.test)
+    testImplementation(deps.kotlin.test.junit)
     testImplementation(deps.test.mockK)
 }
 

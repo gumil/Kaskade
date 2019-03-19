@@ -1,17 +1,17 @@
 import io.gitlab.arturbosch.detekt.DetektPlugin
 
-plugins { id(deps.build.plugins.detekt) version versions.detekt }
+plugins { id(deps.detekt.plugin) version versions.detekt }
 
 buildscript {
     repositories {
         google()
         jcenter()
-        maven { url = uri(deps.build.repositories.plugins) }
+        maven { url = uri(deps.repositories.m2) }
     }
     dependencies {
-        classpath(deps.android.build.gradlePlugin)
-        classpath(deps.kotlin.build.gradlePlugin)
-        classpath(deps.build.plugins.dokka)
+        classpath(deps.android.classpath)
+        classpath(deps.kotlin.classpath)
+        classpath(deps.classpaths.dokka)
         classpath(deps.bintray.classpath)
     }
 }

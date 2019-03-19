@@ -21,13 +21,14 @@ object deps {
             const val minSdkVersion = 16
             const val sampleMinSdkVersion = 21
             const val targetSdkVersion = 28
-
-            const val gradlePlugin = "com.android.tools.build:gradle:3.3.0"
         }
+
+        const val classpath = "com.android.tools.build:gradle:3.3.0"
 
         object lifecycle {
             const val livedata = "androidx.lifecycle:lifecycle-livedata:${versions.lifecycle}"
             const val extensions = "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
+            const val test = "androidx.arch.core:core-testing:${versions.lifecycle}"
         }
 
         const val appCompat = "androidx.appcompat:appcompat:1.0.2"
@@ -37,9 +38,7 @@ object deps {
     }
 
     object kotlin {
-        object build {
-            const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
-        }
+        const val classpath = "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
 
         object stdlib {
             const val core = "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
@@ -49,6 +48,10 @@ object deps {
         object coroutines {
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+        }
+
+        object test {
+            const val junit = "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}"
         }
     }
 
@@ -70,28 +73,30 @@ object deps {
         const val classpath = "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.bintray}"
     }
 
-    const val picasso = "com.squareup.picasso:picasso:2.71828"
-
-    object build {
-        object repositories {
-            const val plugins = "https://plugins.gradle.org/m2/"
-        }
-
-        object plugins {
-            const val dokka = "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
-            const val detekt = "io.gitlab.arturbosch.detekt"
-            const val node = "com.moowork.node"
-            const val mavenPublish = "maven-publish"
-        }
-    }
-
     object detekt {
+        const val plugin = "io.gitlab.arturbosch.detekt"
         const val lint = "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
     }
 
+    object repositories {
+        const val m2 = "https://plugins.gradle.org/m2/"
+    }
+
+    object plugins {
+        const val detekt = "io.gitlab.arturbosch.detekt"
+        const val node = "com.moowork.node"
+        const val mavenPublish = "maven-publish"
+    }
+
+    object classpaths {
+        const val dokka = "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
+    }
+
     object test {
-        const val kotlinjUnit = "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}"
         const val mockK = "io.mockk:mockk:1.9.1"
-        const val lifecycle = "androidx.arch.core:core-testing:${versions.lifecycle}"
+    }
+
+    object libs {
+        const val picasso = "com.squareup.picasso:picasso:2.71828"
     }
 }
