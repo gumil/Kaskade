@@ -13,7 +13,7 @@ android {
     buildToolsVersion(deps.android.build.buildToolsVersion)
 
     defaultConfig {
-        applicationId = "io.gumil.kaskade.sample"
+        applicationId = "dev.gumil.kaskade.sample"
         minSdkVersion(deps.android.build.sampleMinSdkVersion)
         targetSdkVersion(deps.android.build.targetSdkVersion)
         versionCode = 1

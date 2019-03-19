@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="io.gumil.kaskade.sample.MainFragment"
+        android:name="dev.gumil.kaskade.sample.MainFragment"
         android:label="MainFragment">
         <action
             android:id="@+id/action_mainFragment_to_todoFragment"
@@ -21,16 +21,16 @@
 
     <fragment
         android:id="@+id/todoFragment"
-        android:name="io.gumil.kaskade.sample.todo.TodoFragment"
+        android:name="dev.gumil.kaskade.sample.todo.TodoFragment"
         android:label="TodoFragment" />
 
     <fragment
         android:id="@+id/dogFragment"
-        android:name="io.gumil.kaskade.sample.network.DogFragment"
+        android:name="dev.gumil.kaskade.sample.network.DogFragment"
         android:label="DogFragment" />
 
     <fragment
         android:id="@+id/authFragment"
-        android:name="io.gumil.kaskade.sample.auth.AuthFragment"
+        android:name="dev.gumil.kaskade.sample.auth.AuthFragment"
         android:label="AuthFragment" />
 </navigation>
