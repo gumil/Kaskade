@@ -66,6 +66,7 @@ kotlin {
 }
 
 tasks.register("iosTest") {
+    group = "verification"
     dependsOn("iosX64TestBinaries")
     doLast {
         val binary = (kotlin.targets["iosX64"] as KotlinNativeTarget)
@@ -116,6 +117,11 @@ tasks.register<NodeTask>("runMocha") {
 }
 
 tasks["jsTest"].dependsOn("runMocha")
+
+tasks.register("test") {
+    group = "verification"
+    dependsOn("jvmTest", "iosTest", "jsTest")
+}
 
 repositories.whenObjectAdded {
     if (this is IvyArtifactRepository) {
