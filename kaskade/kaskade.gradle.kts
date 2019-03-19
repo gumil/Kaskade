@@ -1,8 +1,3 @@
-import com.moowork.gradle.node.npm.NpmTask
-import com.moowork.gradle.node.task.NodeTask
-import org.jetbrains.kotlin.gradle.plugin.KotlinCompilationToRunnableFiles
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
 plugins {
     kotlin("multiplatform")
     id(deps.plugins.node) version versions.node
@@ -65,73 +60,8 @@ kotlin {
     }
 }
 
-tasks.register("iosTest") {
-    group = "verification"
-    dependsOn("iosX64TestBinaries")
-    doLast {
-        val binary = (kotlin.targets["iosX64"] as KotlinNativeTarget)
-            .compilations["test"]
-            .getBinary("EXECUTABLE", "DEBUG")
-
-        exec {
-            commandLine("xcrun", "simctl", "spawn", "iPhone XR", binary.absolutePath)
-        }
-    }
-}
-
-node {
-    version = "10.9.0"
-    download = true
-    nodeModulesDir = file("$buildDir/npm/")
-}
-
-tasks.register<NpmTask>("installMocha") {
-    setWorkingDir(node.nodeModulesDir)
-    setArgs(listOf("install", "mocha@6.0.0"))
-}
-
-val jsCompilations = kotlin.targets["js"].compilations
-
-tasks.register("populateNodeModules") {
-    doLast {
-        copy {
-        from("$buildDir/npm/node_modules")
-        from(jsCompilations["main"].output.allOutputs)
-        (jsCompilations["test"] as KotlinCompilationToRunnableFiles).runtimeDependencyFiles.forEach {
-            if (it.exists() && !it.isDirectory) {
-                from(zipTree(it.absolutePath).matching { include("*.js") })
-            }
-        }
-        into("$buildDir/node_modules")
-        }
-    }
-}
-
-tasks.register<NodeTask>("runMocha") {
-    dependsOn("compileTestKotlinJs", "installMocha", "populateNodeModules")
-    setScript(file("$buildDir/npm/node_modules/.bin/mocha"))
-    setArgs(listOf(
-        "--timeout", "15000",
-        relativePath(jsCompilations["test"].output.allOutputs.first()) + "/${project.name}_test.js"
-    ))
-}
-
-tasks["jsTest"].dependsOn("runMocha")
-
-tasks.register("test") {
-    group = "verification"
-    dependsOn("jvmTest", "iosTest", "jsTest")
-}
-
-repositories.whenObjectAdded {
-    if (this is IvyArtifactRepository) {
-        metadataSources {
-            artifact()
-        }
-    }
-}
-
 apply {
+    from(rootProject.file("gradle/mpp-tests.gradle"))
     from(rootProject.file("gradle/maven-mpp.gradle"))
     from(rootProject.file("gradle/bintray.gradle"))
 }
