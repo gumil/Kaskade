@@ -3,26 +3,20 @@ package dev.gumil.kaskade.coroutines
 import dev.gumil.kaskade.Action
 import dev.gumil.kaskade.Kaskade
 import dev.gumil.kaskade.State
-import io.mockk.confirmVerified
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
-import io.mockk.verifyOrder
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.plus
-import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
 internal class CoroutinesKaskadeBuilderTest {
 
     @Test
-    fun `create coroutine scoped kaskade builder`() {
-        val mockOnStateChanged = mockk<(state: TestState) -> Unit>(relaxed = true)
-        every { mockOnStateChanged.invoke(any()) } returns Unit
+    fun create_coroutine_scoped_kaskade_builder() {
+        val verifier = Verifier<TestState>()
+        val onStateChanged = verifier.function
 
-        runBlocking {
+        runTest({
             val scope = this
             val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
                 coroutines(scope) {
@@ -31,25 +25,24 @@ internal class CoroutinesKaskadeBuilderTest {
                 }
             }
 
-            kaskade.onStateChanged = mockOnStateChanged
+            kaskade.onStateChanged = onStateChanged
             kaskade.process(TestAction.Action1)
             kaskade.process(TestAction.Action2)
-        }
-
-        verifyOrder {
-            mockOnStateChanged.invoke(TestState.State1)
-            mockOnStateChanged.invoke(TestState.State1)
-            mockOnStateChanged.invoke(TestState.State2)
-        }
-        confirmVerified(mockOnStateChanged)
+        }, {
+            verifier.verifyOrder {
+                verify(TestState.State1)
+                verify(TestState.State1)
+                verify(TestState.State2)
+            }
+        })
     }
 
     @Test
-    fun `create coroutine kaskade builder with independent scopes`() {
-        val mockOnStateChanged = mockk<(state: TestState) -> Unit>(relaxed = true)
-        every { mockOnStateChanged.invoke(any()) } returns Unit
+    fun create_coroutine_kaskade_builder_with_independent_scopes() {
+        val verifier = Verifier<TestState>()
+        val onStateChanged = verifier.function
 
-        runBlocking {
+        runTest({
             val scope = this
             val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
                 coroutines {
@@ -58,26 +51,25 @@ internal class CoroutinesKaskadeBuilderTest {
                 }
             }
 
-            kaskade.onStateChanged = mockOnStateChanged
+            kaskade.onStateChanged = onStateChanged
             kaskade.process(TestAction.Action1)
             kaskade.process(TestAction.Action2)
-        }
-
-        verifyOrder {
-            mockOnStateChanged.invoke(TestState.State1)
-            mockOnStateChanged.invoke(TestState.State1)
-            mockOnStateChanged.invoke(TestState.State2)
-        }
-        confirmVerified(mockOnStateChanged)
+        }, {
+            verifier.verifyOrder {
+                verify(TestState.State1)
+                verify(TestState.State1)
+                verify(TestState.State2)
+            }
+        })
     }
 
     @Test
-    fun `coroutines with shared scope should cancel when scope is cancelled`() {
-        val mockOnStateChanged = mockk<(state: TestState) -> Unit>(relaxed = true)
-        every { mockOnStateChanged.invoke(any()) } returns Unit
+    fun coroutines_with_shared_scope_should_cancel_when_scope_is_cancelled() {
+        val verifier = Verifier<TestState>()
+        val onStateChanged = verifier.function
         val job = Job()
 
-        runBlocking {
+        runTest({
             val localScope = this + job
             val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
                 coroutines(localScope) {
@@ -92,26 +84,26 @@ internal class CoroutinesKaskadeBuilderTest {
                 }
             }
 
-            kaskade.onStateChanged = mockOnStateChanged
+            kaskade.onStateChanged = onStateChanged
             kaskade.process(TestAction.Action1)
             kaskade.process(TestAction.Action2)
-        }
-        job.cancel()
-
-        assertTrue(job.isCancelled)
-        verify(exactly = 1) { mockOnStateChanged.invoke(TestState.State1) }
-        confirmVerified(mockOnStateChanged)
+            job.cancel()
+            delay(1000)
+        }, {
+            assertTrue(job.isCancelled)
+            verifier.verifyInvokedWithValue(TestState.State1, 1)
+        })
     }
 
     @Test
-    fun `coroutines with independent scopes should only cancel cancelled job`() {
-        val mockOnStateChanged = mockk<(state: TestState) -> Unit>(relaxed = true)
-        every { mockOnStateChanged.invoke(any()) } returns Unit
+    fun coroutines_with_independent_scopes_should_only_cancel_cancelled_job() {
+        val verifier = Verifier<TestState>()
+        val onStateChanged = verifier.function
 
         val job1 = Job()
         val job2 = Job()
 
-        runBlocking {
+        runTest({
             val localScope1 = this + job1
             val localScope2 = this + job2
             val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
@@ -126,18 +118,18 @@ internal class CoroutinesKaskadeBuilderTest {
                 }
             }
 
-            kaskade.onStateChanged = mockOnStateChanged
+            kaskade.onStateChanged = onStateChanged
             kaskade.process(TestAction.Action1)
             kaskade.process(TestAction.Action2)
-        }
-        job1.cancel()
-
-        assertTrue(job1.isCancelled)
-        verifyOrder {
-            mockOnStateChanged.invoke(TestState.State1)
-            mockOnStateChanged.invoke(TestState.State2)
-        }
-        confirmVerified(mockOnStateChanged)
+            job1.cancel()
+            delay(1000)
+        }, {
+            assertTrue(job1.isCancelled)
+            verifier.verifyOrder {
+                verify(TestState.State1)
+                verify(TestState.State2)
+            }
+        })
     }
 }
 
