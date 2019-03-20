@@ -32,9 +32,9 @@ subprojects {
         }
 
         val configFile = if (project.displayName.contains("sample")) {
-            "../detekt/comments-disabled.yml"
+            "$rootDir/detekt/comments-disabled.yml"
         } else {
-            "../detekt/detekt.yml"
+            "$rootDir/detekt/detekt.yml"
         }
 
         detekt {

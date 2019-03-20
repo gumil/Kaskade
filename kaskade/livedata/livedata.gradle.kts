@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":kaskade"))
+    implementation(project(":core"))
 
     implementation(deps.kotlin.stdlib.core)
     implementation(deps.android.lifecycle.livedata)

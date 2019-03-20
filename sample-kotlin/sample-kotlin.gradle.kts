@@ -3,7 +3,7 @@ plugins { id("kotlin") }
 apply { from(rootProject.file("gradle/kotlin-sources.gradle")) }
 
 dependencies {
-    implementation(project(":kaskade"))
+    implementation(project(":core"))
 
     implementation(deps.kotlin.stdlib.core)
 
