@@ -19,6 +19,7 @@ kotlin {
         }
     }
     iosX64()
+    iosArm64()
 
     sourceSets {
         val commonMain by getting {
@@ -33,6 +34,13 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+            }
+        }
+
+        val nativeMain by creating {
+            dependencies {
+                api(project(":core"))
+                implementation(deps.kotlin.coroutines.native)
             }
         }
 
@@ -60,12 +68,10 @@ kotlin {
                 implementation(kotlin("test-js"))
             }
         }
-        iosX64().compilations["main"].defaultSourceSet {
-            dependencies {
-                api(project(":core"))
-                implementation(deps.kotlin.coroutines.native)
-            }
-        }
+    }
+
+    configure(listOf(iosX64(), iosArm64())) {
+        compilations["main"].source(sourceSets["nativeMain"])
     }
 }
 
