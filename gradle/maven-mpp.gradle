@@ -25,9 +25,8 @@ publishing {
     publications.all {
         groupId = project.group
         version = project.version
-        artifactId = name
         if (name == "metadata") {
-            artifactId = "common"
+            artifactId = "$project.name-common"
         }
         artifact javadocsJar
 

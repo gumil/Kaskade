@@ -14,8 +14,6 @@ task sourcesJar(type: Jar) {
     }
 }
 
-def projectName = project.name.substring(project.name.lastIndexOf("-") + 1)
-
 publishing {
     publications {
         mavenProject(MavenPublication) {
@@ -30,7 +28,7 @@ publishing {
                 artifact("$buildDir/outputs/aar/${project.name}-${project.version}.aar")
             }
 
-            artifactId = projectName
+            artifactId = project.name
             artifact sourcesJar
 
             withPom(pom)
