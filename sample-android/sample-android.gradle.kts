@@ -45,7 +45,6 @@ dependencies {
     implementation(deps.kotlin.coroutines.core)
     implementation(deps.kotlin.coroutines.android)
 
-    implementation(project(":core"))
     implementation(project(":livedata"))
     implementation(project(":coroutines"))
     implementation(project(":rx"))

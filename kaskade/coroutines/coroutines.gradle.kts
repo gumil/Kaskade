@@ -23,7 +23,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":core"))
+                api(project(":core"))
                 implementation(deps.kotlin.coroutines.common)
                 implementation(kotlin("stdlib-common"))
             }
@@ -38,7 +38,7 @@ kotlin {
 
         jvm().compilations["main"].defaultSourceSet {
             dependencies {
-                implementation(project(":core"))
+                api(project(":core"))
                 implementation(deps.kotlin.coroutines.core)
                 implementation(kotlin("stdlib-jdk8"))
             }
@@ -50,7 +50,7 @@ kotlin {
         }
         js().compilations["main"].defaultSourceSet {
             dependencies {
-                implementation(project(":core"))
+                api(project(":core"))
                 implementation(deps.kotlin.coroutines.js)
                 implementation(kotlin("stdlib-js"))
             }
@@ -62,7 +62,7 @@ kotlin {
         }
         iosX64().compilations["main"].defaultSourceSet {
             dependencies {
-                implementation(project(":core"))
+                api(project(":core"))
                 implementation(deps.kotlin.coroutines.native)
             }
         }
