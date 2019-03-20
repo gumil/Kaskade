@@ -5,6 +5,7 @@ import dev.gumil.kaskade.ActionState
 import dev.gumil.kaskade.Reducer
 import dev.gumil.kaskade.State
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 /**
@@ -18,7 +19,13 @@ class ScopedReducer<ACTION : Action, STATE : State>(
     private val transformerFunction: suspend ActionState<ACTION, STATE>.() -> STATE
 ) : Reducer<ACTION, STATE> {
 
+    private var job: Job? = null
+
     override fun invoke(action: ACTION, state: STATE, onStateChanged: (state: STATE) -> Unit) {
-        coroutineScope.launch { onStateChanged(transformerFunction(ActionState(action, state))) }
+        job = coroutineScope.launch { onStateChanged(transformerFunction(ActionState(action, state))) }
+    }
+
+    suspend fun await() {
+        job?.join()
     }
 }
