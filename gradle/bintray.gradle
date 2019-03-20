@@ -1,3 +1,5 @@
+apply plugin: 'com.jfrog.bintray'
+
 def getPublications =  {
     def publications = []
     project.publishing.publications.all {
