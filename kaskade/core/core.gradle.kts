@@ -1,7 +1,6 @@
 plugins {
     kotlin("multiplatform")
     id(deps.plugins.node) version versions.node
-    id(deps.bintray.plugin)
 }
 
 kotlin {

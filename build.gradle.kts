@@ -12,7 +12,7 @@ buildscript {
         classpath(deps.android.classpath)
         classpath(deps.kotlin.classpath)
         classpath(deps.classpaths.dokka)
-        classpath(deps.bintray.classpath)
+        classpath(deps.classpaths.bintray)
     }
 }
 

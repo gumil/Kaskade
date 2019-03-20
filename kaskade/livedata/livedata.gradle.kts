@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    id(deps.bintray.plugin)
 }
 
 apply { from(rootProject.file("gradle/kotlin-sources.gradle")) }

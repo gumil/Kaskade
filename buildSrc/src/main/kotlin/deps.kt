@@ -71,11 +71,6 @@ object deps {
         const val coroutines = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
     }
 
-    object bintray {
-        const val plugin = "com.jfrog.bintray"
-        const val classpath = "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.bintray}"
-    }
-
     object detekt {
         const val plugin = "io.gitlab.arturbosch.detekt"
         const val lint = "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
@@ -93,6 +88,7 @@ object deps {
 
     object classpaths {
         const val dokka = "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
+        const val bintray = "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.bintray}"
     }
 
     object test {
