@@ -24,12 +24,15 @@ class CoroutinesKaskadeBuilder<ACTION : Action, STATE : State>(
      *
      * @param scope to be used by the [transformer].
      * @param transformer suspending function that transforms [ActionState] to new [State].
+     * @return the ScopedReducer associated with the action
      */
     inline fun <reified T : ACTION> on(
         scope: CoroutineScope,
         noinline transformer: suspend ActionState<T, STATE>.() -> STATE
-    ) {
-        on(T::class, ScopedReducer(scope, transformer))
+    ): ScopedReducer<T, STATE> {
+        val reducer = ScopedReducer(scope, transformer)
+        on(T::class, reducer)
+        return reducer
     }
 
     /**
@@ -60,11 +63,14 @@ class CoroutinesScopedKaskadeBuilder<ACTION : Action, STATE : State>(
      * Reified version of the [on] method for better syntax in the DSL.
      *
      * @param transformer suspending function that transforms [ActionState] to new [State].
+     * @return the ScopedReducer associated with the action
      */
     inline fun <reified T : ACTION> on(
         noinline transformer: suspend ActionState<T, STATE>.() -> STATE
-    ) {
-        on(T::class, ScopedReducer(scope, transformer))
+    ): ScopedReducer<T, STATE> {
+        val reducer = ScopedReducer(scope, transformer)
+        on(T::class, reducer)
+        return reducer
     }
 
     /**

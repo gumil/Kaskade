@@ -70,14 +70,16 @@ internal class CoroutinesKaskadeBuilderTest {
         val job = Job()
 
         runTest({
+            var scopedReducer1: ScopedReducer<TestAction.Action1, TestState>? = null
+            var scopedReducer2: ScopedReducer<TestAction.Action2, TestState>? = null
             val localScope = this + job
             val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
                 coroutines(localScope) {
-                    on<TestAction.Action1> {
+                    scopedReducer1 = on {
                         delay(1000)
                         throw AssertionError("should not be called")
                     }
-                    on<TestAction.Action2> {
+                    scopedReducer2 = on {
                         delay(1000)
                         throw AssertionError("should not be called")
                     }
@@ -88,7 +90,8 @@ internal class CoroutinesKaskadeBuilderTest {
             kaskade.process(TestAction.Action1)
             kaskade.process(TestAction.Action2)
             job.cancel()
-            delay(1000)
+            scopedReducer1?.await()
+            scopedReducer2?.await()
         }, {
             assertTrue(job.isCancelled)
             verifier.verifyInvokedWithValue(TestState.State1, 1)
@@ -104,15 +107,18 @@ internal class CoroutinesKaskadeBuilderTest {
         val job2 = Job()
 
         runTest({
+            var scopedReducer1: ScopedReducer<TestAction.Action1, TestState>? = null
+            var scopedReducer2: ScopedReducer<TestAction.Action2, TestState>? = null
             val localScope1 = this + job1
             val localScope2 = this + job2
             val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
                 coroutines {
-                    on<TestAction.Action1>(localScope1) {
+                    scopedReducer1 = on(localScope1) {
                         delay(1000)
                         throw AssertionError("should not be called")
                     }
-                    on<TestAction.Action2>(localScope2) {
+                    scopedReducer2 = on(localScope2) {
+                        delay(1000)
                         TestState.State2
                     }
                 }
@@ -122,7 +128,8 @@ internal class CoroutinesKaskadeBuilderTest {
             kaskade.process(TestAction.Action1)
             kaskade.process(TestAction.Action2)
             job1.cancel()
-            delay(1000)
+            scopedReducer1?.await()
+            scopedReducer2?.await()
         }, {
             assertTrue(job1.isCancelled)
             verifier.verifyOrder {
