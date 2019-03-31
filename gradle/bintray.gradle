@@ -1,6 +1,6 @@
 apply plugin: 'com.jfrog.bintray'
 
-def getPublications =  {
+def getPublications = {
     def publications = []
     project.publishing.publications.all {
         publications.add(it.name)
@@ -12,7 +12,7 @@ def getPublications =  {
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
-    publish = false
+    publish = true
     dryRun = false
 
     pkg {
@@ -30,6 +30,20 @@ bintray {
             gpg {
                 sign = true
                 passphrase = System.getenv('BINTRAY_PASSPHRASE')
+            }
+        }
+    }
+}
+
+if (plugins.hasPlugin("org.jetbrains.kotlin.multiplatform")) {
+    bintrayUpload {
+        doFirst {
+            publishing.publications.findAll {
+                it instanceof MavenPublication
+            }.each {
+                it.artifact("$buildDir/publications/$it.name/module.json") {
+                    extension 'module'
+                }
             }
         }
     }
