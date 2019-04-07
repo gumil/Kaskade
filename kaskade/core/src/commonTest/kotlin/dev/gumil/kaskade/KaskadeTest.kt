@@ -167,7 +167,7 @@ internal class KaskadeTest {
         val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
             on<TestAction.Action1> {
                 // assert SingleEvent not persisted as current state
-                assertEquals(TestState.State1, state)
+                assertEquals(TestState.State1, currentState)
                 assertEquals(
                     ActionState<TestAction.Action1, TestState>(TestAction.Action1, TestState.State1), this
                 )
