@@ -64,7 +64,7 @@ internal class KaskadeTest {
     @Test
     fun process_action_after_unsubscribing_should_throw_exception() {
         kaskade.unsubscribe()
-        assertFailsWith(IncompleteFlowException::class) {
+        assertFailsWith(IllegalStateException::class) {
             kaskade.process(TestAction.Action1)
         }
     }

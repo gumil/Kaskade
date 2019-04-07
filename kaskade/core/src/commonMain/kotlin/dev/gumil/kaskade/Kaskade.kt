@@ -69,11 +69,15 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
     }
 
     /**
-     * Processes [action] to ouput a new [STATE].
+     * Processes [action] to output a new [STATE].
      *
-     * @param [action] to be precessed into a new [STATE].
+     * @param [action] to be processed into a new [STATE].
      */
     fun process(action: ACTION) {
+        if (actionStateMap.isEmpty()) {
+            throw IllegalStateException("No actions can be processed. Kaskade might be unsubscribed at this point.")
+        }
+
         getReducer(action)?.let { reducer ->
             reducer(action, currentState) { state ->
                 if (state !is SingleEvent) {
