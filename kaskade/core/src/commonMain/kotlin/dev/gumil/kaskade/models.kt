@@ -38,5 +38,5 @@ interface SingleEvent : State
  */
 data class ActionState<A : Action, S : State>(
     val action: A,
-    val state: S
+    val currentState: S
 )

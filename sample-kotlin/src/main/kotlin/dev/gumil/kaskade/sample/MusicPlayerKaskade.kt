@@ -9,7 +9,7 @@ internal class MusicPlayerKaskade {
 
     val kaskade = Kaskade.create<PlayerAction, PlayerState>(PlayerState.Stopped) {
         on<PlayerAction.PausePlay> {
-            when (state) {
+            when (currentState) {
                 is PlayerState.Stopped,
                 is PlayerState.Paused -> PlayerState.Playing(musicPlayer.play())
                 else -> {
