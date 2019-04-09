@@ -23,7 +23,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":core"))
+                implementation(project(":core"))
                 implementation(deps.kotlin.coroutines.common)
                 implementation(kotlin("stdlib-common"))
             }
@@ -38,14 +38,12 @@ kotlin {
 
         val nativeMain by creating {
             dependencies {
-                api(project(":core"))
                 implementation(deps.kotlin.coroutines.native)
             }
         }
 
         jvm().compilations["main"].defaultSourceSet {
             dependencies {
-                api(project(":core"))
                 implementation(deps.kotlin.coroutines.core)
                 implementation(kotlin("stdlib-jdk8"))
             }
@@ -57,7 +55,6 @@ kotlin {
         }
         js().compilations["main"].defaultSourceSet {
             dependencies {
-                api(project(":core"))
                 implementation(deps.kotlin.coroutines.js)
                 implementation(kotlin("stdlib-js"))
             }
