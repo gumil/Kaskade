@@ -25,9 +25,6 @@ publishing {
     publications.all {
         groupId = project.group
         version = project.version
-        if (name == "metadata") {
-            artifactId = "$project.name-common"
-        }
         artifact javadocsJar
 
         withPom(pom)
