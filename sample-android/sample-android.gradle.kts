@@ -45,9 +45,10 @@ dependencies {
     implementation(deps.kotlin.coroutines.core)
     implementation(deps.kotlin.coroutines.android)
 
-    implementation(project(":livedata"))
-    implementation(project(":coroutines"))
-    implementation(project(":rx"))
+    implementation(deps.kaskade.core)
+    implementation(deps.kaskade.coroutines)
+    implementation(deps.kaskade.livedata)
+    implementation(deps.kaskade.rx)
 
     implementation(deps.retrofit.core)
     implementation(deps.retrofit.moshi)
