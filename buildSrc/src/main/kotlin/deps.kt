@@ -76,6 +76,14 @@ object deps {
         const val lint = "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
     }
 
+    object kaskade {
+        private const val version = "0.3.3"
+        const val core = "dev.gumil.kaskade:core:$version"
+        const val coroutines = "dev.gumil.kaskade:coroutines:$version"
+        const val rx = "dev.gumil.kaskade:rx:$version"
+        const val livedata = "dev.gumil.kaskade:livedata:$version"
+    }
+
     object repositories {
         const val m2 = "https://plugins.gradle.org/m2/"
     }
