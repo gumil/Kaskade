@@ -5,9 +5,9 @@ object versions {
     const val detekt = "1.0.0-RC12"
     const val node = "1.2.0"
 
-    internal const val kotlin = "1.3.21"
-    internal const val navigation = "2.0.0-rc02"
-    internal const val coroutines = "1.1.1"
+    internal const val kotlin = "1.3.30"
+    internal const val navigation = "2.0.0"
+    internal const val coroutines = "1.2.0"
     internal const val lifecycle = "2.0.0"
     internal const val retrofit = "2.5.0"
     internal const val bintray = "1.8.4"
@@ -23,7 +23,7 @@ object deps {
             const val targetSdkVersion = 28
         }
 
-        const val classpath = "com.android.tools.build:gradle:3.3.0"
+        const val classpath = "com.android.tools.build:gradle:3.4.0"
 
         object lifecycle {
             const val livedata = "androidx.lifecycle:lifecycle-livedata:${versions.lifecycle}"
