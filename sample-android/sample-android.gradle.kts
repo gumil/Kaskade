@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
-
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -28,12 +26,14 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), file("proguard-rules.pro"))
         }
     }
+
+    packagingOptions {
+        pickFirst("META-INF/atomicfu.kotlin_module")
+    }
 }
 
 androidExtensions {
-    configure(delegateClosureOf<AndroidExtensionsExtension> {
-        isExperimental = true
-    })
+    isExperimental = true
 }
 
 dependencies {
