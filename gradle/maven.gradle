@@ -22,7 +22,7 @@ publishing {
             version = project.version
 
             if (plugins.hasPlugin("com.android.library")) {
-                artifact("$buildDir/outputs/aar/${project.name}-${project.version}.aar")
+                artifact("$buildDir/outputs/aar/${project.name}-release.aar")
             }
 
             artifactId = project.name
