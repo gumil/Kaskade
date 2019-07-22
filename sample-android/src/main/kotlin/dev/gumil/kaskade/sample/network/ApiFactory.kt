@@ -1,10 +1,8 @@
 package dev.gumil.kaskade.sample.network
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import dev.gumil.kaskade.sample.BuildConfig
 import java.util.concurrent.TimeUnit
-import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
@@ -24,7 +22,6 @@ internal object ApiFactory {
         Retrofit.Builder()
             .baseUrl(url)
             .client(okHttpClient)
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(createConverter())
             .build().create(RandomDogApi::class.java)
 
@@ -49,7 +46,7 @@ internal object ApiFactory {
 
 interface RandomDogApi {
     @GET("/api/breed/shiba/images/random")
-    fun getDog(): Deferred<Dog>
+    suspend fun getDog(): Dog
 }
 
 data class Dog(val message: String)

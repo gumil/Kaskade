@@ -68,7 +68,6 @@ object deps {
         const val core = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
         const val moshi = "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
         const val logging = "com.squareup.okhttp3:logging-interceptor:4.0.1"
-        const val coroutines = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
     }
 
     object detekt {

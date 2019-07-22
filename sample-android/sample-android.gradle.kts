@@ -54,7 +54,6 @@ dependencies {
     implementation(deps.retrofit.core)
     implementation(deps.retrofit.moshi)
     implementation(deps.retrofit.logging)
-    implementation(deps.retrofit.coroutines)
 
     implementation(deps.libs.picasso)
 
