@@ -29,6 +29,7 @@ android {
 
     packagingOptions {
         pickFirst("META-INF/atomicfu.kotlin_module")
+        pickFirst("META-INF/kotlinx-coroutines-core.kotlin_module")
     }
 }
 
