@@ -76,7 +76,7 @@ object deps {
     }
 
     object kaskade {
-        private const val version = "0.3.4"
+        private const val version = "0.3.5"
         const val core = "dev.gumil.kaskade:core:$version"
         const val coroutines = "dev.gumil.kaskade:coroutines:$version"
         const val rx = "dev.gumil.kaskade:rx:$version"
