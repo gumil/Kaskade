@@ -44,7 +44,7 @@ internal class DogViewModel(
 
                 coroutines(uiScope) {
                     on<DogAction.GetDog> {
-                        DogState.OnLoaded(dogApi.getDog().await().message)
+                        DogState.OnLoaded(dogApi.getDog().message)
                     }
                 }
 
