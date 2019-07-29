@@ -1,21 +1,37 @@
-language: android
-jdk: oraclejdk8
-sudo: false
+matrix:
+  include:
+    # iOS/JS core multiplatform tests
+    - language: objective-c
+      os: osx
+      osx_image: xcode11
+      script:
+        - xcrun simctl boot "iPhone X"
+        - ./gradlew :core:iosTest :core:jsTest
 
-android:
-  components:
-  - tools                             # Tools
-  - platform-tools                    # Platform tools
-  - build-tools-28.0.3                # Build tools version
-  - android-28                        # Target SDK version
-  - android-21                        # Min SDK version
-  - extra-android-support             # Support repo
-  - extra-android-m2repository        # Support repo
+    # iOS/JS coroutines multiplatform tests
+    - language: objective-c
+      os: osx
+      osx_image: xcode11
+      script:
+        - xcrun simctl boot "iPhone X"
+        - ./gradlew :coroutines:iosTest :coroutines:jsTest
 
-script:
-  - ./gradlew jacocoTestReport
-  - ./gradlew detekt
-  - ./gradlew lint
+    # Android/JVM build
+    - language: android
+      jdk: openjdk8
+      android:
+        components:
+          - tools                             # Tools
+          - platform-tools                    # Platform tools
+          - build-tools-29.0.1                # Build tools version
+          - android-29                        # Target SDK version
+          - android-21                        # Min SDK version
+          - extra-android-support             # Support repo
+          - extra-android-m2repository        # Support repo
+      script:
+        - ./gradlew jacocoTestReport detekt
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
 
 branches:
   only:
@@ -30,6 +46,5 @@ cache:
   - $HOME/.gradle/caches/
   - $HOME/.gradle/wrapper/
   - $HOME/.android/build-cache
-
-after_success:
-- bash <(curl -s https://codecov.io/bash)
+  - $HOME/.konan/cache/
+  - $HOME/.konan/dependencies/
