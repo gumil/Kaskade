@@ -25,6 +25,9 @@ class ScopedReducer<ACTION : Action, STATE : State>(
         job = coroutineScope.launch { onStateChanged(transformerFunction(ActionState(action, state))) }
     }
 
+    /**
+     * Waits for current job of this reducer to finish.
+     */
     suspend fun await() {
         job?.join()
     }
