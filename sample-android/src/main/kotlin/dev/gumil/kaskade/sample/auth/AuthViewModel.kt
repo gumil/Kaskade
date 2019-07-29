@@ -1,5 +1,6 @@
 package dev.gumil.kaskade.sample.auth
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import dev.gumil.kaskade.Action
 import dev.gumil.kaskade.Kaskade
@@ -29,6 +30,7 @@ internal class AuthViewModel(
                 /**
                  * Do sideffects here like logging. Sending state already handled by Kaskade
                  */
+                Log.d("AuthViewModel", "state on next = $state")
             }
 
             override fun onError(e: Throwable) {

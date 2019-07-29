@@ -32,11 +32,7 @@ subprojects {
             from(rootProject.file("gradle/jacoco.gradle.kts"))
         }
 
-        val configFile = if (project.displayName.contains("sample")) {
-            "$rootDir/detekt/comments-disabled.yml"
-        } else {
-            "$rootDir/detekt/detekt.yml"
-        }
+        val configFile = "$rootDir/detekt/detekt.yml"
 
         detekt {
             toolVersion = versions.detekt
