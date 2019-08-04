@@ -7,6 +7,7 @@ apply { from(rootProject.file("gradle/kotlin-sources.gradle")) }
 
 android {
     compileSdkVersion(deps.android.build.compileSdkVersion)
+    buildToolsVersion(deps.android.build.buildToolsVersion)
 
     defaultConfig {
         minSdkVersion(deps.android.build.minSdkVersion)
