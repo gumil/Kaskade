@@ -1,6 +1,6 @@
 # Kaskade
 [![Build Status](https://travis-ci.org/gumil/Kaskade.svg?branch=master)](https://travis-ci.org/gumil/Kaskade)
-[![](https://jitpack.io/v/gumil/Kaskade.svg)](https://jitpack.io/#gumil/Kaskade)
+[![Download](https://api.bintray.com/packages/gumil/maven/kaskade/images/download.svg)](https://bintray.com/gumil/maven/kaskade/_latestVersion)
 [![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-Kaskade-green.svg?style=flat )]( https://android-arsenal.com/details/1/7421 )
 [![codecov](https://codecov.io/gh/gumil/Kaskade/branch/master/graph/badge.svg)](https://codecov.io/gh/gumil/Kaskade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/832c3f8fcb4c4213bc72d674db75138f)](https://www.codacy.com/app/gumil/Kaskade?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gumil/Kaskade&amp;utm_campaign=Badge_Grade)
@@ -20,6 +20,24 @@ Inspired by **MVI** or **Model View Intent**.
 * **Unidirectional** - data flows in one direction.
 * **Predictable** - control on `state` changes and `action` triggers.
 * **DSL** - able to hide complexity in a fluent way.
+* **Multiplatform** - built for JVM, iOS, and Javascript.
+
+## Installation
+
+Add the dependency
+```
+dependencies {
+  // core module
+  implementation 'dev.gumil.kaskade:core:0.x.y'
+  // coroutines module
+  implementation 'dev.gumil.kaskade:coroutines:0.x.y'
+  // rx module
+  implementation 'dev.gumil.kaskade:rx:0.x.y'
+  // livedata module
+  implementation 'dev.gumil.kaskade:livedata:0.x.y'
+}
+```
+(Please replace x and y with the latest version numbers: [![Download](https://api.bintray.com/packages/gumil/maven/kaskade/images/download.svg)](https://bintray.com/gumil/maven/kaskade/_latestVersion) )
 
 ## Usage
 Create the `Action` and `State` objects.
@@ -57,7 +75,7 @@ val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
 }
 ```
 
-Adding actions to `Action` with parameter [ActionState](kaskade/src/main/kotlin/io/gumil/kaskade/models.kt)
+Adding actions to `Action` with parameter [ActionState](kaskade/core/src/commonMain/kotlin/dev/gumil/kaskade/models.kt)
 ```Kotlin
 on<TestAction.Action1> { actionState ->
     // do any side effects when returning a new state
@@ -73,7 +91,7 @@ kaskade.onStateChanged = {
 }
 ```
 
-Observing states with [Flow](kaskade/src/main/kotlin/io/gumil/kaskade/flow/Flow.kt)
+Observing states with [Flow](kaskade/core/src/commonMain/kotlin/dev/gumil/kaskade/flow/Flow.kt)
 ```Kotlin
 kaskade.stateFlow.subscribe {
     // Do something with new state
@@ -95,29 +113,7 @@ Some of the topics covered are:
 * **[LiveData](https://github.com/gumil/Kaskade/wiki/LiveData)**
 * **[Handling Process Death](https://github.com/gumil/Kaskade/wiki/Android)**
 
-Also check out [sample-android](https://github.com/gumil/Kaskade/tree/master/sample-android) for Android use cases and [sample-kotlin](https://github.com/gumil/Kaskade/tree/master/sample-kotlin) for kotlin only project
-
-## Installation
-
-Add the JitPack repository to your build file
-```
-allprojects {
-  repositories {
-    ...
-    maven { url 'https://jitpack.io' }
-  }
-}
-```
-Add the dependency
-```
-dependencies {
-  // core module
-  implementation 'com.github.gumil.kaskade:kaskade:0.2.2'
-  // coroutines module
-  implementation 'com.github.gumil.kaskade:kaskade-coroutines:0.2.2'
-  // rx module
-  implementation 'com.github.gumil.kaskade:kaskade-rx:0.2.2'
-  // livedata module
-  implementation 'com.github.gumil.kaskade:kaskade-livedata:0.2.2'
-}
-```
+### Sample projects
+* [sample-android](https://github.com/gumil/Kaskade/tree/master/sample-android) - Android use cases
+* [sample-kotlin](https://github.com/gumil/Kaskade/tree/master/sample-kotlin) - kotlin only project
+* [Giphy Android Use Case](https://github.com/gumil/giphy) - Android master-detail flow use case
