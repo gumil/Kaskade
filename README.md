@@ -23,8 +23,11 @@ Inspired by **MVI** or **Model View Intent**.
 * **Multiplatform** - built for JVM, iOS, and Javascript.
 
 ## Installation
-
-Add the dependency
+1. Add to **`settings.gradle`**
+```
+enableFeaturePreview('GRADLE_METADATA')
+```
+2. Add the dependency
 ```
 dependencies {
   // core module
