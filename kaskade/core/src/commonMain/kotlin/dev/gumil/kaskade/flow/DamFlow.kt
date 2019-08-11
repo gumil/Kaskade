@@ -12,7 +12,7 @@ class DamFlow<T : Any> : MutableFlow<T>() {
     private val savedValueHolder = SavedValueHolder<T>()
 
     /**
-     * Emits all values from [savedValueHolder] when subscribed.
+     * Emits all saved values when subscribed.
      *
      * @param subscription function that will receive the events.
      */
@@ -22,7 +22,7 @@ class DamFlow<T : Any> : MutableFlow<T>() {
     }
 
     /**
-     * Invokes [subscription] to send events and saves into [savedValueHolder].
+     * Sends the value as events and saves the value when
      */
     override fun sendValue(value: T) {
         savedValueHolder.saveValue(value)

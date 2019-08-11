@@ -45,7 +45,7 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
     /**
      * Listens to state changes on a Kaskade flow
      *
-     * When mutating the function, it emits all states that are pending in the [stateQueue].
+     * When mutating the function, it emits all states that are pending in the state queue.
      */
     var onStateChanged: ((state: STATE) -> Unit)? = null
         set(value) {
@@ -94,7 +94,7 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
         actionStateMap[action::class] as? Reducer<T, STATE>
 
     /**
-     * Clears reference to [onStateChanged] and [actionStateMap].
+     * Clears action and state bindings.
      */
     fun unsubscribe() {
         onStateChanged = null

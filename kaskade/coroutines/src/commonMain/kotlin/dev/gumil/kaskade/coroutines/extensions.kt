@@ -17,7 +17,7 @@ fun <A : Action, S : State> Kaskade.Builder<A, S>.coroutines(builder: Coroutines
 /**
  * Extension function for building the coroutines DSL with a shared scope.
  *
- * @param scope [CoroutineScope] to run suspending functions.
+ * @param scope coroutine scope to run suspending functions.
  * @param builder function to build the DSL.
  */
 fun <A : Action, S : State> Kaskade.Builder<A, S>.coroutines(
