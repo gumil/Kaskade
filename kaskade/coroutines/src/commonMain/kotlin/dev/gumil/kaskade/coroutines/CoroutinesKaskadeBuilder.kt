@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 /**
  * Builder DSL to create reducers with suspending functions with independent scopes.
  *
- * @param builder the default builder from [Kaskade].
+ * @param builder the default builder.
  */
 @KaskadeBuilderMarker
 class CoroutinesKaskadeBuilder<ACTION : Action, STATE : State>(
@@ -20,11 +20,11 @@ class CoroutinesKaskadeBuilder<ACTION : Action, STATE : State>(
 ) {
 
     /**
-     * Reified version of the [on] method for better syntax in the DSL.
+     * Reified version of the on method for better syntax in the DSL.
      *
-     * @param scope to be used by the [transformer].
-     * @param transformer suspending function that transforms [ActionState] to new [State].
-     * @return the ScopedReducer associated with the action
+     * @param scope coroutine scope used by the transformer.
+     * @param transformer suspending function that transforms action and a state to new state.
+     * @return the [ScopedReducer] associated with the action
      */
     inline fun <reified T : ACTION> on(
         scope: CoroutineScope,
@@ -51,7 +51,7 @@ class CoroutinesKaskadeBuilder<ACTION : Action, STATE : State>(
  * Builder DSL to create reducers with suspending functions with shared scopes.
  *
  * @param scope CoroutineScope to be shared by [ScopedReducer].
- * @param builder the default builder from [Kaskade].
+ * @param builder the default builder from Kaskade.
  */
 @KaskadeBuilderMarker
 class CoroutinesScopedKaskadeBuilder<ACTION : Action, STATE : State>(
@@ -60,10 +60,10 @@ class CoroutinesScopedKaskadeBuilder<ACTION : Action, STATE : State>(
 ) {
 
     /**
-     * Reified version of the [on] method for better syntax in the DSL.
+     * Reified version of the on method for better syntax in the DSL.
      *
-     * @param transformer suspending function that transforms [ActionState] to new [State].
-     * @return the ScopedReducer associated with the action
+     * @param transformer suspending function that transforms action and a state to new state.
+     * @return the [ScopedReducer] associated with the action
      */
     inline fun <reified T : ACTION> on(
         noinline transformer: suspend ActionState<T, STATE>.() -> STATE

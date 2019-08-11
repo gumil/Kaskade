@@ -37,6 +37,12 @@ interface SingleEvent : State
  * Receiver used in [Reducer] for ease of use in the DSL.
  */
 data class ActionState<A : Action, S : State>(
+    /**
+     * Current action to be used by the [Reducer]
+     */
     val action: A,
+    /**
+     * Current state while [Reducer] is executed
+     */
     val currentState: S
 )

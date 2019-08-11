@@ -25,14 +25,14 @@ class BlockingReducer<ACTION : Action, STATE : State>(
 ) : Reducer<ACTION, STATE> {
 
     /**
-     * Synchronously invokes the [transformerFunction] and pass it to [onStateChanged] function.
+     * Synchronously invokes the function and emits its result.
      */
     override fun invoke(action: ACTION, state: STATE, onStateChanged: (state: STATE) -> Unit) {
         onStateChanged(getState(action, state))
     }
 
     /**
-     * @return [State] invoked from the [transformerFunction]
+     * @return [State] invoked from the function
      */
     fun getState(action: ACTION, state: STATE) = transformerFunction(ActionState(action, state))
 }

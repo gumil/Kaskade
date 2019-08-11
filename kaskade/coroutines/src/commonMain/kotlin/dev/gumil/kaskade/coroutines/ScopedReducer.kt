@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 /**
  * [ScopedReducer] launches a suspending function that takes the current state and an action and returns a new state.
  *
- * @param coroutineScope to be used in launching [transformerFunction].
+ * @param coroutineScope to be used in launching function.
  * @param transformerFunction suspending function specifying transformation to new state.
  */
 class ScopedReducer<ACTION : Action, STATE : State>(
@@ -21,6 +21,9 @@ class ScopedReducer<ACTION : Action, STATE : State>(
 
     private var job: Job? = null
 
+    /**
+     * Invokes the function and emits its result depending on the scope
+     */
     override fun invoke(action: ACTION, state: STATE, onStateChanged: (state: STATE) -> Unit) {
         job = coroutineScope.launch { onStateChanged(transformerFunction(ActionState(action, state))) }
     }

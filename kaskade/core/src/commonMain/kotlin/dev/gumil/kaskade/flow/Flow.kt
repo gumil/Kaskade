@@ -7,6 +7,9 @@ package dev.gumil.kaskade.flow
  */
 open class MutableFlow<T> : Flow<T> {
 
+    /**
+     * Listen to values emitted by this flow
+     */
     protected open var subscription: ((T) -> Unit)? = null
 
     /**
