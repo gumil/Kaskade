@@ -94,7 +94,7 @@ kaskade.onStateChanged = {
 }
 ```
 
-Observing states with [Flow](kaskade/core/src/commonMain/kotlin/dev/gumil/kaskade/flow/Flow.kt)
+Observing states with [Emitter](kaskade/core/src/commonMain/kotlin/dev/gumil/kaskade/flow/Emitter.kt)
 ```Kotlin
 kaskade.stateFlow.subscribe {
     // Do something with new state

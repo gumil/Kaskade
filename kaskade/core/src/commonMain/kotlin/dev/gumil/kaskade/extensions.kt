@@ -1,20 +1,20 @@
 package dev.gumil.kaskade
 
-import dev.gumil.kaskade.flow.DamFlow
-import dev.gumil.kaskade.flow.Flow
-import dev.gumil.kaskade.flow.MutableFlow
+import dev.gumil.kaskade.flow.DamEmitter
+import dev.gumil.kaskade.flow.Emitter
+import dev.gumil.kaskade.flow.MutableEmitter
 
 /**
- * @return [Flow] of states from Kaskade.
+ * @return [Emitter] of states from Kaskade.
  */
-fun <A : Action, S : State> Kaskade<A, S>.stateFlow(): Flow<S> = createFlow(MutableFlow())
+fun <A : Action, S : State> Kaskade<A, S>.stateEmitter(): Emitter<S> = createEmitter(MutableEmitter())
 
 /**
- * @return [DamFlow] of states from Kaskade.
+ * @return [DamEmitter] of states from Kaskade.
  */
-fun <A : Action, S : State> Kaskade<A, S>.stateDamFlow(): DamFlow<S> = createFlow(DamFlow())
+fun <A : Action, S : State> Kaskade<A, S>.stateDamEmitter(): DamEmitter<S> = createEmitter(DamEmitter())
 
-private fun <A : Action, S : State, F : MutableFlow<S>> Kaskade<A, S>.createFlow(flow: F): F {
+private fun <A : Action, S : State, F : MutableEmitter<S>> Kaskade<A, S>.createEmitter(flow: F): F {
     onStateChanged = { flow.sendValue(it) }
     return flow
 }

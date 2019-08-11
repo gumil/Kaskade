@@ -4,10 +4,10 @@ import dev.gumil.kaskade.SingleEvent
 import kotlin.reflect.KClass
 
 /**
- * [DamFlow] saves values emitted by type. In subscribing states, every type that it is emitted is saved in the dam.
+ * [DamEmitter] saves values emitted by type. In subscribing states, every type that it is emitted is saved in the dam.
  * It saves every latest emission by type except for [SingleEvent]. SingleEvents are not saved into the Dam.
  */
-class DamFlow<T : Any> : MutableFlow<T>() {
+class DamEmitter<T : Any> : MutableEmitter<T>() {
 
     private val savedValueHolder = SavedValueHolder<T>()
 

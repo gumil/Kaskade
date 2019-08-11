@@ -4,11 +4,11 @@ import dev.gumil.kaskade.Kaskade
 import dev.gumil.kaskade.TestAction
 import dev.gumil.kaskade.Verifier
 import dev.gumil.kaskade.TestState
-import dev.gumil.kaskade.stateDamFlow
+import dev.gumil.kaskade.stateDamEmitter
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-internal class DamFlowTest {
+internal class DamEmitterTest {
 
     private val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
         on<TestAction.Action1> {
@@ -36,7 +36,7 @@ internal class DamFlowTest {
 
     @Test
     fun damFlow_when_value_sent_should_invoke_subscribe() {
-        val flow = DamFlow<String>()
+        val flow = DamEmitter<String>()
         val verifier = Verifier<String>()
         val subscriber = verifier.function
 
@@ -48,7 +48,7 @@ internal class DamFlowTest {
 
     @Test
     fun damFlow_invoke_latest_emitted_value_before_subscribe() {
-        val flow = DamFlow<String>()
+        val flow = DamEmitter<String>()
         val verifier = Verifier<String>()
         val subscriber = verifier.function
 
@@ -65,7 +65,7 @@ internal class DamFlowTest {
 
     @Test
     fun damFlow_should_not_invoke_anything_after_unsubscribe() {
-        val flow = DamFlow<String>()
+        val flow = DamEmitter<String>()
         val verifier = Verifier<String>()
         val subscriber = verifier.function
 
@@ -79,7 +79,7 @@ internal class DamFlowTest {
 
     @Test
     fun damFlow_should_invoke_last_emitted_after_unsubscribe() {
-        val flow = DamFlow<String>()
+        val flow = DamEmitter<String>()
         val verifier = Verifier<String>()
         val subscriber = verifier.function
         val verifierNoEmissions = Verifier<String>()
@@ -97,7 +97,7 @@ internal class DamFlowTest {
 
     @Test
     fun damFlow_should_not_invoke_last_emitted_after_cleared() {
-        val flow = DamFlow<String>()
+        val flow = DamEmitter<String>()
         val verifier = Verifier<String>()
         val subscriber = verifier.function
         val verifierNoEmissions = Verifier<String>()
@@ -115,7 +115,7 @@ internal class DamFlowTest {
 
     @Test
     fun create_flow_from_kaskade_using_extension_function() {
-        val stateFlow = kaskade.stateDamFlow()
+        val stateFlow = kaskade.stateDamEmitter()
         val verifier = Verifier<TestState>()
         val subscriber = verifier.function
 
@@ -127,7 +127,7 @@ internal class DamFlowTest {
 
     @Test
     fun create_flow_from_kaskade_no_emissions_on_initialized() {
-        val stateFlow = kaskade.stateDamFlow()
+        val stateFlow = kaskade.stateDamEmitter()
         val verifier = Verifier<TestState>()
         val subscriber = verifier.function
         stateFlow.subscribe(subscriber)
@@ -137,7 +137,7 @@ internal class DamFlowTest {
 
     @Test
     fun create_flow_from_kaskade_should_emit_last_state_on_new_subscriber() {
-        val stateFlow = kaskade.stateDamFlow()
+        val stateFlow = kaskade.stateDamEmitter()
         val verifier = Verifier<TestState>()
         val subscriber = verifier.function
 
@@ -150,7 +150,7 @@ internal class DamFlowTest {
 
     @Test
     fun create_flow_from_kaskade_should_not_emit_excluded_state_on_new_subscriber() {
-        val stateFlow = kaskade.stateDamFlow()
+        val stateFlow = kaskade.stateDamEmitter()
         val verifier = Verifier<TestState>()
         val subscriber = verifier.function
 
@@ -183,7 +183,7 @@ internal class DamFlowTest {
 
         kaskade.process(TestAction.Action2)
 
-        kaskade.stateDamFlow().subscribe(subscriber)
+        kaskade.stateDamEmitter().subscribe(subscriber)
 
         verifier.verifyOrder {
             verify(TestState.State1)
