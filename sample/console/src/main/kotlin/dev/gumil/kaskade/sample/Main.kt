@@ -1,6 +1,6 @@
 package dev.gumil.kaskade.sample
 
-import dev.gumil.kaskade.stateFlow
+import dev.gumil.kaskade.stateEmitter
 
 @Suppress("ComplexMethod", "LabeledExpression")
 fun main() {
@@ -25,7 +25,7 @@ fun main() {
 
     val kaskade = MusicPlayerKaskade().kaskade
 
-    kaskade.stateFlow().subscribe { state ->
+    kaskade.stateEmitter().subscribe { state ->
         when (state) {
             is PlayerState.Playing -> println("Now Playing: ${state.music}")
             PlayerState.Stopped -> println("STOPPED")

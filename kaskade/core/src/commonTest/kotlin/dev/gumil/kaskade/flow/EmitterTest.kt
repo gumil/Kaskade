@@ -4,12 +4,12 @@ import dev.gumil.kaskade.Kaskade
 import dev.gumil.kaskade.TestAction
 import dev.gumil.kaskade.Verifier
 import dev.gumil.kaskade.TestState
-import dev.gumil.kaskade.stateFlow
+import dev.gumil.kaskade.stateEmitter
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-internal class FlowTest {
+internal class EmitterTest {
 
     private val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
         on<TestAction.Action1> {
@@ -31,7 +31,7 @@ internal class FlowTest {
 
     @Test
     fun mutableFlow_when_value_sent_should_invoke_subscribe() {
-        val flow = MutableFlow<String>()
+        val flow = MutableEmitter<String>()
         val verifier = Verifier<String>()
         val subscriber = verifier.function
 
@@ -43,7 +43,7 @@ internal class FlowTest {
 
     @Test
     fun mutableFlow_only_invoke_values_after_subscribe() {
-        val flow = MutableFlow<String>()
+        val flow = MutableEmitter<String>()
         val verifier = Verifier<String>()
         val subscriber = verifier.function
 
@@ -57,7 +57,7 @@ internal class FlowTest {
 
     @Test
     fun mutableFlow_should_not_invoke_anything_after_unsubscribe() {
-        val flow = MutableFlow<String>()
+        val flow = MutableEmitter<String>()
         val verifier = Verifier<String>()
         val subscriber = verifier.function
 
@@ -71,20 +71,20 @@ internal class FlowTest {
 
     @Test
     fun create_flow_from_kaskade_using_extension_function() {
-        val stateFlow = kaskade.stateFlow()
+        val stateFlow = kaskade.stateEmitter()
         val verifier = Verifier<TestState>()
         val subscriber = verifier.function
 
         stateFlow.subscribe(subscriber)
         kaskade.process(TestAction.Action1)
 
-        assertTrue { stateFlow is MutableFlow<TestState> }
+        assertTrue { stateFlow is MutableEmitter<TestState> }
         verifier.verifyInvokedWithValue(TestState.State1)
     }
 
     @Test
     fun create_flow_from_kaskade_no_emissions_on_initialized() {
-        val stateFlow = kaskade.stateFlow()
+        val stateFlow = kaskade.stateEmitter()
         val verifier = Verifier<TestState>()
         val subscriber = verifier.function
 

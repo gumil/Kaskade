@@ -1,6 +1,6 @@
 package dev.gumil.kaskade.sample
 
-import dev.gumil.kaskade.stateFlow
+import dev.gumil.kaskade.stateEmitter
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
@@ -16,7 +16,7 @@ internal class PlayerKaskadeTest {
         val mockSubscriber = mockk<(PlayerState) -> Unit>()
         every { mockSubscriber.invoke(any()) } returns Unit
 
-        kaskade.stateFlow().subscribe(mockSubscriber)
+        kaskade.stateEmitter().subscribe(mockSubscriber)
         kaskade.process(PlayerAction.PausePlay)
 
         verify { mockSubscriber.invoke(PlayerState.Playing("Like Ooh-Ahh")) }
@@ -29,7 +29,7 @@ internal class PlayerKaskadeTest {
         val mockSubscriber = mockk<(PlayerState) -> Unit>()
         every { mockSubscriber.invoke(any()) } returns Unit
 
-        kaskade.stateFlow().subscribe(mockSubscriber)
+        kaskade.stateEmitter().subscribe(mockSubscriber)
         kaskade.process(PlayerAction.PausePlay)
         kaskade.process(PlayerAction.PausePlay)
 
@@ -46,7 +46,7 @@ internal class PlayerKaskadeTest {
         val mockSubscriber = mockk<(PlayerState) -> Unit>()
         every { mockSubscriber.invoke(any()) } returns Unit
 
-        kaskade.stateFlow().subscribe(mockSubscriber)
+        kaskade.stateEmitter().subscribe(mockSubscriber)
         kaskade.process(PlayerAction.Next)
 
         verify { mockSubscriber.invoke(PlayerState.Playing("Like Ooh-Ahh")) }
@@ -59,7 +59,7 @@ internal class PlayerKaskadeTest {
         val mockSubscriber = mockk<(PlayerState) -> Unit>()
         every { mockSubscriber.invoke(any()) } returns Unit
 
-        kaskade.stateFlow().subscribe(mockSubscriber)
+        kaskade.stateEmitter().subscribe(mockSubscriber)
         kaskade.process(PlayerAction.Previous)
 
         verify { mockSubscriber.invoke(PlayerState.Playing("The Best Thing I Ever Did")) }
@@ -72,7 +72,7 @@ internal class PlayerKaskadeTest {
         val mockSubscriber = mockk<(PlayerState) -> Unit>()
         every { mockSubscriber.invoke(any()) } returns Unit
 
-        kaskade.stateFlow().subscribe(mockSubscriber)
+        kaskade.stateEmitter().subscribe(mockSubscriber)
         kaskade.process(PlayerAction.Stop)
 
         verify { mockSubscriber.invoke(PlayerState.Stopped) }

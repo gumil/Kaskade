@@ -1,11 +1,11 @@
 package dev.gumil.kaskade.flow
 
 /**
- * Subclass of [Flow] that exposes [sendValue] method.
+ * Subclass of [Emitter] that exposes [sendValue] method.
  *
- * Used by [dev.gumil.kaskade.stateFlow] internally.
+ * Used by [dev.gumil.kaskade.stateEmitter] internally.
  */
-open class MutableFlow<T> : Flow<T> {
+open class MutableEmitter<T> : Emitter<T> {
 
     /**
      * Listen to values emitted by this flow
@@ -35,13 +35,13 @@ open class MutableFlow<T> : Flow<T> {
 }
 
 /**
- * [Flow] applies the observer pattern.
+ * [Emitter] applies the observer pattern.
  *
  * It's a simple class to be able to observe states.
  *
- * @see [dev.gumil.kaskade.stateFlow].
+ * @see [dev.gumil.kaskade.stateEmitter].
  */
-interface Flow<T> {
+interface Emitter<T> {
 
     /**
      * @param subscription function that will receive the events.
@@ -49,7 +49,7 @@ interface Flow<T> {
     fun subscribe(subscription: (T) -> Unit)
 
     /**
-     * Unsubscribes to the [Flow].
+     * Unsubscribes to the [Emitter].
      */
     fun unsubscribe()
 }

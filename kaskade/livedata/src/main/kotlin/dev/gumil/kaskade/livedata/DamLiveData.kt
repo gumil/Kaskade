@@ -6,7 +6,7 @@ import dev.gumil.kaskade.flow.SavedValueHolder
 /**
  * Dam version of [androidx.lifecycle.LiveData].
  *
- * @see dev.gumil.kaskade.flow.DamFlow
+ * @see dev.gumil.kaskade.flow.DamEmitter
  */
 class DamLiveData<T : Any> : MutableLiveData<T>() {
 
