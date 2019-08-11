@@ -8,6 +8,7 @@ import dev.gumil.kaskade.Reducer
 import dev.gumil.kaskade.State
 import kotlin.reflect.KClass
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Builder DSL to create reducers with suspending functions with independent scopes.
@@ -20,7 +21,7 @@ class CoroutinesKaskadeBuilder<ACTION : Action, STATE : State>(
 ) {
 
     /**
-     * Reified version of the on method for better syntax in the DSL.
+     * Reducer that runs on a scoped coroutine
      *
      * @param scope coroutine scope used by the transformer.
      * @param transformer suspending function that transforms action and a state to new state.
@@ -31,6 +32,22 @@ class CoroutinesKaskadeBuilder<ACTION : Action, STATE : State>(
         noinline transformer: suspend ActionState<T, STATE>.() -> STATE
     ): ScopedReducer<T, STATE> {
         val reducer = ScopedReducer(scope, transformer)
+        on(T::class, reducer)
+        return reducer
+    }
+
+    /**
+     * Reducer that runs a coroutine flow on a scoped coroutine
+     *
+     * @param scope coroutine scope used by the transformer.
+     * @param transformer suspending function that transforms action and a state to new state.
+     * @return the [FlowReducer] associated with the action
+     */
+    inline fun <reified T : ACTION> onFlow(
+        scope: CoroutineScope,
+        noinline transformer: suspend Flow<ActionState<T, STATE>>.() -> Flow<STATE>
+    ): FlowReducer<T, STATE> {
+        val reducer = FlowReducer(scope, transformer)
         on(T::class, reducer)
         return reducer
     }
@@ -60,7 +77,7 @@ class CoroutinesScopedKaskadeBuilder<ACTION : Action, STATE : State>(
 ) {
 
     /**
-     * Reified version of the on method for better syntax in the DSL.
+     * Reducer that runs on a scoped coroutine
      *
      * @param transformer suspending function that transforms action and a state to new state.
      * @return the [ScopedReducer] associated with the action
@@ -69,6 +86,20 @@ class CoroutinesScopedKaskadeBuilder<ACTION : Action, STATE : State>(
         noinline transformer: suspend ActionState<T, STATE>.() -> STATE
     ): ScopedReducer<T, STATE> {
         val reducer = ScopedReducer(scope, transformer)
+        on(T::class, reducer)
+        return reducer
+    }
+
+    /**
+     * Reducer that runs a coroutine flow on a scoped coroutine
+     *
+     * @param transformer suspending function that transforms action and a state to new state.
+     * @return the [FlowReducer] associated with the action
+     */
+    inline fun <reified T : ACTION> onFlow(
+        noinline transformer: suspend Flow<ActionState<T, STATE>>.() -> Flow<STATE>
+    ): FlowReducer<T, STATE> {
+        val reducer = FlowReducer(scope, transformer)
         on(T::class, reducer)
         return reducer
     }

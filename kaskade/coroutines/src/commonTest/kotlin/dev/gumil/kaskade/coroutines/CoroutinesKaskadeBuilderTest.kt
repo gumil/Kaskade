@@ -5,6 +5,7 @@ import dev.gumil.kaskade.Kaskade
 import dev.gumil.kaskade.State
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.plus
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -133,6 +134,58 @@ internal class CoroutinesKaskadeBuilderTest {
         }, {
             assertTrue(job1.isCancelled)
             verifier.verifyOrder {
+                verify(TestState.State1)
+                verify(TestState.State2)
+            }
+        })
+    }
+
+    @Test
+    fun create_coroutine_flow_kaskade_builder() {
+        val verifier = Verifier<TestState>()
+        val onStateChanged = verifier.function
+
+        runTest({
+            val scope = this
+            val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
+                coroutines(scope) {
+                    onFlow<TestAction.Action1> { map { TestState.State1 } }
+                    onFlow<TestAction.Action2> { map { TestState.State2 } }
+                }
+            }
+
+            kaskade.onStateChanged = onStateChanged
+            kaskade.process(TestAction.Action1)
+            kaskade.process(TestAction.Action2)
+        }, {
+            verifier.verifyOrder {
+                verify(TestState.State1)
+                verify(TestState.State1)
+                verify(TestState.State2)
+            }
+        })
+    }
+
+    @Test
+    fun create_coroutine_flow_kaskade_builder_with_independent_scopes() {
+        val verifier = Verifier<TestState>()
+        val onStateChanged = verifier.function
+
+        runTest({
+            val scope = this
+            val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
+                coroutines {
+                    onFlow<TestAction.Action1>(scope) { map { TestState.State1 } }
+                    onFlow<TestAction.Action2>(scope) { map { TestState.State2 } }
+                }
+            }
+
+            kaskade.onStateChanged = onStateChanged
+            kaskade.process(TestAction.Action1)
+            kaskade.process(TestAction.Action2)
+        }, {
+            verifier.verifyOrder {
+                verify(TestState.State1)
                 verify(TestState.State1)
                 verify(TestState.State2)
             }
