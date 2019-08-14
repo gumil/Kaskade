@@ -29,7 +29,7 @@ matrix:
           - extra-android-support             # Support repo
           - extra-android-m2repository        # Support repo
       script:
-        - ./gradlew jacocoTestReport detekt
+        - ./gradlew jacocoTestReport detekt :livedata:lintRelease
       after_success:
         - bash <(curl -s https://codecov.io/bash)
 
