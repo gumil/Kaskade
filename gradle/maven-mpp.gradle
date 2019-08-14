@@ -25,7 +25,6 @@ publishing {
     publications.all {
         groupId = project.group
         version = project.version
-        artifact javadocsJar
 
         withPom(pom)
     }
