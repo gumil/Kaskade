@@ -14,7 +14,7 @@ matrix:
       osx_image: xcode11
       script:
         - xcrun simctl boot "iPhone X"
-        - ./gradlew :coroutines:iosTest :coroutines:jsTest
+        - ./gradlew :core:compileTestKotlinJs :coroutines:iosTest :coroutines:jsTest
 
     # Android/JVM build
     - language: android
