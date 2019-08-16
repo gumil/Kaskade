@@ -1,7 +1,7 @@
 /**
  * Exclude sample modules
  */
-if (!displayName.contains("sample")) {
+if (!displayName.contains(":app") && !displayName.contains(":console")) {
     apply<JacocoPlugin>()
 
     extensions.getByType(JacocoPluginExtension::class.java).toolVersion = versions.jacoco
