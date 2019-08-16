@@ -117,6 +117,6 @@ Some of the topics covered are:
 * **[Handling Process Death](https://github.com/gumil/Kaskade/wiki/Android)**
 
 ### Sample projects
-* [sample-android](https://github.com/gumil/Kaskade/tree/master/sample-android) - Android use cases
-* [sample-kotlin](https://github.com/gumil/Kaskade/tree/master/sample-kotlin) - kotlin only project
+* [Android App](sample/app) - Android use cases
+* [Kotlin Console](sample/console) - Kotlin only project
 * [Giphy Android Use Case](https://github.com/gumil/giphy) - Android master-detail flow use case
