@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
-import dev.gumil.kaskade.flow.Flow
-import dev.gumil.kaskade.flow.MutableFlow
+import dev.gumil.kaskade.flow.Emitter
+import dev.gumil.kaskade.flow.MutableEmitter
 import dev.gumil.kaskade.sample.R
 import dev.gumil.kaskade.sample.todo.data.TodoItem
 import kotlinx.android.synthetic.main.item_footer.view.*
@@ -26,9 +26,9 @@ internal class TodoAdapter(
             notifyDataSetChanged()
         }
 
-    val onItemAction: Flow<TodoAction> get() = _onItemAction
+    val onItemAction: Emitter<TodoAction> get() = _onItemAction
 
-    private val _onItemAction = MutableFlow<TodoAction>()
+    private val _onItemAction = MutableEmitter<TodoAction>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindableViewHolder {
         val inflater = LayoutInflater.from(parent.context)

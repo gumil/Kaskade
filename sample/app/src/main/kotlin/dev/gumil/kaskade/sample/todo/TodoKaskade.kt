@@ -5,7 +5,7 @@ import dev.gumil.kaskade.Kaskade
 import dev.gumil.kaskade.State
 import dev.gumil.kaskade.sample.todo.data.TodoItem
 import dev.gumil.kaskade.sample.todo.data.TodoRepository
-import dev.gumil.kaskade.stateFlow
+import dev.gumil.kaskade.stateEmitter
 
 internal class TodoKaskade(
     private val todoRepository: TodoRepository
@@ -32,7 +32,7 @@ internal class TodoKaskade(
         }
     }
 
-    val state = kaskade.stateFlow()
+    val state = kaskade.stateEmitter()
 
     fun process(action: TodoAction) {
         kaskade.process(action)
