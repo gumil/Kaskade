@@ -23,7 +23,7 @@ matrix:
         components:
           - tools                             # Tools
           - platform-tools                    # Platform tools
-          - build-tools-29.0.1                # Build tools version
+          - build-tools-29.0.2                # Build tools version
           - android-29                        # Target SDK version
           - android-21                        # Min SDK version
           - extra-android-support             # Support repo
