@@ -1,41 +1,17 @@
-matrix:
-  include:
-    # iOS/JS core multiplatform tests
-    - language: objective-c
-      os: osx
-      osx_image: xcode11
-      script:
-        - xcrun simctl boot "iPhone X"
-        - ./gradlew :core:iosTest :core:jsTest
+language: android
+jdk: oraclejdk8
+sudo: false
 
-    # iOS/JS coroutines multiplatform tests
-    - language: objective-c
-      os: osx
-      osx_image: xcode11
-      script:
-        - xcrun simctl boot "iPhone X"
-        - ./gradlew :core:compileTestKotlinJs :coroutines:iosTest :coroutines:jsTest
+script:
+  - echo "script test"
 
-    # Android/JVM build
-    - language: android
-      jdk: openjdk8
-      android:
-        components:
-          - tools                             # Tools
-          - platform-tools                    # Platform tools
-          - build-tools-29.0.1                # Build tools version
-          - android-29                        # Target SDK version
-          - android-21                        # Min SDK version
-          - extra-android-support             # Support repo
-          - extra-android-m2repository        # Support repo
-      script:
-        - ./gradlew jacocoTestReport detekt :livedata:lintRelease
-      after_success:
-        - bash <(curl -s https://codecov.io/bash)
-
-branches:
-  only:
-  - master
+deploy:
+  - provider: script
+    script: bash scripts/deploy.sh staging
+    on:
+      branch: ci/tag-deploy
+      tags: true
+      condition: $TRAVIS_TAG =~ [0-9]+\.[0-9]+\.[0-9]+
 
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
