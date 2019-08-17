@@ -32,6 +32,13 @@ matrix:
         - ./gradlew jacocoTestReport detekt :livedata:lintRelease
       after_success:
         - bash <(curl -s https://codecov.io/bash)
+      deploy:
+        - provider: script
+          script: ./gradlew bintrayUpload
+          on:
+            branch: master
+            tags: true
+            condition: $TRAVIS_TAG =~ [0-9]+\.[0-9]+\.[0-9]+
 
 branches:
   only:
