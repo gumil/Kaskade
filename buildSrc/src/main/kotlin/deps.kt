@@ -16,7 +16,7 @@ object versions {
 object deps {
     object android {
         object build {
-            const val buildToolsVersion = "29.0.1"
+            const val buildToolsVersion = "29.0.2"
             const val compileSdkVersion = 29
             const val minSdkVersion = 16
             const val sampleMinSdkVersion = 21
