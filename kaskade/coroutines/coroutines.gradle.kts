@@ -3,6 +3,8 @@ plugins {
     id(deps.plugins.node) version versions.node
 }
 
+configurations.create("compileClasspath")
+
 kotlin {
     jvm()
     js {
