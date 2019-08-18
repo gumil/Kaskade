@@ -12,8 +12,8 @@ def getPublications = {
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
-    publish = true
-    dryRun = false
+    publish = false
+    dryRun = true
 
     pkg {
         userOrg = projectBintrayUserOrg
