@@ -27,7 +27,7 @@ matrix:
 
 deploy:
   - provider: script
-    script: ./gradlew assemble bintrayUpload
+    script: ./gradlew publishToMavenLocal bintrayUpload
     on:
       branch: master
       tags: true
