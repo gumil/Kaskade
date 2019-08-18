@@ -1,7 +1,16 @@
 apply plugin: 'com.jfrog.bintray'
 
+def osName = System.getenv("TRAVIS_OS_NAME") ?: ""
+
 def getPublications = {
     def publications = []
+
+    if (osName == "osx") {
+        return project.publishing.publications
+                .collect { it.name }
+                .findAll { it.contains("ios") }
+    }
+
     project.publishing.publications.all {
         publications.add(it.name)
     }
