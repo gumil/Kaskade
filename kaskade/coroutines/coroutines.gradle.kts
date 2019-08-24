@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
+
 plugins {
     kotlin("multiplatform")
     id(deps.plugins.node) version versions.node
@@ -78,3 +80,5 @@ apply {
     from(rootProject.file("gradle/maven-mpp.gradle"))
     from(rootProject.file("gradle/bintray.gradle"))
 }
+
+tasks.named("jsTest").dependsOn(":core:compileTestKotlinJs")
