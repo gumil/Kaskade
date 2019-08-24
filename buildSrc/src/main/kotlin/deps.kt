@@ -23,7 +23,7 @@ object deps {
             const val targetSdkVersion = 29
         }
 
-        const val classpath = "com.android.tools.build:gradle:3.4.2"
+        const val classpath = "com.android.tools.build:gradle:3.5.0"
 
         object lifecycle {
             const val livedata = "androidx.lifecycle:lifecycle-livedata:${versions.lifecycle}"
