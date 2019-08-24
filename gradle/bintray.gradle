@@ -23,6 +23,7 @@ bintray {
     key = System.getenv('BINTRAY_KEY')
     publish = true
     dryRun = false
+    override = true
 
     pkg {
         userOrg = projectBintrayUserOrg
