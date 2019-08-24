@@ -2,14 +2,14 @@
 
 object versions {
     const val jacoco = "0.8.4"
-    const val detekt = "1.0.0-RC16"
+    const val detekt = "1.0.1"
     const val node = "1.3.1"
 
-    internal const val kotlin = "1.3.41"
-    internal const val navigation = "2.1.0-beta02"
-    internal const val coroutines = "1.3.0-RC"
+    internal const val kotlin = "1.3.50"
+    internal const val navigation = "2.1.0-rc01"
+    internal const val coroutines = "1.3.0"
     internal const val lifecycle = "2.0.0"
-    internal const val retrofit = "2.6.0"
+    internal const val retrofit = "2.6.1"
     internal const val bintray = "1.8.4"
 }
 
@@ -32,8 +32,8 @@ object deps {
         }
 
         const val appCompat = "androidx.appcompat:appcompat:1.1.0-rc01"
-        const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0-beta01"
-        const val material = "com.google.android.material:material:1.1.0-alpha08"
+        const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0-beta03"
+        const val material = "com.google.android.material:material:1.1.0-alpha09"
         const val navigation = "androidx.navigation:navigation-fragment:${versions.navigation}"
     }
 
@@ -59,15 +59,15 @@ object deps {
     }
 
     object rx {
-        const val java = "io.reactivex.rxjava2:rxjava:2.2.10"
+        const val java = "io.reactivex.rxjava2:rxjava:2.2.11"
         const val android = "io.reactivex.rxjava2:rxandroid:2.1.1"
-        const val binding = "com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2"
+        const val binding = "com.jakewharton.rxbinding3:rxbinding:3.0.0"
     }
 
     object retrofit {
         const val core = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
         const val moshi = "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
-        const val logging = "com.squareup.okhttp3:logging-interceptor:4.0.1"
+        const val logging = "com.squareup.okhttp3:logging-interceptor:4.1.0"
     }
 
     object detekt {
