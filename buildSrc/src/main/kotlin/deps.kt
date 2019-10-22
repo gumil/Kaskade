@@ -59,7 +59,7 @@ object deps {
     }
 
     object rx {
-        const val java = "io.reactivex.rxjava2:rxjava:2.2.11"
+        const val java = "io.reactivex.rxjava2:rxjava:2.2.13"
         const val android = "io.reactivex.rxjava2:rxandroid:2.1.1"
         const val binding = "com.jakewharton.rxbinding3:rxbinding:3.0.0"
     }
