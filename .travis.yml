@@ -5,7 +5,7 @@ matrix:
       os: osx
       osx_image: xcode11
       script:
-        - xcrun simctl boot "iPhone X"
+        - xcrun simctl boot "iPhone 8"
         - ./gradlew :core:iosTest :core:jsTest
         - ./gradlew :coroutines:iosTest :coroutines:jsTest
 
