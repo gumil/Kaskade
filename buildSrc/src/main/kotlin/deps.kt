@@ -7,7 +7,7 @@ object versions {
 
     internal const val kotlin = "1.3.50"
     internal const val navigation = "2.1.0-rc01"
-    internal const val coroutines = "1.3.0"
+    internal const val coroutines = "1.3.2"
     internal const val lifecycle = "2.0.0"
     internal const val retrofit = "2.6.1"
     internal const val bintray = "1.8.4"
