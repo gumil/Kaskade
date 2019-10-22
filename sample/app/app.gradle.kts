@@ -40,9 +40,9 @@ androidExtensions {
 }
 
 dependencies {
-    implementation(deps.android.appCompat)
-    implementation(deps.android.recyclerView)
-    implementation(deps.android.material)
+    implementation(deps.sample.android.appCompat)
+    implementation(deps.sample.android.recyclerView)
+    implementation(deps.sample.android.material)
 
     implementation(deps.kotlin.stdlib.jdk8)
     implementation(deps.kotlin.coroutines.core)
@@ -53,18 +53,18 @@ dependencies {
     implementation(project(":livedata"))
     implementation(project(":rx"))
 
-    implementation(deps.retrofit.core)
-    implementation(deps.retrofit.moshi)
-    implementation(deps.retrofit.logging)
+    implementation(deps.sample.retrofit.core)
+    implementation(deps.sample.retrofit.moshi)
+    implementation(deps.sample.retrofit.logging)
 
-    implementation(deps.libs.picasso)
+    implementation(deps.sample.picasso)
 
-    implementation(deps.android.lifecycle.extensions)
-    implementation(deps.android.navigation)
+    implementation(deps.sample.lifecycle.extensions)
+    implementation(deps.sample.android.navigation)
 
     implementation(deps.rx.java)
-    implementation(deps.rx.android)
-    implementation(deps.rx.binding)
+    implementation(deps.sample.rx.android)
+    implementation(deps.sample.rx.binding)
 
     testImplementation(deps.android.lifecycle.test)
     testImplementation(deps.kotlin.test.junit)
