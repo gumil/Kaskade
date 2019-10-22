@@ -27,14 +27,8 @@ object deps {
 
         object lifecycle {
             const val livedata = "androidx.lifecycle:lifecycle-livedata:${versions.lifecycle}"
-            const val extensions = "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
             const val test = "androidx.arch.core:core-testing:${versions.lifecycle}"
         }
-
-        const val appCompat = "androidx.appcompat:appcompat:1.1.0-rc01"
-        const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0-beta03"
-        const val material = "com.google.android.material:material:1.2.0-alpha01"
-        const val navigation = "androidx.navigation:navigation-fragment:${versions.navigation}"
     }
 
     object kotlin {
@@ -60,14 +54,6 @@ object deps {
 
     object rx {
         const val java = "io.reactivex.rxjava2:rxjava:2.2.13"
-        const val android = "io.reactivex.rxjava2:rxandroid:2.1.1"
-        const val binding = "com.jakewharton.rxbinding3:rxbinding:3.0.0"
-    }
-
-    object retrofit {
-        const val core = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
-        const val moshi = "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
-        const val logging = "com.squareup.okhttp3:logging-interceptor:4.1.0"
     }
 
     object detekt {
@@ -94,7 +80,32 @@ object deps {
         const val mockK = "io.mockk:mockk:1.9.3"
     }
 
-    object libs {
+    /**
+     * Dependencies used by the sample app
+     */
+    object sample {
         const val picasso = "com.squareup.picasso:picasso:2.71828"
+
+        object retrofit {
+            const val core = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+            const val moshi = "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
+            const val logging = "com.squareup.okhttp3:logging-interceptor:4.1.0"
+        }
+
+        object rx {
+            const val android = "io.reactivex.rxjava2:rxandroid:2.1.1"
+            const val binding = "com.jakewharton.rxbinding3:rxbinding:3.0.0"
+        }
+
+        object lifecycle {
+            const val extensions = "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
+        }
+
+        object android {
+            const val appCompat = "androidx.appcompat:appcompat:1.1.0-rc01"
+            const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0-beta03"
+            const val material = "com.google.android.material:material:1.2.0-alpha01"
+            const val navigation = "androidx.navigation:navigation-fragment:${versions.navigation}"
+        }
     }
 }
