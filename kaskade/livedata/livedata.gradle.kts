@@ -1,19 +1,13 @@
+import plugin.AndroidConfigurationPlugin
+
 plugins {
     id("com.android.library")
     kotlin("android")
 }
 
-apply { from(rootProject.file("gradle/kotlin-sources.gradle")) }
+apply<AndroidConfigurationPlugin>()
 
 android {
-    compileSdkVersion(deps.android.build.compileSdkVersion)
-    buildToolsVersion(deps.android.build.buildToolsVersion)
-
-    defaultConfig {
-        minSdkVersion(deps.android.build.minSdkVersion)
-        targetSdkVersion(deps.android.build.targetSdkVersion)
-    }
-
     buildTypes {
         getByName("debug") {
             isTestCoverageEnabled = true

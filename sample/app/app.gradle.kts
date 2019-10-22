@@ -1,19 +1,17 @@
+import plugin.AndroidConfigurationPlugin
+
 plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
 }
 
-apply { from(rootProject.file("gradle/kotlin-sources.gradle")) }
+apply<AndroidConfigurationPlugin>()
 
 android {
-    compileSdkVersion(deps.android.build.compileSdkVersion)
-    buildToolsVersion(deps.android.build.buildToolsVersion)
-
     defaultConfig {
-        applicationId = "dev.gumil.kaskade.sample"
         minSdkVersion(deps.android.build.sampleMinSdkVersion)
-        targetSdkVersion(deps.android.build.targetSdkVersion)
+        applicationId = "dev.gumil.kaskade.sample"
         versionCode = 1
         versionName = "1.0"
 
