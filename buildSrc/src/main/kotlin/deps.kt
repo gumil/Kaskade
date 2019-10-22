@@ -33,7 +33,7 @@ object deps {
 
         const val appCompat = "androidx.appcompat:appcompat:1.1.0-rc01"
         const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0-beta03"
-        const val material = "com.google.android.material:material:1.1.0-alpha09"
+        const val material = "com.google.android.material:material:1.2.0-alpha01"
         const val navigation = "androidx.navigation:navigation-fragment:${versions.navigation}"
     }
 
