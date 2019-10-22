@@ -1,27 +1,12 @@
+import plugin.MultiplatformConfigurationPlugin
+
 plugins {
     kotlin("multiplatform")
-    id(deps.plugins.node) version versions.node
 }
 
-configurations.create("compileClasspath")
+apply<MultiplatformConfigurationPlugin>()
 
 kotlin {
-    jvm()
-    js {
-        configure(listOf(compilations["main"], compilations["test"])) {
-            tasks.getByName(compileKotlinTaskName) {
-                kotlinOptions {
-                    metaInfo = true
-                    sourceMap = true
-                    sourceMapEmbedSources = "always"
-                    moduleKind = "umd"
-                }
-            }
-        }
-    }
-    iosX64()
-    iosArm64()
-
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -63,7 +48,6 @@ kotlin {
 }
 
 apply {
-    from(rootProject.file("gradle/mpp-tests.gradle"))
     from(rootProject.file("gradle/maven-mpp.gradle"))
     from(rootProject.file("gradle/bintray.gradle"))
 }
