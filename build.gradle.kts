@@ -4,13 +4,9 @@ plugins { id(deps.detekt.plugin) version versions.detekt }
 
 buildscript {
     repositories {
-        google()
         jcenter()
-        maven { url = uri(deps.repositories.m2) }
     }
     dependencies {
-        classpath(deps.android.classpath)
-        classpath(deps.kotlin.classpath)
         classpath(deps.classpaths.dokka)
         classpath(deps.classpaths.bintray)
     }

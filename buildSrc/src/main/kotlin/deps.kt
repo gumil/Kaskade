@@ -3,7 +3,6 @@
 object versions {
     const val jacoco = "0.8.4"
     const val detekt = "1.0.1"
-    const val node = "1.3.1"
 
     internal const val kotlin = "1.3.50"
     internal const val navigation = "2.1.0-rc01"
@@ -23,8 +22,6 @@ object deps {
             const val targetSdkVersion = 29
         }
 
-        const val classpath = "com.android.tools.build:gradle:3.5.1"
-
         object lifecycle {
             const val livedata = "androidx.lifecycle:lifecycle-livedata:${versions.lifecycle}"
             const val test = "androidx.arch.core:core-testing:${versions.lifecycle}"
@@ -32,8 +29,6 @@ object deps {
     }
 
     object kotlin {
-        const val classpath = "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
-
         object stdlib {
             const val core = "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
             const val jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
@@ -61,14 +56,8 @@ object deps {
         const val lint = "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
     }
 
-    object repositories {
-        const val m2 = "https://plugins.gradle.org/m2/"
-    }
-
     object plugins {
         const val detekt = "io.gitlab.arturbosch.detekt"
-        const val node = "com.moowork.node"
-        const val mavenPublish = "maven-publish"
     }
 
     object classpaths {
