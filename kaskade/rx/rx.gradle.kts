@@ -1,8 +1,10 @@
+import plugin.JvmLibraryConfigurationPlugin
+
 plugins {
     id("kotlin")
 }
 
-apply { from(rootProject.file("gradle/kotlin-sources.gradle")) }
+apply<JvmLibraryConfigurationPlugin>()
 
 dependencies {
     implementation(project(":core"))
@@ -14,6 +16,5 @@ dependencies {
 }
 
 apply {
-    from(rootProject.file("gradle/maven.gradle"))
     from(rootProject.file("gradle/bintray.gradle"))
 }
