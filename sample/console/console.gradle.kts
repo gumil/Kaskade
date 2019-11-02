@@ -1,6 +1,8 @@
+import plugin.JvmConfigurationPlugin
+
 plugins { id("kotlin") }
 
-apply { from(rootProject.file("gradle/kotlin-sources.gradle")) }
+apply<JvmConfigurationPlugin>()
 
 dependencies {
     implementation(project(":core"))
