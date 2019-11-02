@@ -47,7 +47,7 @@ object deps {
     }
 
     object rx {
-        const val java = "io.reactivex.rxjava2:rxjava:2.2.13"
+        const val java = "io.reactivex.rxjava2:rxjava:2.2.14"
     }
 
     object detekt {
