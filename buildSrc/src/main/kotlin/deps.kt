@@ -8,7 +8,7 @@ object versions {
     internal const val navigation = "2.1.0-rc01"
     internal const val coroutines = "1.3.2"
     internal const val lifecycle = "2.0.0"
-    internal const val retrofit = "2.6.1"
+    internal const val retrofit = "2.6.2"
     internal const val bintray = "1.8.4"
 }
 
@@ -78,7 +78,7 @@ object deps {
         object retrofit {
             const val core = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
             const val moshi = "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
-            const val logging = "com.squareup.okhttp3:logging-interceptor:4.1.0"
+            const val logging = "com.squareup.okhttp3:logging-interceptor:4.2.2"
         }
 
         object rx {
