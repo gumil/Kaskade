@@ -13,6 +13,7 @@ class MultiplatformConfigurationPlugin : Plugin<Project> {
         configureMpp(project)
         project.configureMppTest()
         project.configureMavenMultiplatform()
+        project.configureBintray()
     }
 
     private fun configureMpp(project: Project) {

@@ -14,7 +14,3 @@ dependencies {
 
     testImplementation(deps.kotlin.test.junit)
 }
-
-apply {
-    from(rootProject.file("gradle/bintray.gradle"))
-}

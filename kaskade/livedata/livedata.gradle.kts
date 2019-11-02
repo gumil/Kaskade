@@ -29,7 +29,3 @@ dependencies {
     testImplementation(deps.kotlin.test.junit)
     testImplementation(deps.test.mockK)
 }
-
-apply {
-    from(rootProject.file("gradle/bintray.gradle"))
-}
