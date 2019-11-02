@@ -7,7 +7,6 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath(deps.classpaths.dokka)
         classpath(deps.classpaths.bintray)
     }
 }
