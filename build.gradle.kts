@@ -2,15 +2,6 @@ import io.gitlab.arturbosch.detekt.DetektPlugin
 
 plugins { id(deps.detekt.plugin) version versions.detekt }
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath(deps.classpaths.bintray)
-    }
-}
-
 allprojects {
     repositories {
         google()

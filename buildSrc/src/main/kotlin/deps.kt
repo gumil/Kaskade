@@ -9,7 +9,6 @@ object versions {
     internal const val coroutines = "1.3.2"
     internal const val lifecycle = "2.0.0"
     internal const val retrofit = "2.6.2"
-    internal const val bintray = "1.8.4"
 }
 
 object deps {
@@ -58,10 +57,6 @@ object deps {
 
     object plugins {
         const val detekt = "io.gitlab.arturbosch.detekt"
-    }
-
-    object classpaths {
-        const val bintray = "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.bintray}"
     }
 
     object test {
