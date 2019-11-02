@@ -60,7 +60,6 @@ kotlin {
 }
 
 apply {
-    from(rootProject.file("gradle/maven-mpp.gradle"))
     from(rootProject.file("gradle/bintray.gradle"))
 }
 

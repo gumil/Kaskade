@@ -12,6 +12,7 @@ class MultiplatformConfigurationPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         configureMpp(project)
         project.configureMppTest()
+        project.configureMavenMultiplatform()
     }
 
     private fun configureMpp(project: Project) {
