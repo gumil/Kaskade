@@ -1,11 +1,11 @@
-import plugin.AndroidConfigurationPlugin
+import plugin.AndroidLibraryConfigurationPlugin
 
 plugins {
     id("com.android.library")
     kotlin("android")
 }
 
-apply<AndroidConfigurationPlugin>()
+apply<AndroidLibraryConfigurationPlugin>()
 
 android {
     buildTypes {
@@ -31,6 +31,5 @@ dependencies {
 }
 
 apply {
-    from(rootProject.file("gradle/maven.gradle"))
     from(rootProject.file("gradle/bintray.gradle"))
 }
