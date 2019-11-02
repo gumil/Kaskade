@@ -46,7 +46,3 @@ kotlin {
         }
     }
 }
-
-apply {
-    from(rootProject.file("gradle/bintray.gradle"))
-}

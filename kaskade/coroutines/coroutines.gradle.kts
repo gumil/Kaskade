@@ -59,8 +59,4 @@ kotlin {
     }
 }
 
-apply {
-    from(rootProject.file("gradle/bintray.gradle"))
-}
-
 tasks.named("jsTest").dependsOn(":core:compileTestKotlinJs")
