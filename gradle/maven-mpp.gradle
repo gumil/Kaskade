@@ -1,25 +1,5 @@
-apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'maven-publish'
 apply from: rootProject.file('gradle/pom.gradle')
-
-dokka {
-    outputDirectory = "$buildDir/javadoc"
-    kotlinTasks {
-        // dokka fails to retrieve sources from MPP-tasks so they must be set empty to avoid exception
-        // use sourceRoot instead (see below)
-        []
-    }
-    sourceRoot {
-        // assuming there is only a single source dir...
-        path = kotlin.sourceSets.commonMain.kotlin.srcDirs[0]
-    }
-}
-
-task javadocsJar(type: Jar, dependsOn: dokka) {
-    group = 'documentation'
-    archiveClassifier = 'javadoc'
-    from dokka.outputDirectory
-}
 
 publishing {
     publications.all {

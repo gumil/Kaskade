@@ -61,7 +61,6 @@ object deps {
     }
 
     object classpaths {
-        const val dokka = "org.jetbrains.dokka:dokka-gradle-plugin:0.9.18"
         const val bintray = "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.bintray}"
     }
 
