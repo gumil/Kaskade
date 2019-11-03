@@ -7,6 +7,7 @@ matrix:
       script:
         - xcrun simctl boot "iPhone 8"
         - ./gradlew :core:iosTest :core:jsTest
+        - ./gradlew :coroutines:compileKotlinJs
         - ./gradlew :coroutines:iosTest :coroutines:jsTest
 
     # Android/JVM build
