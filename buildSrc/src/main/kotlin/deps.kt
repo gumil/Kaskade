@@ -2,7 +2,7 @@
 
 object versions {
     const val jacoco = "0.8.4"
-    const val detekt = "1.0.1"
+    const val detekt = "1.1.1"
 
     internal const val kotlin = "1.3.50"
     internal const val navigation = "2.1.0-rc01"
