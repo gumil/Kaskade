@@ -18,6 +18,7 @@ class JvmLibraryConfigurationPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.configureJvm()
+        project.configureJacocoJvm()
         project.configureMavenJvm()
         project.configureBintray()
     }
