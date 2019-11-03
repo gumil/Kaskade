@@ -1,8 +1,8 @@
 @file:Suppress("unused", "ClassName")
 
 object versions {
-    const val jacoco = "0.8.4"
-    const val detekt = "1.1.1"
+    internal const val jacoco = "0.8.4"
+    internal const val detekt = "1.1.1"
 
     internal const val kotlin = "1.3.50"
     internal const val navigation = "2.1.0-rc01"
@@ -51,12 +51,7 @@ object deps {
     }
 
     object detekt {
-        const val plugin = "io.gitlab.arturbosch.detekt"
         const val lint = "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
-    }
-
-    object plugins {
-        const val detekt = "io.gitlab.arturbosch.detekt"
     }
 
     object test {

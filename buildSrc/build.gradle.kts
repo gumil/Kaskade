@@ -21,6 +21,7 @@ dependencies {
     implementation("com.github.node-gradle:gradle-node-plugin:2.2.0")
     implementation("org.codehaus.groovy:groovy:2.5.7")
     implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
+    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.1.1")
 
     implementation(gradleApi())
 }
