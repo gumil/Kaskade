@@ -92,7 +92,10 @@ private fun configureJsTest(project: Project) {
         setArgs(
             listOf(
                 "--timeout", "15000",
-                project.relativePath(testCompilation.output.allOutputs.first()) + "/${project.name}_test.js"
+                project.file(
+                    project.relativePath(testCompilation.output.allOutputs.first()) +
+                        "/${project.name}_test.js"
+                ).absolutePath
             )
         )
     }
