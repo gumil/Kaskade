@@ -18,6 +18,7 @@ class AndroidLibraryConfigurationPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.configureAndroid()
+        project.configureJacocoAndroid()
         project.configureMavenAndroid()
         project.configureBintray()
     }

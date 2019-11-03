@@ -14,10 +14,6 @@ subprojects {
     apply<DetektPlugin>()
 
     afterEvaluate {
-        apply {
-            from(rootProject.file("gradle/jacoco.gradle.kts"))
-        }
-
         val configFile = "$rootDir/detekt/detekt.yml"
 
         detekt {
