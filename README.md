@@ -1,5 +1,5 @@
 # Kaskade
-[![Build Status](https://travis-ci.org/gumil/Kaskade.svg?branch=master)](https://travis-ci.org/gumil/Kaskade)
+[![Build Status](https://travis-ci.com/gumil/Kaskade.svg?branch=master)](https://travis-ci.com/gumil/Kaskade)
 [![Download](https://api.bintray.com/packages/gumil/maven/kaskade/images/download.svg)](https://bintray.com/gumil/maven/kaskade/_latestVersion)
 [![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-Kaskade-green.svg?style=flat )]( https://android-arsenal.com/details/1/7421 )
 [![codecov](https://codecov.io/gh/gumil/Kaskade/branch/master/graph/badge.svg)](https://codecov.io/gh/gumil/Kaskade)
