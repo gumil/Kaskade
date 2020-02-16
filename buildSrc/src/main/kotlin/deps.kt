@@ -2,13 +2,13 @@
 
 object versions {
     internal const val jacoco = "0.8.4"
-    internal const val detekt = "1.1.1"
+    internal const val detekt = "1.5.1"
 
-    internal const val kotlin = "1.3.50"
-    internal const val navigation = "2.1.0-rc01"
-    internal const val coroutines = "1.3.2"
-    internal const val lifecycle = "2.0.0"
-    internal const val retrofit = "2.6.2"
+    internal const val kotlin = "1.3.61"
+    internal const val navigation = "2.2.1"
+    internal const val coroutines = "1.3.3"
+    internal const val lifecycle = "2.2.0"
+    internal const val retrofit = "2.7.1"
 }
 
 object deps {
@@ -23,7 +23,7 @@ object deps {
 
         object lifecycle {
             const val livedata = "androidx.lifecycle:lifecycle-livedata:${versions.lifecycle}"
-            const val test = "androidx.arch.core:core-testing:${versions.lifecycle}"
+            const val test = "androidx.arch.core:core-testing:2.1.0"
         }
     }
 
@@ -47,7 +47,7 @@ object deps {
     }
 
     object rx {
-        const val java = "io.reactivex.rxjava2:rxjava:2.2.14"
+        const val java = "io.reactivex.rxjava2:rxjava:2.2.16"
     }
 
     object detekt {
@@ -67,12 +67,12 @@ object deps {
         object retrofit {
             const val core = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
             const val moshi = "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
-            const val logging = "com.squareup.okhttp3:logging-interceptor:4.2.2"
+            const val logging = "com.squareup.okhttp3:logging-interceptor:4.3.1"
         }
 
         object rx {
             const val android = "io.reactivex.rxjava2:rxandroid:2.1.1"
-            const val binding = "com.jakewharton.rxbinding3:rxbinding:3.0.0"
+            const val binding = "com.jakewharton.rxbinding3:rxbinding:3.1.0"
         }
 
         object lifecycle {
@@ -80,9 +80,9 @@ object deps {
         }
 
         object android {
-            const val appCompat = "androidx.appcompat:appcompat:1.1.0-rc01"
-            const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0-beta03"
-            const val material = "com.google.android.material:material:1.2.0-alpha01"
+            const val appCompat = "androidx.appcompat:appcompat:1.1.0"
+            const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
+            const val material = "com.google.android.material:material:1.2.0-alpha04"
             const val navigation = "androidx.navigation:navigation-fragment:${versions.navigation}"
         }
     }

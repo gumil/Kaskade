@@ -16,8 +16,8 @@ plugins {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:3.5.1")
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.50")
+    implementation("com.android.tools.build:gradle:3.5.3")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61")
     implementation("com.github.node-gradle:gradle-node-plugin:2.2.0")
     implementation("org.codehaus.groovy:groovy:2.5.7")
     implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
