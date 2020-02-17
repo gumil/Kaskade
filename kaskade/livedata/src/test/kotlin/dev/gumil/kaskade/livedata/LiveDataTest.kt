@@ -116,7 +116,7 @@ internal class LiveDataTest {
             }
         }
 
-        kaskade.process(TestAction.Action2)
+        kaskade.dispatch(TestAction.Action2)
 
         kaskade.stateLiveData().observeForever(mockObserver)
 

@@ -73,7 +73,7 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
      *
      * @param [action] to be processed into a new [STATE].
      */
-    fun process(action: ACTION) {
+    fun dispatch(action: ACTION) {
         if (actionStateMap.isEmpty()) {
             throw IllegalStateException("No actions can be processed. Kaskade might be unsubscribed at this point.")
         }

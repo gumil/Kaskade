@@ -35,7 +35,7 @@ internal class RxReducerTest {
         val testObserver = TestObserver<TestState>()
         kaskade.stateObservable().subscribe(testObserver)
 
-        kaskade.process(TestAction.Action1)
+        kaskade.dispatch(TestAction.Action1)
 
         observer.assertValue(TestState.State1)
         observer.assertResult(TestState.State1)
@@ -52,7 +52,7 @@ internal class RxReducerTest {
         val testObserver = TestObserver<TestState>()
         kaskade.stateObservable().subscribe(testObserver)
 
-        kaskade.process(TestAction.Action2)
+        kaskade.dispatch(TestAction.Action2)
 
         observer.assertNotSubscribed()
         observer.assertNotComplete()
@@ -79,7 +79,7 @@ internal class RxReducerTest {
         val testObserver = TestObserver<TestState>()
         kaskade.stateObservable().subscribe(testObserver)
 
-        kaskade.process(TestAction.Action1)
+        kaskade.dispatch(TestAction.Action1)
 
         observer.assertValues(TestState.State2, TestState.State1)
         observer.assertResult(TestState.State2, TestState.State1)
@@ -106,7 +106,7 @@ internal class RxReducerTest {
         val testObserver = TestObserver<TestState>()
         kaskade.stateObservable().subscribe(testObserver)
 
-        kaskade.process(TestAction.Action1)
+        kaskade.dispatch(TestAction.Action1)
 
         observer.assertError(exception)
         observer.assertNotComplete()
@@ -133,8 +133,8 @@ internal class RxReducerTest {
         val testObserver = TestObserver<TestState>()
         kaskade.stateObservable().subscribe(testObserver)
 
-        kaskade.process(TestAction.Action1)
-        kaskade.process(TestAction.Action2)
+        kaskade.dispatch(TestAction.Action1)
+        kaskade.dispatch(TestAction.Action2)
 
         testObserver.assertValues(TestState.State1, TestState.State2)
         testObserver.assertNoErrors()

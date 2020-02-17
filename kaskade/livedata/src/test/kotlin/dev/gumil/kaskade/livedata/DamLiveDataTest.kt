@@ -120,7 +120,7 @@ internal class DamLiveDataTest {
 
     @Test
     fun `create DamLivedata from kaskade using extension function`() {
-        kaskade.process(TestAction.Action1)
+        kaskade.dispatch(TestAction.Action1)
 
         verify { mockObserver.onChanged(TestState.State1) }
         confirmVerified(mockObserver)
@@ -142,9 +142,9 @@ internal class DamLiveDataTest {
         val stateLiveData = kaskade.stateDamLiveData()
         val mockObserver = mockk<Observer<TestState>>(relaxed = true)
 
-        kaskade.process(TestAction.Action1)
+        kaskade.dispatch(TestAction.Action1)
         stateLiveData.observeForever(mockObserver)
-        kaskade.process(TestAction.Action3)
+        kaskade.dispatch(TestAction.Action3)
         stateLiveData.removeObserver(mockObserver)
         stateLiveData.observeForever(mockObserver)
 
@@ -169,7 +169,7 @@ internal class DamLiveDataTest {
             }
         }
 
-        kaskade.process(TestAction.Action2)
+        kaskade.dispatch(TestAction.Action2)
         kaskade.stateDamLiveData().observeForever(mockObserver)
 
         verifyOrder {

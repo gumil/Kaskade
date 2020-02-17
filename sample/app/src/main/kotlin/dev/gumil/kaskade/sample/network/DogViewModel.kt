@@ -57,7 +57,7 @@ internal class DogViewModel(
     }
 
     fun process(action: DogAction) {
-        kaskade.process(action)
+        kaskade.dispatch(action)
     }
 
     override fun onCleared() {

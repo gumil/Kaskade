@@ -17,7 +17,7 @@ internal class PlayerKaskadeTest {
         every { mockSubscriber.invoke(any()) } returns Unit
 
         kaskade.stateEmitter().subscribe(mockSubscriber)
-        kaskade.process(PlayerAction.PausePlay)
+        kaskade.dispatch(PlayerAction.PausePlay)
 
         verify { mockSubscriber.invoke(PlayerState.Playing("Like Ooh-Ahh")) }
         confirmVerified(mockSubscriber)
@@ -30,8 +30,8 @@ internal class PlayerKaskadeTest {
         every { mockSubscriber.invoke(any()) } returns Unit
 
         kaskade.stateEmitter().subscribe(mockSubscriber)
-        kaskade.process(PlayerAction.PausePlay)
-        kaskade.process(PlayerAction.PausePlay)
+        kaskade.dispatch(PlayerAction.PausePlay)
+        kaskade.dispatch(PlayerAction.PausePlay)
 
         verifyOrder {
             mockSubscriber.invoke(PlayerState.Playing("Like Ooh-Ahh"))
@@ -47,7 +47,7 @@ internal class PlayerKaskadeTest {
         every { mockSubscriber.invoke(any()) } returns Unit
 
         kaskade.stateEmitter().subscribe(mockSubscriber)
-        kaskade.process(PlayerAction.Next)
+        kaskade.dispatch(PlayerAction.Next)
 
         verify { mockSubscriber.invoke(PlayerState.Playing("Like Ooh-Ahh")) }
         confirmVerified(mockSubscriber)
@@ -60,7 +60,7 @@ internal class PlayerKaskadeTest {
         every { mockSubscriber.invoke(any()) } returns Unit
 
         kaskade.stateEmitter().subscribe(mockSubscriber)
-        kaskade.process(PlayerAction.Previous)
+        kaskade.dispatch(PlayerAction.Previous)
 
         verify { mockSubscriber.invoke(PlayerState.Playing("The Best Thing I Ever Did")) }
         confirmVerified(mockSubscriber)
@@ -73,7 +73,7 @@ internal class PlayerKaskadeTest {
         every { mockSubscriber.invoke(any()) } returns Unit
 
         kaskade.stateEmitter().subscribe(mockSubscriber)
-        kaskade.process(PlayerAction.Stop)
+        kaskade.dispatch(PlayerAction.Stop)
 
         verify { mockSubscriber.invoke(PlayerState.Stopped) }
         confirmVerified(mockSubscriber)
