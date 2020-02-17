@@ -34,6 +34,10 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
 
     private val stateQueue: MutableList<STATE> = mutableListOf(initialState)
 
+    private val actionWatchers: MutableList<(ACTION) -> Unit> = mutableListOf()
+
+    private val stateWatchers: MutableList<(STATE) -> Unit> = mutableListOf()
+
     private var currentState: STATE by observable(initialState) { _, _, newValue ->
         emitOrEnqueueState(newValue)
     }
@@ -58,17 +62,6 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
         }
 
     /**
-     * Adds actions to be handled. Used in [create] to build the [Kaskade].
-     *
-     * @param builder that contains [ACTION] and [Reducer].
-     */
-    fun addActions(builder: Builder<ACTION, STATE>.() -> Unit) {
-        val eventBuilder = Builder<ACTION, STATE>()
-        eventBuilder.builder()
-        actionStateMap.putAll(eventBuilder.transformer)
-    }
-
-    /**
      * Processes [action] to output a new [STATE].
      *
      * @param [action] to be processed into a new [STATE].
@@ -80,6 +73,8 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
 
         getReducer(action)?.let { reducer ->
             reducer(action, currentState) { state ->
+                actionWatchers.forEach { it.invoke(action) }
+                stateWatchers.forEach { it.invoke(state) }
                 if (state !is SingleEvent) {
                     currentState = state
                 } else {
@@ -94,11 +89,51 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
         actionStateMap[action::class] as? Reducer<T, STATE>
 
     /**
+     * Watches every succeeding action that is dispatched.
+     *
+     * @param [watcher] listens to actions.
+     */
+    fun addActionWatcher(watcher: (ACTION) -> Unit) {
+        actionWatchers.add(watcher)
+    }
+
+    /**
+     * Watches every succeeding state that is emitted unlike with [onStateChanged] that
+     * enqueues unhandled state emissions and emits whenever [onStateChanged] is assigned to a
+     * non-null value.
+     *
+     * @param [watcher] listens to states.
+     */
+    fun addStateWatcher(watcher: (STATE) -> Unit) {
+        stateWatchers.add(watcher)
+    }
+
+    /**
+     * Removes associated [watcher].
+     *
+     * @param [watcher] to be removed.
+     */
+    fun removeActionWatcher(watcher: (ACTION) -> Unit) {
+        actionWatchers.remove(watcher)
+    }
+
+    /**
+     * Removes associated [watcher].
+     *
+     * @param [watcher] to be removed.
+     */
+    fun removeStateWatcher(watcher: (STATE) -> Unit) {
+        stateWatchers.remove(watcher)
+    }
+
+    /**
      * Clears action and state bindings.
      */
     fun unsubscribe() {
         onStateChanged = null
         actionStateMap.clear()
+        actionWatchers.clear()
+        stateWatchers.clear()
     }
 
     /**
@@ -109,7 +144,15 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
 
         private val _transformerMap = mutableMapOf<KClass<out ACTION>, Reducer<ACTION, STATE>>()
 
+        private var _actionWatcher: ((ACTION) -> Unit)? = null
+
+        private var _stateWatcher: ((STATE) -> Unit)? = null
+
         internal val transformer get() = _transformerMap.toMap()
+
+        internal val actionWatcher get() = _actionWatcher
+
+        internal val stateWatcher get() = _stateWatcher
 
         /**
          * Reified version of the [on] method for better syntax in the DSL.
@@ -130,6 +173,24 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
         fun <T : ACTION> on(clazz: KClass<T>, reducer: Reducer<T, STATE>) {
             _transformerMap[clazz] = reducer as Reducer<ACTION, STATE>
         }
+
+        /**
+         * DSL to watch every action that is dispatched.
+         *
+         * @param [watcher] listens to actions.
+         */
+        fun watchActions(watcher: (ACTION) -> Unit) {
+            _actionWatcher = watcher
+        }
+
+        /**
+         * DSL to watch every state that is emitted.
+         *
+         * @param [watcher] listens to states.
+         */
+        fun watchStates(watcher: (STATE) -> Unit) {
+            _stateWatcher = watcher
+        }
     }
 
     companion object {
@@ -145,7 +206,15 @@ class Kaskade<ACTION : Action, STATE : State> private constructor(
             builder: Builder<ACTION, STATE>.() -> Unit
         ): Kaskade<ACTION, STATE> {
             val kaskade = Kaskade<ACTION, STATE>(initialState)
-            kaskade.addActions(builder)
+            val eventBuilder = Builder<ACTION, STATE>()
+
+            eventBuilder.builder()
+
+            kaskade.actionStateMap.putAll(eventBuilder.transformer)
+            eventBuilder.actionWatcher?.let(kaskade::addActionWatcher)
+            eventBuilder.stateWatcher?.let(kaskade::addStateWatcher)
+            eventBuilder.stateWatcher?.invoke(initialState)
+
             return kaskade
         }
     }

@@ -218,4 +218,103 @@ internal class KaskadeTest {
             verify(TestState.State2)
         }
     }
+
+    @Test
+    fun adding_action_watcher_listens_to_actions() {
+        val verifier = Verifier<TestAction>()
+
+        val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
+            on<TestAction.Action1> { TestState.State1 }
+
+            watchActions(verifier.function)
+        }
+
+        kaskade.dispatch(TestAction.Action1)
+
+        verifier.verifyInvokedWithValue(TestAction.Action1)
+    }
+
+    @Test
+    fun removing_action_watcher_will_stop_listening_to_actions() {
+        val verifier = Verifier<TestAction>()
+
+        val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
+            on<TestAction.Action1> { TestState.State1 }
+
+            watchActions(verifier.function)
+        }
+        kaskade.removeActionWatcher(verifier.function)
+
+        kaskade.dispatch(TestAction.Action1)
+
+        verifier.verifyInvokedWithValue(TestAction.Action1, 0)
+    }
+
+    @Test
+    fun multiple_action_watchers_will_be_able_to_listen_to_actions() {
+        val verifier = Verifier<TestAction>()
+        val verifier2 = Verifier<TestAction>()
+
+        val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
+            on<TestAction.Action1> { TestState.State1 }
+        }.apply {
+            addActionWatcher(verifier.function)
+            addActionWatcher(verifier2.function)
+        }
+
+        kaskade.dispatch(TestAction.Action1)
+
+        verifier.verifyInvokedWithValue(TestAction.Action1)
+        verifier2.verifyInvokedWithValue(TestAction.Action1)
+    }
+
+    @Test
+    fun adding_state_watcher_listens_to_states() {
+        val verifier = Verifier<TestState>()
+
+        val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
+            on<TestAction.Action1> { TestState.State1 }
+
+            watchStates(verifier.function)
+        }
+
+        kaskade.dispatch(TestAction.Action1)
+
+        verifier.verifyInvokedWithValue(TestState.State1, 2)
+    }
+
+    @Test
+    fun removing_state_watcher_will_stop_listening_to_states() {
+        val verifier = Verifier<TestState>()
+
+        val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
+            on<TestAction.Action1> { TestState.State1 }
+
+            watchStates(verifier.function)
+        }
+
+        kaskade.removeStateWatcher(verifier.function)
+
+        kaskade.dispatch(TestAction.Action1)
+
+        verifier.verifyInvokedWithValue(TestState.State1, 1)
+    }
+
+    @Test
+    fun multiple_state_watchers_will_be_able_to_listen_to_states() {
+        val verifier = Verifier<TestState>()
+        val verifier2 = Verifier<TestState>()
+
+        val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
+            on<TestAction.Action1> { TestState.State1 }
+            watchStates(verifier.function)
+        }.apply {
+            addStateWatcher(verifier2.function)
+        }
+
+        kaskade.dispatch(TestAction.Action1)
+
+        verifier.verifyInvokedWithValue(TestState.State1, 2)
+        verifier2.verifyInvokedWithValue(TestState.State1, 1)
+    }
 }
