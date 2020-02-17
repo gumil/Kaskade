@@ -19,12 +19,12 @@ package dev.gumil.kaskade
 /**
  * Upper bound of all [Action].
  */
-interface Action
+interface Action : Recording
 
 /**
  * Upper bound of all [State].
  */
-interface State
+interface State : Recording
 
 /**
  * Type to indicate that a [State]'s duty is to only show this state once.
