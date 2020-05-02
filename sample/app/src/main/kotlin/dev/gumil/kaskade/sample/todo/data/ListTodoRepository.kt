@@ -11,7 +11,7 @@ internal class ListTodoRepository : TodoRepository {
     override fun getToDoItems(): List<TodoItem> = list
 
     override fun updateItem(item: TodoItem) {
-        list[list.indexOfFirst { item.id == it.id } ] = item
+        list[list.indexOfFirst { item.id == it.id }] = item
     }
 
     override fun removeItem(item: TodoItem) {
