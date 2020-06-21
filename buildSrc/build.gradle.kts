@@ -16,12 +16,12 @@ plugins {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:3.6.3")
+    implementation("com.android.tools.build:gradle:4.0.0")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
-    implementation("com.github.node-gradle:gradle-node-plugin:2.2.3")
+    implementation("com.github.node-gradle:gradle-node-plugin:2.2.4")
     implementation("org.codehaus.groovy:groovy:3.0.3")
     implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
-    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.8.0")
+    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.10.0-RC1")
 
     implementation(gradleApi())
 }
