@@ -1,14 +1,14 @@
 @file:Suppress("unused", "ClassName")
 
 object versions {
-    internal const val jacoco = "0.8.4"
-    internal const val detekt = "1.8.0"
+    internal const val jacoco = "0.8.5"
+    internal const val detekt = "1.10.0-RC1"
 
     internal const val kotlin = "1.3.72"
     internal const val navigation = "2.2.2"
-    internal const val coroutines = "1.3.5"
+    internal const val coroutines = "1.3.7"
     internal const val lifecycle = "2.2.0"
-    internal const val retrofit = "2.8.1"
+    internal const val retrofit = "2.9.0"
 }
 
 object deps {
@@ -17,7 +17,7 @@ object deps {
             const val buildToolsVersion = "29.0.3"
             const val compileSdkVersion = 29
             const val minSdkVersion = 16
-            const val sampleMinSdkVersion = 21
+            const val sampleMinSdkVersion = 23
             const val targetSdkVersion = 29
         }
 
@@ -67,12 +67,12 @@ object deps {
         object retrofit {
             const val core = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
             const val moshi = "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
-            const val logging = "com.squareup.okhttp3:logging-interceptor:4.6.0"
+            const val logging = "com.squareup.okhttp3:logging-interceptor:4.7.2"
         }
 
         object rx {
             const val android = "io.reactivex.rxjava2:rxandroid:2.1.1"
-            const val binding = "com.jakewharton.rxbinding3:rxbinding:3.0.0"
+            const val binding = "com.jakewharton.rxbinding3:rxbinding:3.1.0"
         }
 
         object lifecycle {
@@ -82,7 +82,7 @@ object deps {
         object android {
             const val appCompat = "androidx.appcompat:appcompat:1.1.0"
             const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
-            const val material = "com.google.android.material:material:1.2.0-alpha06"
+            const val material = "com.google.android.material:material:1.3.0-alpha01"
             const val navigation = "androidx.navigation:navigation-fragment:${versions.navigation}"
         }
     }
