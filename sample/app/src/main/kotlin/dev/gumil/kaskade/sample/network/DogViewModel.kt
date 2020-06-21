@@ -13,6 +13,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.withContext
 
 internal class DogViewModel(
     private val dogApi: RandomDogApi,
@@ -44,7 +45,10 @@ internal class DogViewModel(
 
                 coroutines(uiScope) {
                     on<DogAction.GetDog> {
-                        DogState.OnLoaded(dogApi.getDog().message)
+                        val dog = withContext(Dispatchers.IO) {
+                            dogApi.getDog().message
+                        }
+                        DogState.OnLoaded(dog)
                     }
                 }
 
