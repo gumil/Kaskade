@@ -15,9 +15,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * @see dev.gumil.kaskade.flow.DamEmitter
  */
 @ExperimentalCoroutinesApi
-class DamStateFlow<T: Any>(
+class DamStateFlow<T : Any>(
     initialState: T
-): MutableStateFlow<T> {
+) : MutableStateFlow<T> {
 
     private val stateFlow = MutableStateFlow(initialState)
     private val savedValueHolder = SavedValueHolder<T>()
@@ -37,6 +37,9 @@ class DamStateFlow<T: Any>(
             stateFlow.value = value
         }
 
+    /**
+     * Clears all saved values.
+     */
     fun clear() {
         savedValueHolder.clear()
     }
