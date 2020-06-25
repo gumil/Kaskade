@@ -1,6 +1,6 @@
 package plugin
 
-import com.android.build.gradle.AndroidConfig
+import com.android.build.gradle.BaseExtension
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPom
@@ -29,7 +29,7 @@ fun Project.configureMavenAndroid() {
     createSourcesJarTask {
         dependsOn("assemble")
         from(
-            project.extensions.getByType<AndroidConfig>()
+            project.extensions.getByType<BaseExtension>()
                 .sourceSets.getByName("main").java.srcDirs
         )
     }
