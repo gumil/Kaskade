@@ -12,7 +12,7 @@ internal class Verifier<T> {
     private var invokedValues = mutableListOf<T>()
 
     fun verifyInvokedWithValue(value: T, times: Int = 1) {
-        assertEquals(invokedValues.filter { it == value }.size, times)
+        assertEquals(times, invokedValues.filter { it == value }.size)
     }
 
     fun verifyNoInvocations() {
@@ -23,7 +23,7 @@ internal class Verifier<T> {
         val orderedBuilder = OrderedBuilder<T>()
         verifyBuilder(orderedBuilder)
         orderedBuilder.values.forEachIndexed { index, value ->
-            assertEquals(invokedValues[index], value)
+            assertEquals(value, invokedValues[index])
         }
     }
 
