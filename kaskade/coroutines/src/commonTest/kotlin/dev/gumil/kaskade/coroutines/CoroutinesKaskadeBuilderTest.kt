@@ -1,8 +1,6 @@
 package dev.gumil.kaskade.coroutines
 
-import dev.gumil.kaskade.Action
 import dev.gumil.kaskade.Kaskade
-import dev.gumil.kaskade.State
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
@@ -191,14 +189,4 @@ internal class CoroutinesKaskadeBuilderTest {
             }
         })
     }
-}
-
-sealed class TestState : State {
-    object State1 : TestState()
-    object State2 : TestState()
-}
-
-sealed class TestAction : Action {
-    object Action1 : TestAction()
-    object Action2 : TestAction()
 }
