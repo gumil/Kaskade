@@ -45,7 +45,7 @@ class SavedValueHolder<T : Any> {
     /**
      * [Map] of saved values.
      */
-    val savedValues get() = _savedValues
+    val savedValues: Map<KClass<out T>, T> get() = _savedValues
 
     private val _savedValues = mutableMapOf<KClass<out T>, T>()
 
