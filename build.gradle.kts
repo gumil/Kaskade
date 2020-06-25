@@ -1,4 +1,6 @@
-import plugin.DetektConfigurationPlugin
+plugins {
+    id("io.gitlab.arturbosch.detekt") version versions.detekt
+}
 
 allprojects {
     repositories {
@@ -9,7 +11,20 @@ allprojects {
 }
 
 subprojects {
-    apply<DetektConfigurationPlugin>()
+    apply {
+        plugin("io.gitlab.arturbosch.detekt")
+    }
+
+    detekt {
+        toolVersion = versions.detekt
+        input = files("src/main/kotlin", "src/test/kotlin",
+            "src/commonMain/kotlin", "src/commonTest/kotlin")
+        config = files("$rootDir/detekt/detekt.yml")
+    }
+
+    dependencies {
+        detektPlugins(deps.detekt.lint)
+    }
 }
 
 val clean by tasks.creating(Delete::class) {
