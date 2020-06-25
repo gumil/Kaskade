@@ -5,7 +5,7 @@ object versions {
     internal const val detekt = "1.10.0-RC1"
 
     internal const val kotlin = "1.3.72"
-    internal const val navigation = "2.2.2"
+    internal const val navigation = "2.3.0"
     internal const val coroutines = "1.3.7"
     internal const val lifecycle = "2.2.0"
     internal const val retrofit = "2.9.0"
