@@ -27,7 +27,7 @@ import kotlin.reflect.KClass
  * @param initialState initial state to be emitted immediately when [onStateChanged] is initialized.
  */
 class Kaskade<ACTION : Action, STATE : State> private constructor(
-    initialState: STATE
+    val initialState: STATE
 ) {
 
     private val actionStateMap = mutableMapOf<KClass<out ACTION>, Reducer<ACTION, STATE>>()
