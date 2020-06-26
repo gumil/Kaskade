@@ -2,6 +2,7 @@ package dev.gumil.kaskade.sample.network
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import androidx.lifecycle.SavedStateHandle
 import io.mockk.coEvery
 import io.mockk.confirmVerified
 import io.mockk.mockk
@@ -22,6 +23,8 @@ internal class DogViewModelTest {
 
     private val mockApi = mockk<RandomDogApi>()
 
+    private val savedStateHandle = SavedStateHandle()
+
     @Before
     fun setUp() {
         coEvery { mockApi.getDog() } returns mockDog
@@ -31,8 +34,7 @@ internal class DogViewModelTest {
     fun `process Refresh should emit Loading and OnLoaded states`() {
         val mockObserver = mockk<Observer<DogState>>(relaxed = true)
         runBlocking {
-            val viewModel = DogViewModel(mockApi, this)
-            viewModel.restore()
+            val viewModel = DogViewModel(mockApi, savedStateHandle, this)
             viewModel.state.observeForever(mockObserver)
             viewModel.process(DogAction.Refresh)
         }
@@ -46,8 +48,7 @@ internal class DogViewModelTest {
         val mockObserver = mockk<Observer<DogState>>(relaxed = true)
         val exception = Exception()
         runBlocking {
-            val viewModel = DogViewModel(mockApi, this)
-            viewModel.restore()
+            val viewModel = DogViewModel(mockApi, savedStateHandle, this)
             viewModel.state.observeForever(mockObserver)
             viewModel.process(DogAction.OnError(exception))
         }
@@ -61,8 +62,7 @@ internal class DogViewModelTest {
     fun `process GetDog action should emit OnLoaded state`() {
         val mockObserver = mockk<Observer<DogState>>(relaxed = true)
         runBlocking {
-            val viewModel = DogViewModel(mockApi, this)
-            viewModel.restore()
+            val viewModel = DogViewModel(mockApi, savedStateHandle, this)
             viewModel.state.observeForever(mockObserver)
             viewModel.process(DogAction.GetDog)
         }
@@ -75,9 +75,9 @@ internal class DogViewModelTest {
     fun `restore with state should only emit passed state`() {
         val mockObserver = mockk<Observer<DogState>>(relaxed = true)
         val state = DogState.OnLoaded(mockUrl)
+        savedStateHandle["last_state"] = state
         runBlocking {
-            val viewModel = DogViewModel(mockApi, this)
-            viewModel.restore(state)
+            val viewModel = DogViewModel(mockApi, savedStateHandle, this)
             viewModel.state.observeForever(mockObserver)
         }
         verify(exactly = 0) { mockObserver.onChanged(DogState.Loading) }

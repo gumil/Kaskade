@@ -2,7 +2,9 @@ package dev.gumil.kaskade.sample.network
 
 import android.os.Parcelable
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dev.gumil.kaskade.coroutines.coroutines
 import dev.gumil.kaskade.Action
 import dev.gumil.kaskade.Kaskade
@@ -12,52 +14,56 @@ import dev.gumil.kaskade.livedata.stateDamLiveData
 import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
+
+private const val KEY_STATE = "last_state"
 
 internal class DogViewModel(
     private val dogApi: RandomDogApi,
+    private val savedStateHandle: SavedStateHandle,
     scope: CoroutineScope? = null
 ) : ViewModel() {
 
-    constructor() : this(ApiFactory.create())
+    /**
+     * This is internally used by the SavedStateViewModelFactory
+     */
+    @Suppress("unused")
+    constructor(savedStateHandle: SavedStateHandle) : this(ApiFactory.create(), savedStateHandle)
 
-    private val job = scope?.coroutineContext?.get(Job) ?: Job()
+    private val uiScope = scope ?: viewModelScope
 
-    private val uiScope = scope ?: CoroutineScope(Dispatchers.Main + job)
+    private val kaskade: Kaskade<DogAction, DogState>
 
-    @field:Suppress("LateinitUsage")
-    private lateinit var kaskade: Kaskade<DogAction, DogState>
+    init {
+        val initialState = savedStateHandle.get<DogState>(KEY_STATE) ?: DogState.Loading
+        kaskade = Kaskade.create(initialState) {
+            on<DogAction.Refresh> {
+                process(DogAction.GetDog)
+                DogState.Loading
+            }
+
+            coroutines(uiScope) {
+                on<DogAction.GetDog> {
+                    val dog = withContext(Dispatchers.IO) {
+                        dogApi.getDog().message
+                    }
+                    val state = DogState.OnLoaded(dog)
+                    savedStateHandle[KEY_STATE] = state
+                    state
+                }
+            }
+
+            on<DogAction.OnError> { DogState.Error(action.exception) }
+        }
+        if (initialState is DogState.Loading) {
+            process(DogAction.GetDog)
+        }
+    }
 
     val state: LiveData<DogState> get() = _state
 
     private val _state by lazy {
         kaskade.stateDamLiveData()
-    }
-
-    fun restore(state: DogState = DogState.Loading) {
-        if (::kaskade.isInitialized.not()) {
-            kaskade = Kaskade.create(state) {
-                on<DogAction.Refresh> {
-                    process(DogAction.GetDog)
-                    DogState.Loading
-                }
-
-                coroutines(uiScope) {
-                    on<DogAction.GetDog> {
-                        val dog = withContext(Dispatchers.IO) {
-                            dogApi.getDog().message
-                        }
-                        DogState.OnLoaded(dog)
-                    }
-                }
-
-                on<DogAction.OnError> { DogState.Error(action.exception) }
-            }
-            if (state is DogState.Loading) {
-                process(DogAction.GetDog)
-            }
-        }
     }
 
     fun process(action: DogAction) {
@@ -67,7 +73,6 @@ internal class DogViewModel(
     override fun onCleared() {
         super.onCleared()
         _state.clear()
-        job.cancel()
         kaskade.unsubscribe()
     }
 }

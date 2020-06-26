@@ -17,18 +17,6 @@ import kotlinx.android.synthetic.main.fragment_dog.*
 internal class DogFragment : Fragment(), Callback {
 
     private val dogViewModel by viewModels<DogViewModel>()
-    private var currentState: DogState.OnLoaded? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        savedInstanceState?.let { bundle ->
-            bundle.getParcelable<DogState.OnLoaded>(ARG_STATE)?.let { state ->
-                currentState = state
-                dogViewModel.restore(state)
-            }
-        } ?: dogViewModel.restore()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_dog, container, false)
@@ -43,13 +31,6 @@ internal class DogFragment : Fragment(), Callback {
         buttonGetNewImage.setOnClickListener { dogViewModel.process(DogAction.Refresh) }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        currentState?.let {
-            outState.putParcelable(ARG_STATE, currentState)
-        }
-    }
-
     private fun render(state: DogState) = when (state) {
         is DogState.Loading -> {
             progressBar.visibility = View.VISIBLE
@@ -60,7 +41,6 @@ internal class DogFragment : Fragment(), Callback {
             Toast.makeText(context, "Error loading image", Toast.LENGTH_SHORT).show()
         }
         is DogState.OnLoaded -> {
-            currentState = state
             Picasso.get().load(state.url).into(imageView, this)
         }
     }
@@ -72,9 +52,5 @@ internal class DogFragment : Fragment(), Callback {
 
     override fun onError(e: java.lang.Exception) {
         dogViewModel.process(DogAction.OnError(e))
-    }
-
-    companion object {
-        private const val ARG_STATE = "last_state"
     }
 }
