@@ -25,24 +25,24 @@ internal class AuthViewModelTest {
     }
 
     @Test
-    fun `process login should emit Loading and Success states`() {
+    fun `dispatch login should emit Loading and Success states`() {
         val viewModel = AuthViewModel(0)
         val observer = TestObserver<AuthState>()
         viewModel.state.subscribe(observer)
 
-        viewModel.process(Observable.just(AuthAction.Login("hello", "world")))
+        viewModel.dispatch(Observable.just(AuthAction.Login("hello", "world")))
 
         observer.assertValues(AuthState.Loading, AuthState.Success)
         observer.assertNoErrors()
     }
 
     @Test
-    fun `process login with error should emit Loading and Error states`() {
+    fun `dispatch login with error should emit Loading and Error states`() {
         val viewModel = AuthViewModel(0)
         val observer = TestObserver<AuthState>()
         viewModel.state.subscribe(observer)
 
-        viewModel.process(Observable.just(AuthAction.Login("hello", "error")))
+        viewModel.dispatch(Observable.just(AuthAction.Login("hello", "error")))
 
         println(observer.values())
         observer.assertValues(AuthState.Loading, AuthState.Error)
@@ -50,12 +50,12 @@ internal class AuthViewModelTest {
     }
 
     @Test
-    fun `process onError should emit error state`() {
+    fun `dispatch onError should emit error state`() {
         val viewModel = AuthViewModel(0)
         val observer = TestObserver<AuthState>()
         viewModel.state.subscribe(observer)
 
-        viewModel.process(Observable.just(AuthAction.OnError))
+        viewModel.dispatch(Observable.just(AuthAction.OnError))
 
         observer.assertValues(AuthState.Error)
         observer.assertNoErrors()

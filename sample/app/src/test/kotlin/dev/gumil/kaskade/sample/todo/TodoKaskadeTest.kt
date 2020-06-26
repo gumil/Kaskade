@@ -28,7 +28,7 @@ class TodoKaskadeTest {
 
         todoKaskade.state.subscribe(subscriber)
 
-        todoKaskade.process(TodoAction.Refresh)
+        todoKaskade.dispatch(TodoAction.Refresh)
         verify { subscriber.invoke(TodoState.OnLoaded(emptyList())) }
         confirmVerified(subscriber)
     }
@@ -37,7 +37,7 @@ class TodoKaskadeTest {
     fun `Action Delete`() {
         todoKaskade.state.subscribe(subscriber)
 
-        todoKaskade.process(TodoAction.Delete(1, TodoItem(1, "test", false)))
+        todoKaskade.dispatch(TodoAction.Delete(1, TodoItem(1, "test", false)))
 
         verify { subscriber.invoke(TodoState.OnDeleted(1)) }
         confirmVerified(subscriber)
@@ -49,7 +49,7 @@ class TodoKaskadeTest {
 
         todoKaskade.state.subscribe(subscriber)
 
-        todoKaskade.process(TodoAction.Add(todoItem))
+        todoKaskade.dispatch(TodoAction.Add(todoItem))
 
         verify { subscriber.invoke(TodoState.OnAdded(todoItem)) }
         confirmVerified(subscriber)
@@ -61,7 +61,7 @@ class TodoKaskadeTest {
 
         todoKaskade.state.subscribe(subscriber)
 
-        todoKaskade.process(TodoAction.Update(1, todoItem))
+        todoKaskade.dispatch(TodoAction.Update(1, todoItem))
 
         verify { subscriber.invoke(TodoState.OnUpdated(1, todoItem)) }
         confirmVerified(subscriber)

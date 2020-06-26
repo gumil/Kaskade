@@ -57,33 +57,33 @@ internal class KaskadeTest {
     @Test
     fun action_not_in_Kaskade_should_throw_exception() {
         assertFailsWith(IncompleteFlowException::class) {
-            kaskade.process(TestAction.Action4)
+            kaskade.dispatch(TestAction.Action4)
         }
     }
 
     @Test
-    fun process_action_after_unsubscribing_should_throw_exception() {
+    fun dispatch_action_after_unsubscribing_should_throw_exception() {
         kaskade.unsubscribe()
         assertFailsWith(IllegalStateException::class) {
-            kaskade.process(TestAction.Action1)
+            kaskade.dispatch(TestAction.Action1)
         }
     }
 
     @Test
     fun action1_should_emit_State1() {
-        kaskade.process(TestAction.Action1)
+        kaskade.dispatch(TestAction.Action1)
         stateChangeVerifier.verifyInvokedWithValue(TestState.State1, 2)
     }
 
     @Test
     fun action2_should_emit_State2() {
-        kaskade.process(TestAction.Action2)
+        kaskade.dispatch(TestAction.Action2)
         stateChangeVerifier.verifyInvokedWithValue(TestState.State2)
     }
 
     @Test
     fun action3_should_emit_State3() {
-        kaskade.process(TestAction.Action3)
+        kaskade.dispatch(TestAction.Action3)
         stateChangeVerifier.verifyInvokedWithValue(TestState.State3)
     }
 
@@ -146,9 +146,9 @@ internal class KaskadeTest {
     @Test
     fun emit_all_states_before_onStateChanged_is_set() {
         kaskade.onStateChanged = null
-        kaskade.process(TestAction.Action1)
-        kaskade.process(TestAction.Action2)
-        kaskade.process(TestAction.Action3)
+        kaskade.dispatch(TestAction.Action1)
+        kaskade.dispatch(TestAction.Action2)
+        kaskade.dispatch(TestAction.Action3)
 
         val verifier = Verifier<TestState>()
         val stateChanged = verifier.function
@@ -183,9 +183,9 @@ internal class KaskadeTest {
         val stateChanged = verifier.function
         kaskade.onStateChanged = stateChanged
 
-        kaskade.process(TestAction.Action1)
-        kaskade.process(TestAction.Action2)
-        kaskade.process(TestAction.Action1)
+        kaskade.dispatch(TestAction.Action1)
+        kaskade.dispatch(TestAction.Action2)
+        kaskade.dispatch(TestAction.Action1)
 
         verifier.verifyOrder {
             verify(TestState.State1)
@@ -196,7 +196,7 @@ internal class KaskadeTest {
     }
 
     @Test
-    fun should_emit_initial_state_and_process_state() {
+    fun should_emit_initial_state_and_processed_state() {
         val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
             on<TestAction.Action1> {
                 TestState.State1
@@ -209,7 +209,7 @@ internal class KaskadeTest {
         val verifier = Verifier<TestState>()
         val stateChanged = verifier.function
 
-        kaskade.process(TestAction.Action2)
+        kaskade.dispatch(TestAction.Action2)
 
         kaskade.onStateChanged = stateChanged
 

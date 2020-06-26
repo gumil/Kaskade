@@ -34,8 +34,8 @@ internal class TodoKaskade(
 
     val state = kaskade.stateEmitter()
 
-    fun process(action: TodoAction) {
-        kaskade.process(action)
+    fun dispatch(action: TodoAction) {
+        kaskade.dispatch(action)
     }
 
     fun unsubscribe() {

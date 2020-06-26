@@ -105,7 +105,7 @@ internal class LiveDataTest {
     }
 
     @Test
-    fun `livedata should only emit processed state`() {
+    fun `livedata should only emit dispatched state`() {
         val mockObserver = mockk<Observer<TestState>>(relaxed = true)
         val kaskade = Kaskade.create<TestAction, TestState>(TestState.State1) {
             on<TestAction.Action1> {
@@ -116,7 +116,7 @@ internal class LiveDataTest {
             }
         }
 
-        kaskade.process(TestAction.Action2)
+        kaskade.dispatch(TestAction.Action2)
 
         kaskade.stateLiveData().observeForever(mockObserver)
 

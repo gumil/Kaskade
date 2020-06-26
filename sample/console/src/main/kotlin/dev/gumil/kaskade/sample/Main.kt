@@ -37,10 +37,10 @@ fun main() {
         val action = readLine()?.get(0) ?: 'q'
 
         when (action) {
-            'z' -> kaskade.process(PlayerAction.Stop)
-            'x' -> kaskade.process(PlayerAction.PausePlay)
-            'c' -> kaskade.process(PlayerAction.Previous)
-            'v' -> kaskade.process(PlayerAction.Next)
+            'z' -> kaskade.dispatch(PlayerAction.Stop)
+            'x' -> kaskade.dispatch(PlayerAction.PausePlay)
+            'c' -> kaskade.dispatch(PlayerAction.Previous)
+            'v' -> kaskade.dispatch(PlayerAction.Next)
             else -> break@loop
         }
     }

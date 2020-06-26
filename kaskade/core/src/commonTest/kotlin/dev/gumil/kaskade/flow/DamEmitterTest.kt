@@ -120,7 +120,7 @@ internal class DamEmitterTest {
         val subscriber = verifier.function
 
         stateFlow.subscribe(subscriber)
-        kaskade.process(TestAction.Action1)
+        kaskade.dispatch(TestAction.Action1)
 
         verifier.verifyInvokedWithValue(TestState.State1)
     }
@@ -141,7 +141,7 @@ internal class DamEmitterTest {
         val verifier = Verifier<TestState>()
         val subscriber = verifier.function
 
-        kaskade.process(TestAction.Action1)
+        kaskade.dispatch(TestAction.Action1)
         stateFlow.unsubscribe()
         stateFlow.subscribe(subscriber)
 
@@ -154,9 +154,9 @@ internal class DamEmitterTest {
         val verifier = Verifier<TestState>()
         val subscriber = verifier.function
 
-        kaskade.process(TestAction.Action1)
+        kaskade.dispatch(TestAction.Action1)
         stateFlow.subscribe(subscriber)
-        kaskade.process(TestAction.Action3)
+        kaskade.dispatch(TestAction.Action3)
         stateFlow.unsubscribe()
         stateFlow.subscribe(subscriber)
 
@@ -181,7 +181,7 @@ internal class DamEmitterTest {
         val verifier = Verifier<TestState>()
         val subscriber = verifier.function
 
-        kaskade.process(TestAction.Action2)
+        kaskade.dispatch(TestAction.Action2)
 
         kaskade.stateDamEmitter().subscribe(subscriber)
 

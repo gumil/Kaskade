@@ -76,7 +76,7 @@ internal class EmitterTest {
         val subscriber = verifier.function
 
         stateFlow.subscribe(subscriber)
-        kaskade.process(TestAction.Action1)
+        kaskade.dispatch(TestAction.Action1)
 
         assertTrue { stateFlow is MutableEmitter<TestState> }
         verifier.verifyInvokedWithValue(TestState.State1)

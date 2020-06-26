@@ -104,7 +104,7 @@ kaskade.stateEmitter().subscribe {
 
 Executing actions
 ```Kotlin
-kaskade.process(TestAction.Action1)
+kaskade.dispatch(TestAction.Action1)
 ```
 
 ## Documentation
