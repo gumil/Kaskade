@@ -169,7 +169,7 @@ internal class DamStateFlowTest {
                 .take(numberOfStateChanges)
                 .verifyCollect(this, verifier.function)
             yield()
-            kaskade.process(TestAction.Action2)
+            kaskade.dispatch(TestAction.Action2)
             yield()
         }) {
             verifier.verifyInvokedWithValue(TestState.State1)

@@ -38,7 +38,7 @@ internal class DogViewModel(
         val initialState = savedStateHandle.get<DogState>(KEY_STATE) ?: DogState.Loading
         kaskade = Kaskade.create(initialState) {
             on<DogAction.Refresh> {
-                process(DogAction.GetDog)
+                dispatch(DogAction.GetDog)
                 DogState.Loading
             }
 
@@ -56,7 +56,7 @@ internal class DogViewModel(
             on<DogAction.OnError> { DogState.Error(action.exception) }
         }
         if (initialState is DogState.Loading) {
-            process(DogAction.GetDog)
+            dispatch(DogAction.GetDog)
         }
     }
 
@@ -66,8 +66,8 @@ internal class DogViewModel(
         kaskade.stateDamLiveData()
     }
 
-    fun process(action: DogAction) {
-        kaskade.process(action)
+    fun dispatch(action: DogAction) {
+        kaskade.dispatch(action)
     }
 
     override fun onCleared() {

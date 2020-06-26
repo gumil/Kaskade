@@ -25,8 +25,8 @@ internal class CoroutinesKaskadeBuilderTest {
             }
 
             kaskade.onStateChanged = onStateChanged
-            kaskade.process(TestAction.Action1)
-            kaskade.process(TestAction.Action2)
+            kaskade.dispatch(TestAction.Action1)
+            kaskade.dispatch(TestAction.Action2)
         }, {
             verifier.verifyOrder {
                 verify(TestState.State1)
@@ -51,8 +51,8 @@ internal class CoroutinesKaskadeBuilderTest {
             }
 
             kaskade.onStateChanged = onStateChanged
-            kaskade.process(TestAction.Action1)
-            kaskade.process(TestAction.Action2)
+            kaskade.dispatch(TestAction.Action1)
+            kaskade.dispatch(TestAction.Action2)
         }, {
             verifier.verifyOrder {
                 verify(TestState.State1)
@@ -86,8 +86,8 @@ internal class CoroutinesKaskadeBuilderTest {
             }
 
             kaskade.onStateChanged = onStateChanged
-            kaskade.process(TestAction.Action1)
-            kaskade.process(TestAction.Action2)
+            kaskade.dispatch(TestAction.Action1)
+            kaskade.dispatch(TestAction.Action2)
             job.cancel()
             scopedReducer1?.await()
             scopedReducer2?.await()
@@ -124,8 +124,8 @@ internal class CoroutinesKaskadeBuilderTest {
             }
 
             kaskade.onStateChanged = onStateChanged
-            kaskade.process(TestAction.Action1)
-            kaskade.process(TestAction.Action2)
+            kaskade.dispatch(TestAction.Action1)
+            kaskade.dispatch(TestAction.Action2)
             job1.cancel()
             scopedReducer1?.await()
             scopedReducer2?.await()
@@ -153,8 +153,8 @@ internal class CoroutinesKaskadeBuilderTest {
             }
 
             kaskade.onStateChanged = onStateChanged
-            kaskade.process(TestAction.Action1)
-            kaskade.process(TestAction.Action2)
+            kaskade.dispatch(TestAction.Action1)
+            kaskade.dispatch(TestAction.Action2)
         }, {
             verifier.verifyOrder {
                 verify(TestState.State1)
@@ -179,8 +179,8 @@ internal class CoroutinesKaskadeBuilderTest {
             }
 
             kaskade.onStateChanged = onStateChanged
-            kaskade.process(TestAction.Action1)
-            kaskade.process(TestAction.Action2)
+            kaskade.dispatch(TestAction.Action1)
+            kaskade.dispatch(TestAction.Action2)
         }, {
             verifier.verifyOrder {
                 verify(TestState.State1)

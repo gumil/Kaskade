@@ -34,7 +34,7 @@ internal class AuthViewModel(
             }
 
             override fun onError(e: Throwable) {
-                process(Observable.just(AuthAction.OnError))
+                dispatch(Observable.just(AuthAction.OnError))
             }
         }.also { disposables.add(it) }
 
@@ -65,8 +65,8 @@ internal class AuthViewModel(
 
     val state: Observable<AuthState> = kaskade.stateObservable()
 
-    fun process(actions: Observable<AuthAction>) {
-        actions.subscribe { kaskade.process(it) }.also { disposables.add(it) }
+    fun dispatch(actions: Observable<AuthAction>) {
+        actions.subscribe { kaskade.dispatch(it) }.also { disposables.add(it) }
     }
 
     override fun onCleared() {

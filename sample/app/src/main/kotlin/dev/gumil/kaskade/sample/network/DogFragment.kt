@@ -28,7 +28,7 @@ internal class DogFragment : Fragment(), Callback {
             render(it)
         })
 
-        buttonGetNewImage.setOnClickListener { dogViewModel.process(DogAction.Refresh) }
+        buttonGetNewImage.setOnClickListener { dogViewModel.dispatch(DogAction.Refresh) }
     }
 
     private fun render(state: DogState) = when (state) {
@@ -51,6 +51,6 @@ internal class DogFragment : Fragment(), Callback {
     }
 
     override fun onError(e: java.lang.Exception) {
-        dogViewModel.process(DogAction.OnError(e))
+        dogViewModel.dispatch(DogAction.OnError(e))
     }
 }

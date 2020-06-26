@@ -28,7 +28,7 @@ internal class AuthFragment : Fragment() {
             render(it)
         }
 
-        viewModel.process(buttonLogin.clicks().map {
+        viewModel.dispatch(buttonLogin.clicks().map {
             AuthAction.Login(
                 editTextUsername.text.toString(),
                 editTextPassword.text.toString()

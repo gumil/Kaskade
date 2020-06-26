@@ -27,9 +27,9 @@ internal class TodoFragment : Fragment() {
 
         todoKaskade.state.subscribe { render(it) }
 
-        adapter.onItemAction.subscribe { todoKaskade.process(it) }
+        adapter.onItemAction.subscribe { todoKaskade.dispatch(it) }
 
-        todoKaskade.process(TodoAction.Refresh)
+        todoKaskade.dispatch(TodoAction.Refresh)
     }
 
     override fun onDestroyView() {
