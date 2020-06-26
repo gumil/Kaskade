@@ -33,6 +33,15 @@ android {
     testOptions {
         unitTests.isReturnDefaultValues = true
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 androidExtensions {
@@ -43,6 +52,7 @@ dependencies {
     implementation(deps.sample.android.appCompat)
     implementation(deps.sample.android.recyclerView)
     implementation(deps.sample.android.material)
+    implementation(deps.sample.android.fragment)
 
     implementation(deps.kotlin.stdlib.jdk8)
     implementation(deps.kotlin.coroutines.core)
