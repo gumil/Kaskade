@@ -118,5 +118,12 @@ Some of the topics covered are:
 
 ### Sample projects
 * [Android App](sample/app) - Android use cases
+  * [auth](sample/app/src/main/kotlin/dev/gumil/kaskade/sample/auth) - Rx use case
+  * [network](sample/app/src/main/kotlin/dev/gumil/kaskade/sample/network) - Coroutines and LiveData use case
+  * [todo](sample/app/src/main/kotlin/dev/gumil/kaskade/sample/todo) - Vanilla kaskade use case
+
 * [Kotlin Console](sample/console) - Kotlin only project
-* [Giphy Android Use Case](https://github.com/gumil/giphy) - Android master-detail flow use case
+
+* [Giphy Android Use Case](https://github.com/gumil/giphy)
+  * Android master-detail
+  * Reactive FlowBinding and StateFlow use case
