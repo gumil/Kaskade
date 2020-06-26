@@ -84,6 +84,7 @@ object deps {
             const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
             const val material = "com.google.android.material:material:1.3.0-alpha01"
             const val navigation = "androidx.navigation:navigation-fragment:${versions.navigation}"
+            const val fragment = "androidx.fragment:fragment-ktx:1.2.5"
         }
     }
 }

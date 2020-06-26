@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import dev.gumil.kaskade.sample.R
@@ -16,10 +16,7 @@ import kotlinx.android.synthetic.main.fragment_dog.*
 
 internal class DogFragment : Fragment(), Callback {
 
-    private val dogViewModel by lazy {
-        ViewModelProviders.of(this).get(DogViewModel::class.java)
-    }
-
+    private val dogViewModel by viewModels<DogViewModel>()
     private var currentState: DogState.OnLoaded? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +36,7 @@ internal class DogFragment : Fragment(), Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dogViewModel.state.observe(this, Observer<DogState> {
+        dogViewModel.state.observe(viewLifecycleOwner, Observer<DogState> {
             render(it)
         })
 

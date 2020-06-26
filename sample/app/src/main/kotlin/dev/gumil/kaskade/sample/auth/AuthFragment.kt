@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import com.jakewharton.rxbinding3.view.clicks
 import dev.gumil.kaskade.sample.R
 import io.reactivex.disposables.Disposable
@@ -14,9 +14,7 @@ import kotlinx.android.synthetic.main.fragment_auth.*
 
 internal class AuthFragment : Fragment() {
 
-    private val viewModel by lazy {
-        ViewModelProviders.of(this).get(AuthViewModel::class.java)
-    }
+    private val viewModel by viewModels<AuthViewModel>()
 
     private var disposable: Disposable? = null
 
