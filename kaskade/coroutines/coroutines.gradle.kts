@@ -24,12 +24,6 @@ kotlin {
             }
         }
 
-        val nativeMain by creating {
-            dependencies {
-                implementation(deps.kotlin.coroutines.native)
-            }
-        }
-
         jvm().compilations["main"].defaultSourceSet {
             dependencies {
                 implementation(deps.kotlin.coroutines.core)
@@ -52,10 +46,14 @@ kotlin {
                 implementation(kotlin("test-js"))
             }
         }
-    }
 
-    configure(listOf(iosX64(), iosArm64())) {
-        compilations["main"].source(sourceSets["nativeMain"])
+        configure(listOf(iosX64(), iosArm64())) {
+            compilations["main"].defaultSourceSet {
+                dependencies {
+                    implementation(deps.kotlin.coroutines.native)
+                }
+            }
+        }
     }
 }
 
