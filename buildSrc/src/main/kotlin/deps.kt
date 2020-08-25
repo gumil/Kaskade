@@ -1,12 +1,12 @@
 @file:Suppress("unused", "ClassName")
 
 object versions {
-    const val detekt = "1.10.0-RC1"
+    const val detekt = "1.11.2"
     internal const val jacoco = "0.8.5"
 
-    internal const val kotlin = "1.3.72"
+    internal const val kotlin = "1.4.0"
     internal const val navigation = "2.3.0"
-    internal const val coroutines = "1.3.7"
+    internal const val coroutines = "1.3.9"
     internal const val lifecycle = "2.2.0"
     internal const val retrofit = "2.9.0"
 }
@@ -35,9 +35,6 @@ object deps {
 
         object coroutines {
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
-            const val native = "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:${versions.coroutines}"
-            const val js = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${versions.coroutines}"
-            const val common = "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${versions.coroutines}"
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
         }
 
@@ -62,12 +59,12 @@ object deps {
      * Dependencies used by the sample app
      */
     object sample {
-        const val picasso = "com.squareup.picasso:picasso:2.71828"
+        const val picasso = "com.squareup.picasso:picasso:2.8"
 
         object retrofit {
             const val core = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
             const val moshi = "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
-            const val logging = "com.squareup.okhttp3:logging-interceptor:4.7.2"
+            const val logging = "com.squareup.okhttp3:logging-interceptor:4.8.1"
         }
 
         object rx {
@@ -80,7 +77,7 @@ object deps {
         }
 
         object android {
-            const val appCompat = "androidx.appcompat:appcompat:1.1.0"
+            const val appCompat = "androidx.appcompat:appcompat:1.2.0"
             const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
             const val material = "com.google.android.material:material:1.3.0-alpha01"
             const val navigation = "androidx.navigation:navigation-fragment:${versions.navigation}"

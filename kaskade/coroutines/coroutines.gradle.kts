@@ -9,14 +9,16 @@ apply<MultiplatformConfigurationPlugin>()
 
 kotlin {
     sourceSets {
+        @kotlin.Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
             dependencies {
                 implementation(project(":core"))
-                implementation(deps.kotlin.coroutines.common)
+                implementation(deps.kotlin.coroutines.core)
                 implementation(kotlin("stdlib-common"))
             }
         }
 
+        @kotlin.Suppress("UNUSED_VARIABLE")
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
@@ -24,34 +26,17 @@ kotlin {
             }
         }
 
-        jvm().compilations["main"].defaultSourceSet {
-            dependencies {
-                implementation(deps.kotlin.coroutines.core)
-                implementation(kotlin("stdlib-jdk8"))
-            }
-        }
-        jvm().compilations["test"].defaultSourceSet {
+        @kotlin.Suppress("UNUSED_VARIABLE")
+        val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
-        js().compilations["main"].defaultSourceSet {
-            dependencies {
-                implementation(deps.kotlin.coroutines.js)
-                implementation(kotlin("stdlib-js"))
-            }
-        }
-        js().compilations["test"].defaultSourceSet {
+
+        @kotlin.Suppress("UNUSED_VARIABLE")
+        val jsTest by getting {
             dependencies {
                 implementation(kotlin("test-js"))
-            }
-        }
-
-        configure(listOf(iosX64(), iosArm64())) {
-            compilations["main"].defaultSourceSet {
-                dependencies {
-                    implementation(deps.kotlin.coroutines.native)
-                }
             }
         }
     }
