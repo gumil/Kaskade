@@ -23,7 +23,7 @@ class MultiplatformConfigurationPlugin : Plugin<Project> {
         project.extensions.getByType<KotlinMultiplatformExtension>().run {
             jvm()
             js {
-                project.configure<KotlinJsCompilation>(listOf(compilations["main"], compilations["test"])) {
+                project.configure(listOf(compilations["main"], compilations["test"])) {
                     project.tasks.getByName(compileKotlinTaskName) {
                         kotlinOptions {
                             metaInfo = true

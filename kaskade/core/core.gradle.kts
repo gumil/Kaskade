@@ -8,12 +8,8 @@ apply<MultiplatformConfigurationPlugin>()
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib-common"))
-            }
-        }
 
+        @kotlin.Suppress("UNUSED_VARIABLE")
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
@@ -21,25 +17,15 @@ kotlin {
             }
         }
 
-        // Default source set for JVM-specific sources and dependencies:
-        jvm().compilations["main"].defaultSourceSet {
-            dependencies {
-                implementation(kotlin("stdlib-jdk8"))
-            }
-        }
-        // JVM-specific tests and their dependencies:
-        jvm().compilations["test"].defaultSourceSet {
+        @kotlin.Suppress("UNUSED_VARIABLE")
+        val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
 
-        js().compilations["main"].defaultSourceSet {
-            dependencies {
-                implementation(kotlin("stdlib-js"))
-            }
-        }
-        js().compilations["test"].defaultSourceSet {
+        @kotlin.Suppress("UNUSED_VARIABLE")
+        val jsTest by getting {
             dependencies {
                 implementation(kotlin("test-js"))
             }
