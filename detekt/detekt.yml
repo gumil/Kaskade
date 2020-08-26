@@ -250,6 +250,7 @@ formatting:
     active: true
     autoCorrect: true
   ParameterListWrapping:
+    excludes: "**/commonTest/**,**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt"
     active: true
     autoCorrect: true
     indentSize: 4

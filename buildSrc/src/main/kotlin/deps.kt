@@ -1,7 +1,7 @@
 @file:Suppress("unused", "ClassName")
 
 object versions {
-    const val detekt = "1.11.2"
+    const val detekt = "1.12.0"
     internal const val jacoco = "0.8.5"
 
     internal const val kotlin = "1.4.0"

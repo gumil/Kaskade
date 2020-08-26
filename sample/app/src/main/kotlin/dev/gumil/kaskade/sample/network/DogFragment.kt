@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import dev.gumil.kaskade.sample.R
@@ -24,11 +23,13 @@ internal class DogFragment : Fragment(), Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dogViewModel.state.observe(viewLifecycleOwner, Observer<DogState> {
+        dogViewModel.state.observe(viewLifecycleOwner, {
             render(it)
         })
 
-        buttonGetNewImage.setOnClickListener { dogViewModel.dispatch(DogAction.Refresh) }
+        buttonGetNewImage.setOnClickListener {
+            dogViewModel.dispatch(DogAction.Refresh)
+        }
     }
 
     private fun render(state: DogState) = when (state) {

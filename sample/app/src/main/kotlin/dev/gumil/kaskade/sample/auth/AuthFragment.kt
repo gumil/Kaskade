@@ -28,12 +28,14 @@ internal class AuthFragment : Fragment() {
             render(it)
         }
 
-        viewModel.dispatch(buttonLogin.clicks().map {
-            AuthAction.Login(
-                editTextUsername.text.toString(),
-                editTextPassword.text.toString()
-            )
-        })
+        viewModel.dispatch(
+            buttonLogin.clicks().map {
+                AuthAction.Login(
+                    editTextUsername.text.toString(),
+                    editTextPassword.text.toString()
+                )
+            }
+        )
     }
 
     override fun onDestroyView() {
